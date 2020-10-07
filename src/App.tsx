@@ -7,7 +7,7 @@ const App = () => {
   return (
     <>
       {/* <WelcomePage /> */}
-      <CreateAccount />
+      <CreateAccount /> 
     </>
   );
 };

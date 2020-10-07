@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+import { RectButton } from 'react-native-gesture-handler';
+
 export const Container = styled.View`
     flex: 1;
     background-color: #1b1b1f;
@@ -48,8 +50,8 @@ export const HorizontalButtonsContainer = styled.View`
     align-items: center;
 `;
 
-export const Button = styled.TouchableOpacity`
-    width: 156px;
+export const Button = styled(RectButton)`
+    width: 150px;
     height: 56px;
     margin: 0 10px;
 `;

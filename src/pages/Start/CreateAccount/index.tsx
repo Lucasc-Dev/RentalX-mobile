@@ -1,12 +1,18 @@
 import React from 'react';
-import { Text } from 'react-native';
 
-import { Container } from './styles';
+import Icon from 'react-native-vector-icons/Feather'
+
+import { 
+  Container,
+  HorizontalContainer, 
+} from './styles';
 
 const CreateAccount: React.FC = () => {
   return (
     <Container>
-      <Text>CreateAccount</Text>
+      <HorizontalContainer>
+        <Icon name="chevron-left" />
+      </HorizontalContainer>
     </Container>
   );
 };
