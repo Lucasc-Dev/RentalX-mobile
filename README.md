@@ -1,2 +1,5 @@
-# RentX-mobile
-🚗 RentX - The best way to rent a car!
+<h1 align="center">
+  RentX Aplication!
+</h1>
+
+RentX is a mobile platform to find and rent a vehicle using your smartphone!
