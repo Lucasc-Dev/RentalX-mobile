@@ -2,10 +2,11 @@ import React from 'react';
 
 import Icon from 'react-native-vector-icons/Feather'
 
-//import Input from '../../../components/Input';
+import Input from '../../../components/Input';
 
 import { 
   Container,
+  BackButton,
   TextContainer,
   Title,
   Subtitle,
@@ -15,7 +16,9 @@ import {
 const CreateAccount: React.FC = () => {
   return (
     <Container>
-      <Icon size={20} name="chevron-left" color="#AEAEB3" />
+      <BackButton>
+        <Icon size={20} name="chevron-left" color="#AEAEB3" />
+      </BackButton>
 
       <TextContainer>
         <Title>Estamos quase lá.</Title>
@@ -24,7 +27,12 @@ const CreateAccount: React.FC = () => {
       </TextContainer>
 
       <ButtonsContainer>
-        {/* <Input /> */}
+        <Input 
+          placeholder="E-mail"
+          />
+        <Input 
+          placeholder="Senha"
+        />
       </ButtonsContainer>
     </Container>
   );

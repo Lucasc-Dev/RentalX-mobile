@@ -4,11 +4,16 @@ export const Container = styled.View`
 
 `;
 
-export const HorizontalContainer = styled.View`
-
+export const BackButton = styled.TouchableOpacity`
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const TextContainer = styled.View`
+    margin-left: 32px;
+    margin-top: 100px;
     width: 220px;
 `;
 
@@ -21,6 +26,7 @@ export const Title = styled.Text`
 `;
 
 export const Subtitle = styled.Text`
+    margin-top: 24px;
     font-family: 'Inter-Medium-sInt=0';
     font-weight: normal;
     font-size: 15px;
@@ -29,5 +35,5 @@ export const Subtitle = styled.Text`
 `;
 
 export const ButtonsContainer = styled.View`
-
+    margin-top: 110px;
 `;
