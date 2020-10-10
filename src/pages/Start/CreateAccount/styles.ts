@@ -1,19 +1,21 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-
+    flex: 1;
+    justify-content: space-evenly;
 `;
 
 export const BackButton = styled.TouchableOpacity`
     width: 40px;
     height: 40px;
+    margin: 32px 0 0 15px;
     align-items: center;
     justify-content: center;
+    position: absolute;
 `;
 
 export const TextContainer = styled.View`
     margin-left: 32px;
-    margin-top: 100px;
     width: 220px;
 `;
 
@@ -35,5 +37,4 @@ export const Subtitle = styled.Text`
 `;
 
 export const ButtonsContainer = styled.View`
-    margin-top: 110px;
 `;
