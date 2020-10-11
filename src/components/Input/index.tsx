@@ -22,7 +22,10 @@ const Input: React.FC<InputProps> = ({ icon, ...rest }) => {
       </IconBox>
 
       <InputBox>
-        <TextInput placeholderTextColor="#AEAEB3" { ...rest } />
+        <TextInput 
+          placeholderTextColor="#AEAEB3" 
+          { ...rest } 
+        />
       </InputBox>
     </Container>
   );
