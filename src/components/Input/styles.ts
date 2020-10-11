@@ -24,7 +24,7 @@ export const InputBox = styled.View`
     justify-content: center;
 `;
 
-export const InputText = styled.TextInput`
+export const TextInput = styled.TextInput`
     font-family: 'Inter-Medium-sInt=0';
     font-size: 16px;
     margin: 0 23px;

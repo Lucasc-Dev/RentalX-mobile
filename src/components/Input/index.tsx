@@ -7,25 +7,22 @@ import {
   Container,
   IconBox,
   InputBox,
-  InputText,
+  TextInput,
 } from './styles';
 
 interface InputProps extends TextInputProps {
-  placeholder?: string;
+  icon: string;
 }
 
-const Input: React.FC<TextInputProps> = ({ placeholder }) => {
+const Input: React.FC<InputProps> = ({ icon, ...rest }) => {
   return (
     <Container>
       <IconBox>
-        <Icon name="mail" size={20} color="#7a7a80" />
+        <Icon name={icon} size={20} color="#7a7a80" />
       </IconBox>
 
       <InputBox>
-        <InputText 
-          placeholderTextColor="#aeaeb3"
-          placeholder={placeholder}
-        />
+        <TextInput placeholderTextColor="#AEAEB3" { ...rest } />
       </InputBox>
     </Container>
   );

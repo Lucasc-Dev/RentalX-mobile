@@ -8,33 +8,61 @@ import Button from '../../../components/Button';
 import { 
   Container,
   BackButton,
-  TextContainer,
+  TitleContainer,
   Title,
   Subtitle,
   ButtonsContainer,
+  HorizontalContainer,
+  CheckBox,
+  CheckBoxContainer,
+  MiniText,
+  ForgotPasswordButton,
 } from './styles';
 import { KeyboardAvoidingView } from 'react-native';
 
 const CreateAccount: React.FC = () => {
+  const [remindMe, setRemindMe] = useState(false);
+
   return (
     <>
       <BackButton>
         <Icon size={20} name="chevron-left" color="#AEAEB3" />
       </BackButton>
-      <Container>
-        <TextContainer>
+      <Container behavior="position">
+        <TitleContainer>
           <Title>Estamos quase lá.</Title>
           
           <Subtitle>Faça seu login para começar uma experiência incrível.</Subtitle>
-        </TextContainer>
+        </TitleContainer>
 
         <ButtonsContainer>
           <Input
             placeholder="E-mail"
+            autoCorrect={false}
+            icon="mail"
           />
           <Input 
             placeholder="Senha"
+            secureTextEntry
+            autoCorrect={false}
+            icon="lock"
           />
+
+          <HorizontalContainer>
+            <CheckBoxContainer>
+              <CheckBox
+                value={remindMe}
+                onValueChange={(value) => setRemindMe(value)}
+              />
+
+              <MiniText>Lembrar-me</MiniText>
+            </CheckBoxContainer>
+            
+
+            <ForgotPasswordButton>
+              <MiniText>Esqueci minha senha</MiniText>
+            </ForgotPasswordButton>
+          </HorizontalContainer>
 
           <Button 
             text="Login"
