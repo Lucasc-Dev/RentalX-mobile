@@ -11,10 +11,11 @@ import {
 } from './styles';
 
 interface InputProps extends TextInputProps {
+  name: string;
   icon: string;
 }
 
-const Input: React.FC<InputProps> = ({ icon, ...rest }) => {
+const Input: React.FC<InputProps> = ({ icon, name, ...rest }) => {
   return (
     <Container>
       <IconBox>
@@ -23,8 +24,9 @@ const Input: React.FC<InputProps> = ({ icon, ...rest }) => {
 
       <InputBox>
         <TextInput 
-          placeholderTextColor="#AEAEB3" 
-          { ...rest } 
+          keyboardAppearance="light"
+          placeholderTextColor="#666360" 
+          {...rest} 
         />
       </InputBox>
     </Container>

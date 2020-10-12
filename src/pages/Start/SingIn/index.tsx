@@ -18,9 +18,8 @@ import {
   MiniText,
   ForgotPasswordButton,
 } from './styles';
-import { KeyboardAvoidingView } from 'react-native';
 
-const CreateAccount: React.FC = () => {
+const SignIn: React.FC = () => {
   const [remindMe, setRemindMe] = useState(false);
 
   return (
@@ -37,13 +36,14 @@ const CreateAccount: React.FC = () => {
 
         <ButtonsContainer>
           <Input
+            name="email"
             placeholder="E-mail"
             autoCorrect={false}
             icon="mail"
           />
           <Input 
+            name="password"
             placeholder="Senha"
-            placeholderTextColor="#AEAEB3"
             secureTextEntry
             autoCorrect={false}
             icon="lock"
@@ -74,4 +74,4 @@ const CreateAccount: React.FC = () => {
   );
 };
 
-export default CreateAccount;
+export default SignIn;

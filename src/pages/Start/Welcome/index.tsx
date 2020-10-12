@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import logo from '../../../assets/images/XLogo.png';
 
@@ -18,6 +19,20 @@ import {
 } from './styles';
 
 const WelcomePage: React.FC = () => {
+  const { navigate, goBack } = useNavigation();
+
+  const handleLoginButton = useCallback(() => {
+    navigate('SignIn');
+  }, []);
+  
+  const handleSignUpButton = useCallback(() => {
+    navigate('CreateAccount');
+  }, []);
+  
+  const handleBackButton = useCallback(() => {
+    goBack();
+  }, []);
+
   return (
     <Container>
       <VerticalContainer>
@@ -32,16 +47,22 @@ const WelcomePage: React.FC = () => {
 
         <ButtonsContainer>
           <HorizontalButtonsContainer>
-            <Button style={{ backgroundColor: '#dc1637' }}>
+            <Button 
+              style={{ backgroundColor: '#dc1637' }}
+              onPress={handleLoginButton}
+            >
               <ButtonText>Login</ButtonText>
             </Button>
 
-            <Button style={{ backgroundColor: '#29292e' }}>
+            <Button 
+              style={{ backgroundColor: '#29292e' }}
+              onPress={handleSignUpButton}
+            >
               <ButtonText>Cadastro</ButtonText>
             </Button>
           </HorizontalButtonsContainer>
 
-          <BackButton>
+          <BackButton onPress={handleBackButton}>
             <BackButtonText>Voltar</BackButtonText>
           </BackButton>
         </ButtonsContainer>

@@ -1,14 +1,19 @@
-import React from 'react';
+import 'react-native-gesture-handler';
 
-import CreateAccount from './pages/Start/CreateAccount';
-import WelcomePage from './pages/Start/WelcomePage';
+import React from 'react';
+import { StatusBar, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+
+import Routes from './routes';
 
 const App = () => {
   return (
-    <>
-      {/* <WelcomePage /> */}
-      <CreateAccount /> 
-    </>
+    <NavigationContainer>
+      <StatusBar />
+      <View style={{ flex: 1, backgroundColor: '#E1E1E6' }}>
+        <Routes />
+      </View>
+    </NavigationContainer>
   );
 };
 

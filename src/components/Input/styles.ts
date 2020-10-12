@@ -25,6 +25,7 @@ export const InputBox = styled.View`
 `;
 
 export const TextInput = styled.TextInput`
+    flex: 1;
     font-family: 'Inter-Medium-sInt=0';
     font-size: 16px;
     margin: 0 23px;
