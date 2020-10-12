@@ -6,6 +6,7 @@ import SignIn from '../pages/Start/SingIn';
 import CreateAccount from '../pages/Start/CreateAccount';
 import CreateAccountPassword from '../pages/Start/CreateAccountPassword';
 import AccountCreated from '../pages/Start/AccountCreated';
+import SelectPeriod from '../pages/Application/SelectPeriod';
 
 const Auth = createStackNavigator();
 
@@ -16,12 +17,14 @@ const AuthRoutes: React.FC = () => {
                 headerShown: false,
                 cardStyle: { backgroundColor: '#E1E1E6' },
             }}
-        >
+            >
+            <Auth.Screen name="SelectPeriod" component={SelectPeriod} />
             <Auth.Screen name="WelcomePage" component={WelcomePage} />
             <Auth.Screen name="SignIn" component={SignIn} />
             <Auth.Screen name="CreateAccount" component={CreateAccount} />
             <Auth.Screen name="CreateAccountPassword" component={CreateAccountPassword} />
             <Auth.Screen name="AccountCreated" component={AccountCreated} />
+
         </Auth.Navigator>
     );
 }
