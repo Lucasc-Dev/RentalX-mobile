@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 
 import Icon from 'react-native-vector-icons/Feather'
 
@@ -16,13 +15,7 @@ import {
   InfoTitle,
 } from './styles';
 
-const CreateAccount: React.FC = () => {
-  const { navigate } = useNavigation();
-
-  const handleNextButton = useCallback(() => {
-    navigate('CreateAccountPassword');
-  }, []);
-
+const CreateAccountPassword: React.FC = () => {
   return (
     <>
       <BackButton>
@@ -36,25 +29,27 @@ const CreateAccount: React.FC = () => {
         </TitleContainer>
 
         <InputsContainer>
-          <InfoTitle>01. Dados</InfoTitle>
+          <InfoTitle>02. Senha</InfoTitle>
 
           <Input 
-            name="name"
-            placeholder="Nome"
+            name="password"
+            placeholder="Senha"
             autoCorrect={false}
-            icon="user"
+            secureTextEntry
+            icon="lock"
           />
           <Input
-            name="email"
-            placeholder="E-mail"
+            name="confirm_password"
+            placeholder="Repetir senha"
             autoCorrect={false}
-            icon="mail"
+            secureTextEntry
+            icon="lock"
           />
 
           <Button 
             style={{ marginTop: 32 }}
-            text="Próximo"
-            onPress={handleNextButton}
+            text="Cadastrar"
+            onPress={() => {}}
           />
         </InputsContainer>
       </Container>
@@ -62,4 +57,4 @@ const CreateAccount: React.FC = () => {
   );
 };
 
-export default CreateAccount;
+export default CreateAccountPassword;
