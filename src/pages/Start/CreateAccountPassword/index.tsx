@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/Feather'
 
@@ -16,6 +17,12 @@ import {
 } from './styles';
 
 const CreateAccountPassword: React.FC = () => {
+  const { navigate } = useNavigation();
+
+  const handleNextButton = useCallback(() => {
+    navigate('AccountCreated');
+  }, []);
+
   return (
     <>
       <BackButton>
@@ -49,7 +56,7 @@ const CreateAccountPassword: React.FC = () => {
           <Button 
             style={{ marginTop: 32 }}
             text="Cadastrar"
-            onPress={() => {}}
+            onPress={handleNextButton}
           />
         </InputsContainer>
       </Container>
