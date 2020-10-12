@@ -19,7 +19,7 @@ import {
 } from './styles';
 
 const WelcomePage: React.FC = () => {
-  const { navigate, goBack } = useNavigation();
+  const { navigate, canGoBack } = useNavigation();
 
   const handleLoginButton = useCallback(() => {
     navigate('SignIn');
@@ -30,7 +30,7 @@ const WelcomePage: React.FC = () => {
   }, []);
   
   const handleBackButton = useCallback(() => {
-    goBack();
+    canGoBack();
   }, []);
 
   return (

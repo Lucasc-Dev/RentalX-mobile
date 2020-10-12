@@ -6,8 +6,21 @@ export const Container = styled.View`
     background-color: #1b1b1f;
 `;
 
+export const ImageBackground = styled.ImageBackground`
+    position: absolute;
+    margin-top: 66px;
+    width: 375px;
+    height: 235px;
+    opacity: 0.35;
+`;
+
+export const DoneImage = styled.Image`
+    margin-top: 250px;
+    align-self: center;
+`;
+
 export const TitleContainer = styled.View`
-    margin-top: 320px;
+    margin-top: 32px;
     flex-direction: column;
     align-items: center;
 `;
@@ -31,7 +44,7 @@ export const Subtitle = styled.Text`
 export const Button = styled(RectButton)`
     width: 160px;
     height: 56px;
-    margin-top: 70px;
+    margin-top: 60px;
     background-color: #29292e;
     align-items: center;
     justify-content: center;
