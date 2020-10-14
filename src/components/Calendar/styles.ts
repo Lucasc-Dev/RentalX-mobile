@@ -51,14 +51,28 @@ export const WeekDayText = styled.Text`
 `;
 
 export const MonthContainer = styled.View`
-
+    flex: 1;
+    margin: 20px 12px;
 `;
 
-export const MonthDay = styled.View`
+export const MonthDayColumn = styled.TouchableOpacity`
+    flex-direction: column;
+`;
 
+export const MonthDayRow = styled.TouchableOpacity`
+    flex-direction: row;
+`;
+
+export const MonthDay = styled.TouchableOpacity`
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const MonthDayText = styled.Text`
-
+    font-family: 'Inter-Medium-sInt=0';
+    font-size: 15px;
+    color: #47474d;
 `;
 

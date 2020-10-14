@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { 
@@ -12,15 +12,27 @@ import {
   WeekDays,
   WeekDayText,
   MonthContainer,
+  MonthDayColumn,
+  MonthDayRow,
   MonthDay,
   MonthDayText,
 } from './styles';
 
 const Calendar: React.FC = () => {
-  const [monthDays, setMonthDays] = useState([]);
+  const [weekDays, setWeekDays] = useState([
+    [1, 2, 3, 4, 5, 6, 7], 
+    [8, 9, 10, 11, 12, 13, 14], 
+    [15, 16, 17, 18, 19, 20, 21], 
+    [22, 23, 24, 25, 26, 27, 28], 
+    [29, 30, 31, 1, 2, 3, 4],
+  ]);
+
+  useEffect(() => {
+    
+  }, []);
 
   return (
-    <Container>
+    <Container> 
       <Header>
         <Title>
           <MonthTitle>
@@ -50,9 +62,21 @@ const Calendar: React.FC = () => {
       </Header>
 
       <MonthContainer>
-        <MonthDay>
-          <MonthDayText>1</MonthDayText>
-        </MonthDay>
+        <MonthDayColumn>
+          {
+            weekDays.map((days, index) => (
+              <MonthDayRow key={index}>
+                {
+                  days.map((day) => (
+                    <MonthDay key={day}>
+                      <MonthDayText>{day}</MonthDayText>
+                    </MonthDay>
+                  ))
+                }
+              </MonthDayRow>
+            ))
+          }
+        </MonthDayColumn>
       </MonthContainer>
     </Container>
   );
