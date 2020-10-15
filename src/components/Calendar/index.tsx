@@ -14,10 +14,10 @@ import {
   WeekDays,
   WeekDayText,
   MonthContainer,
-  MonthDayColumn,
-  MonthDayRow,
-  MonthDay,
-  MonthDayText,
+  MonthColumn,
+  MonthRow,
+  Day,
+  DayText,
 } from './styles';
 
 interface Week {
@@ -28,7 +28,7 @@ interface Day {
   date: Date;
   selected?: boolean;
   between?: boolean;
-  isValid: boolean;
+  valid: boolean;
 }
 
 const Calendar: React.FC = () => {
@@ -37,7 +37,6 @@ const Calendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
-    console.log(currentDate)
     const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
 
     const weeks: Week[] = [
@@ -58,7 +57,9 @@ const Calendar: React.FC = () => {
 
         weeks[i].days.push({ 
           date: day, 
-          isValid: day.getMonth() === currentDate.getMonth(),
+          valid: day.getMonth() === currentDate.getMonth(),
+          selected: false,
+          between: false,
         });
       }
     }
@@ -72,6 +73,30 @@ const Calendar: React.FC = () => {
   
   const handleNextMonthButton = useCallback(() => {
     setCurrentDate(state => new Date(state.getFullYear(), state.getMonth() + 1, 1));
+  }, []);
+
+  const handleSelectDay = useCallback((day: Day) => {
+    const newWeekDays = 
+      weekDays.map(
+        week => {
+          const days = week.days.map(weekDay => {
+            const newDay = weekDay;
+            if (weekDay.date === day.date) {
+              newDay.selected = (!newDay.selected);
+            }
+
+            return newDay;
+          });
+
+          const newWeek: Week = {
+            days: days,
+          };
+
+          return newWeek;
+        }
+      );
+
+    setWeekDays(newWeekDays);
   }, []);
 
   const monthAndYear = useMemo(() => {
@@ -115,23 +140,25 @@ const Calendar: React.FC = () => {
       </Header>
 
       <MonthContainer>
-        <MonthDayColumn>
+        <MonthColumn>
           {
             weekDays.map(({ days }, index) => (
-              <MonthDayRow key={index}>
+              <MonthRow key={index}>
                 {
                   days.map((day) => (
-                    <MonthDay 
+                    <Day 
                       key={day.date.getDate()}
+                      isSelected={day.selected}
+                      onPress={() => {handleSelectDay(day)}}
                     >
-                      <MonthDayText isValid={day.isValid}>{day.date.getDate()}</MonthDayText>
-                    </MonthDay>
+                      <DayText isValid={day.valid}>{day.date.getDate()}</DayText>
+                    </Day>
                   ))
                 }
-              </MonthDayRow>
+              </MonthRow>
             ))
           }
-        </MonthDayColumn>
+        </MonthColumn>
       </MonthContainer>
     </Container>
   );

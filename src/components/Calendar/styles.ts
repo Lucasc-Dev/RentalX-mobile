@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
 
-interface DayTextProps {
-    isValid: boolean;
+interface DayProps {
+    isSelected?: boolean;
+    isValid?: boolean;
 }
 
 export const Container = styled.View`
@@ -59,24 +60,26 @@ export const MonthContainer = styled.View`
     margin: 20px 12px;
 `;
 
-export const MonthDayColumn = styled.View`
+export const MonthColumn = styled.View`
     flex-direction: column;
 `;
 
-export const MonthDayRow = styled.View`
+export const MonthRow = styled.View`
     flex-direction: row;
 `;
 
-export const MonthDay = styled.TouchableOpacity`
+export const Day = styled.TouchableOpacity<DayProps>`
     width: 48px;
     height: 48px;
     align-items: center;
     justify-content: center;
+
+    background-color: ${(props: DayProps) => props.isSelected ? '#dc1637' : '#fff'};
 `;
 
-export const MonthDayText = styled.Text<DayTextProps>`
+export const DayText = styled.Text<DayProps>`
     font-family: 'Inter-Medium-sInt=0';
     font-size: 15px;
-    color: ${(props: DayTextProps) => props.isValid ? '#47474d' : '#AEAEB3'};
+    color: ${(props: DayProps) => props.isValid ? '#47474d' : '#AEAEB3'};
 `;
 
