@@ -1,5 +1,9 @@
 import styled from 'styled-components/native';
 
+interface DayTextProps {
+    isValid: boolean;
+}
+
 export const Container = styled.View`
     flex: 1;
 `;
@@ -55,11 +59,11 @@ export const MonthContainer = styled.View`
     margin: 20px 12px;
 `;
 
-export const MonthDayColumn = styled.TouchableOpacity`
+export const MonthDayColumn = styled.View`
     flex-direction: column;
 `;
 
-export const MonthDayRow = styled.TouchableOpacity`
+export const MonthDayRow = styled.View`
     flex-direction: row;
 `;
 
@@ -70,9 +74,9 @@ export const MonthDay = styled.TouchableOpacity`
     justify-content: center;
 `;
 
-export const MonthDayText = styled.Text`
+export const MonthDayText = styled.Text<DayTextProps>`
     font-family: 'Inter-Medium-sInt=0';
     font-size: 15px;
-    color: #47474d;
+    color: ${(props: DayTextProps) => props.isValid ? '#47474d' : '#AEAEB3'};
 `;
 
