@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { convert } from '../../utils/ConvertMonth';
-import { isBefore, isAfter } from 'date-fns';
+import { isBefore, isAfter, isEqual } from 'date-fns';
 
 import { 
   Container,
@@ -61,14 +61,15 @@ const Calendar: React.FC = () => {
 
         const isInThisMonth = date.getMonth() === currentDate.getMonth();
         const isNotInThePast = isBefore(new Date(), date);
-        const isNotTooMonthsLong = isAfter(new Date(today.getFullYear(), today.getMonth() + 3), date)
-        const isBeforeStartDate = (startDate && isAfter(startDate, date));
-        const isAfterEndDate = (endDate && !startDate && isBefore(endDate, date));
-        const isEndDateAndStartDateSelected = !!(endDate && startDate);
+        const isNotTooLong = isAfter(new Date(today.getFullYear(), today.getMonth() + 3), date)
+        const isAfterStartDate = startDate && !endDate && (isAfter(date, startDate) || isEqual(date, startDate));
+        const isBeforeEndDate = endDate && !startDate && (isBefore(date, endDate) || isEqual(date, endDate));
+        const isBothDatesSelected = !!(endDate && startDate);
+        const isBothDatesNotSelected = (!endDate && !startDate);
 
         const valid = 
-          (isInThisMonth && isNotInThePast && isNotTooMonthsLong) &&
-          ((isBeforeStartDate || isAfterEndDate) || (isEndDateAndStartDateSelected));
+          (isInThisMonth && isNotInThePast && isNotTooLong) &&
+          ((isAfterStartDate || isBeforeEndDate) || (isBothDatesSelected || isBothDatesNotSelected));
           
         const selected = date.getTime() === startDate?.getTime() || date.getTime() === endDate?.getTime();
         
@@ -86,7 +87,7 @@ const Calendar: React.FC = () => {
     }
 
     setWeekDays(weeks);
-  }, [currentDate, startDate, endDate]);
+  }, [currentDate, startDate, endDate, isBefore, isAfter]);
 
   const handleLastMonthButton = useCallback(() => {
     setCurrentDate(state => new Date(state.getFullYear(), state.getMonth() - 1, 1));
@@ -108,6 +109,11 @@ const Calendar: React.FC = () => {
 
     if (endDate?.getTime() === date.getTime()) {
       setEndDate(undefined);
+      return;
+    }
+
+    if (startDate && endDate && isBefore(date, startDate)) {
+      setStartDate(date);
       return;
     }
 
