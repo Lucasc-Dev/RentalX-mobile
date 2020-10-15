@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { convert } from '../../utils/ConvertMonth';
+import { isBefore, isAfter } from 'date-fns';
 
 import { 
   Container,
@@ -34,6 +35,9 @@ interface Day {
 const Calendar: React.FC = () => {
   const [weekDays, setWeekDays] = useState<Week[]>([]);
 
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
@@ -51,21 +55,38 @@ const Calendar: React.FC = () => {
     let dayIndex = 1 - firstDay.getDay();
     for (let i = 0; i < weeks.length; i++) {
       for (let j = 0; j < 7; j++) {
-        const day = new Date(currentDate.getFullYear(), currentDate.getMonth(), dayIndex);
+        const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), dayIndex);
         
-        dayIndex++;
+        const today = new Date();
+
+        const isInThisMonth = date.getMonth() === currentDate.getMonth();
+        const isNotInThePast = isBefore(new Date(), date);
+        const isNotTooMonthsLong = isAfter(new Date(today.getFullYear(), today.getMonth() + 3), date)
+        const isBeforeStartDate = (startDate && isAfter(startDate, date));
+        const isAfterEndDate = (endDate && !startDate && isBefore(endDate, date));
+        const isEndDateAndStartDateSelected = !!(endDate && startDate);
+
+        const valid = 
+          (isInThisMonth && isNotInThePast && isNotTooMonthsLong) &&
+          ((isBeforeStartDate || isAfterEndDate) || (isEndDateAndStartDateSelected));
+          
+        const selected = date.getTime() === startDate?.getTime() || date.getTime() === endDate?.getTime();
+        
+        const between = (startDate && endDate) && (isBefore(startDate, date) && isAfter(endDate, date));
 
         weeks[i].days.push({ 
-          date: day, 
-          valid: day.getMonth() === currentDate.getMonth(),
-          selected: false,
-          between: false,
+          date, 
+          valid,
+          selected,
+          between,
         });
+
+        dayIndex++;
       }
     }
 
     setWeekDays(weeks);
-  }, [currentDate]);
+  }, [currentDate, startDate, endDate]);
 
   const handleLastMonthButton = useCallback(() => {
     setCurrentDate(state => new Date(state.getFullYear(), state.getMonth() - 1, 1));
@@ -75,42 +96,40 @@ const Calendar: React.FC = () => {
     setCurrentDate(state => new Date(state.getFullYear(), state.getMonth() + 1, 1));
   }, []);
 
-  const handleSelectDay = useCallback((day: Day) => {
-    const newWeekDays = 
-      weekDays.map(
-        week => {
-          const days = week.days.map(weekDay => {
-            const newDay = weekDay;
-            if (weekDay.date === day.date) {
-              newDay.selected = (!newDay.selected);
-            }
+  const handleSelectDay = useCallback(({ date, valid }: Day) => {
+    if (!valid) {
+      return;
+    }
 
-            return newDay;
-          });
+    if (startDate?.getTime() === date.getTime()) {
+      setStartDate(undefined);
+      return;
+    }
 
-          const newWeek: Week = {
-            days: days,
-          };
+    if (endDate?.getTime() === date.getTime()) {
+      setEndDate(undefined);
+      return;
+    }
 
-          return newWeek;
-        }
-      );
+    if (startDate) {
+      setEndDate(date);
+    }else{
+      setStartDate(date);
+    }
+  }, [startDate, endDate]);
 
-    setWeekDays(newWeekDays);
-  }, []);
-
-  const monthAndYear = useMemo(() => {
+  const currentMonthAndYear = useMemo(() => {
     const month = convert(currentDate.getMonth());
 
     return `${month} ${currentDate.getFullYear()}`;
-  }, [currentDate]);
+  }, [currentDate, convert]);
 
   return (
     <Container>  
       <Header>
         <Title>
           <MonthTitle>
-            <MonthTitleText>{monthAndYear}</MonthTitleText>
+            <MonthTitleText>{currentMonthAndYear}</MonthTitleText>
           </MonthTitle>
 
           <Arrows>
@@ -149,9 +168,16 @@ const Calendar: React.FC = () => {
                     <Day 
                       key={day.date.getDate()}
                       isSelected={day.selected}
+                      isBetween={day.between}
                       onPress={() => {handleSelectDay(day)}}
-                    >
-                      <DayText isValid={day.valid}>{day.date.getDate()}</DayText>
+                      >
+                      <DayText 
+                        isValid={day.valid}
+                        isSelected={day.selected}
+                        isBetween={day.between}
+                      >
+                        {day.date.getDate()}
+                      </DayText>
                     </Day>
                   ))
                 }

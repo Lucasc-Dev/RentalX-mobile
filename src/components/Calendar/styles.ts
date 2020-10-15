@@ -1,7 +1,9 @@
-import styled from 'styled-components/native';
+import { differenceInCalendarDays } from 'date-fns/esm';
+import styled, { css } from 'styled-components/native';
 
 interface DayProps {
     isSelected?: boolean;
+    isBetween?: boolean;
     isValid?: boolean;
 }
 
@@ -74,12 +76,43 @@ export const Day = styled.TouchableOpacity<DayProps>`
     align-items: center;
     justify-content: center;
 
-    background-color: ${(props: DayProps) => props.isSelected ? '#dc1637' : '#fff'};
+    background-color: ${props => {
+        if (props.isSelected) {
+            return '#dc1637';
+        }
+        if (props.isBetween) {
+            return '#fdedef';
+        }
+        return '#fff';
+    }};
 `;
 
 export const DayText = styled.Text<DayProps>`
-    font-family: 'Inter-Medium-sInt=0';
+    font-family: 'Inter-Medium';
     font-size: 15px;
-    color: ${(props: DayProps) => props.isValid ? '#47474d' : '#AEAEB3'};
+    color: #47474d;
+
+    ${(props) => 
+        props.isSelected &&
+            css`
+                color: #FFF;
+                font-family: 'Inter-SemiBold';
+            `
+    }
+
+    ${(props) => 
+        props.isBetween &&
+            css`
+                color: #dc1637;
+                font-family: 'Inter-SemiBold';
+            `
+    }
+
+    ${(props) => 
+        !props.isValid &&
+            css`
+                color: #AEAEB3;
+            `
+    }
 `;
 
