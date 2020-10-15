@@ -8,11 +8,14 @@ import {
 
 interface ButtonProps extends RectButtonProperties {
   text?: string;
+  enable?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ text, enable, ...rest }) => {
   return (
     <ButtonContainer
+      enabled={enable}
+      enable={enable}
       {...rest}
     >
       <ButtonText>{text}</ButtonText>

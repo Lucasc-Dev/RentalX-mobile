@@ -33,7 +33,7 @@ export const Title = styled.Text`
 
 export const Subtitle = styled.Text`
     padding-top: 16px;
-    font-family: 'Inter-Medium-sInt=0';
+    font-family: 'Inter-Medium';
     font-weight: 400;
     text-align: center;
     font-size: 16px;
@@ -58,7 +58,7 @@ export const Button = styled(RectButton)`
 
 export const ButtonText = styled.Text`
     margin: auto;
-    font-family: 'Inter-Medium-sInt=0';
+    font-family: 'Inter-Medium';
     text-align: center;
     font-size: 16px;
     color: #e1e1e6;

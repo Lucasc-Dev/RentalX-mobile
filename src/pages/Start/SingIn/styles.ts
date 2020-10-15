@@ -28,7 +28,7 @@ export const Title = styled.Text`
 
 export const Subtitle = styled.Text`
     margin-top: 24px;
-    font-family: 'Inter-Regular-sInt=0';
+    font-family: 'Inter-Regular';
     font-weight: normal;
     font-size: 15px;
     line-height: 25px;
@@ -57,7 +57,7 @@ export const CheckBox = styled(ReactCheckBox)`
 `;
 
 export const MiniText = styled.Text`
-    font-family: 'Inter-Regular-sInt=0';
+    font-family: 'Inter-Regular';
     font-size: 14px;
     text-align: center;
     color: #737380;

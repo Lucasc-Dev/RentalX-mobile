@@ -93,26 +93,23 @@ export const DayText = styled.Text<DayProps>`
     color: #47474d;
 
     ${(props) => 
-        props.isSelected &&
-            css`
-                color: #FFF;
-                font-family: 'Inter-SemiBold';
-            `
+        props.isSelected && css`
+            color: #FFF;
+            font-family: 'Inter-SemiBold';
+        `
     }
 
     ${(props) => 
-        props.isBetween &&
-            css`
-                color: #dc1637;
-                font-family: 'Inter-SemiBold';
-            `
+        props.isBetween && css`
+            color: #dc1637;
+            font-family: 'Inter-SemiBold';
+        `
     }
 
     ${(props) => 
-        !props.isValid &&
-            css`
-                color: #AEAEB3;
-            `
+        !props.isValid &&css`
+            color: #AEAEB3;
+        `
     }
 `;
 

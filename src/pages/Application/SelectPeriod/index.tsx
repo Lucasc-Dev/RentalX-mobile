@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Button from '../../../components/Button';
 
 import arrowIcon from '../../../assets/icons/RightArrow.png';
 
@@ -42,6 +43,11 @@ const SelectPeriod: React.FC = () => {
       </Details>
 
       <Calendar />
+
+      <Button 
+        text="Confirmar"
+        enable={true}
+      />
     </Container>
   );
 };

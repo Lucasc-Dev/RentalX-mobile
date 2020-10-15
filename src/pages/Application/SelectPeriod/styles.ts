@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.ScrollView.attrs({
+    contentContainerStyle: { paddingBottom: 20 },
     showsVerticalScrollIndicator: false,
 })`
     flex: 1;
@@ -43,7 +44,7 @@ export const DateFieldTitle = styled.Text`
 
 export const DateFieldInput = styled.Text`
     margin-top: 8px;
-    font-family: 'Inter-Medium-sInt=0';
+    font-family: 'Inter-Medium';
     font-size: 15px;
     color: #FFF;
 `;

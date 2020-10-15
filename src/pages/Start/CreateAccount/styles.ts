@@ -27,7 +27,7 @@ export const Title = styled.Text`
 
 export const Subtitle = styled.Text`
     margin-top: 24px;
-    font-family: 'Inter-Regular-sInt=0';
+    font-family: 'Inter-Regular';
     font-weight: normal;
     font-size: 15px;
     line-height: 25px;
