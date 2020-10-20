@@ -17,14 +17,14 @@ const AuthRoutes: React.FC = () => {
                 headerShown: false,
                 cardStyle: { backgroundColor: '#E1E1E6' },
             }}
-            >
-            <Auth.Screen name="SelectPeriod" component={SelectPeriod} />
+        >
             <Auth.Screen name="WelcomePage" component={WelcomePage} />
             <Auth.Screen name="SignIn" component={SignIn} />
             <Auth.Screen name="CreateAccount" component={CreateAccount} />
             <Auth.Screen name="CreateAccountPassword" component={CreateAccountPassword} />
             <Auth.Screen name="AccountCreated" component={AccountCreated} />
-
+            
+            <Auth.Screen name="SelectPeriod" component={SelectPeriod} />
         </Auth.Navigator>
     );
 }

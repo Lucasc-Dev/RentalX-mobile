@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/Feather'
 
@@ -20,7 +21,13 @@ import {
 } from './styles';
 
 const SignIn: React.FC = () => {
+  const { navigate } = useNavigation();
+
   const [remindMe, setRemindMe] = useState(false);
+
+  const handleLoginButton = useCallback(() => {
+    navigate('SelectPeriod');
+  }, []);
 
   return (
     <>
@@ -67,6 +74,7 @@ const SignIn: React.FC = () => {
 
           <Button 
             text="Login"
+            onPress={handleLoginButton}
           />
         </ButtonsContainer>
       </Container>

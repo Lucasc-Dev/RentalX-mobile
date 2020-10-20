@@ -11,7 +11,7 @@ interface ButtonProps extends RectButtonProperties {
   enable?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, enable, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ text, enable = true, ...rest }) => {
   return (
     <ButtonContainer
       enabled={enable}
