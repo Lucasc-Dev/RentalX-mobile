@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import Button from '../../../components/Button';
 
 import arrowIcon from '../../../assets/icons/RightArrow.png';
@@ -17,8 +18,14 @@ import {
 } from './styles';
 
 const SelectPeriod: React.FC = () => {
+  const { navigate } = useNavigation();
+
   const [startDate, setStartDate] = useState('16 Julho 2020');
   const [endDate, setEndDate] = useState('20 Julho 2020');
+
+  const handleConfirmButton = useCallback(() => {
+    navigate('VehiclesList');
+  }, []);
 
   return (
     <Container>
@@ -47,6 +54,7 @@ const SelectPeriod: React.FC = () => {
       <Button 
         text="Confirmar"
         enable={true}
+        onPress={handleConfirmButton}
       />
     </Container>
   );

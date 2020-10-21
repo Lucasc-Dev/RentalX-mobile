@@ -7,6 +7,7 @@ import CreateAccount from '../pages/Start/CreateAccount';
 import CreateAccountPassword from '../pages/Start/CreateAccountPassword';
 import AccountCreated from '../pages/Start/AccountCreated';
 import SelectPeriod from '../pages/Application/SelectPeriod';
+import VehiclesList from '../pages/Application/VehiclesList';
 
 const Auth = createStackNavigator();
 
@@ -25,6 +26,7 @@ const AuthRoutes: React.FC = () => {
             <Auth.Screen name="AccountCreated" component={AccountCreated} />
             
             <Auth.Screen name="SelectPeriod" component={SelectPeriod} />
+            <Auth.Screen name="VehiclesList" component={VehiclesList} />
         </Auth.Navigator>
     );
 }
