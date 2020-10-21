@@ -23,6 +23,7 @@ export const DateField = styled.View`
 `;
 
 export const ChevronIcon = styled(FeatherIcon)`
+    padding-top: 24px;
 `;
 
 export const DateFieldTitle = styled.Text`

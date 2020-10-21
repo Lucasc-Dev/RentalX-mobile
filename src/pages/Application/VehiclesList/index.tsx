@@ -33,6 +33,26 @@ const VehiclesList: React.FC = () => {
           </DateField>
         </DateContainer>
       </Header>
+
+      <VehiclesContainer>
+        <TitleContainer>
+          <Title>Resultados</Title>
+
+          <OptionsContainer>
+            <TotalVehicles>3 carros</TotalVehicles>
+          </OptionsContainer>
+        </TitleContainer>
+
+        <Vehicle>
+          <VehicleSubtitle>Lamborghini</VehicleSubtitle>
+          <VehicleTitle>Huracan</VehicleTitle>
+
+          <VehicleSubtitle>Ao dia</VehicleSubtitle>
+          <VehiclePrice>R$ 580,00</VehiclePrice>
+
+          
+        </Vehicle>
+      </VehiclesContainer>
     </Container>
   );
 };
