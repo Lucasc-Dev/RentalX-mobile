@@ -11,6 +11,14 @@ import {
   SearchInputBox,
   SearchInput,
   SearchIconBox,
+  VehiclesContainer,
+  Vehicle,
+  VehicleInfoContainer,
+  TextContainer,
+  VehicleSubtitle,
+  VehicleTitle,
+  VehiclePrice,
+  VehicleImage,
 } from './styles';
 
 const SearchVehicle: React.FC = () => {
@@ -33,6 +41,93 @@ const SearchVehicle: React.FC = () => {
           </SearchIconBox>
         </Search>
       </Header>
+
+      <VehiclesContainer>
+        <Vehicle>
+          <VehicleInfoContainer>
+            <TextContainer>
+              <VehicleSubtitle>Lamborghini</VehicleSubtitle>
+              <VehicleTitle>Huracan</VehicleTitle>
+            </TextContainer>
+            <TextContainer>
+              <VehicleSubtitle>Ao dia</VehicleSubtitle>
+              <VehiclePrice>R$ 120</VehiclePrice>
+            </TextContainer>
+          </VehicleInfoContainer>
+
+          <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
+
+          <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
+        </Vehicle>
+
+        <Vehicle>
+          <VehicleInfoContainer>
+            <TextContainer>
+              <VehicleSubtitle>Lamborghini</VehicleSubtitle>
+              <VehicleTitle>Huracan</VehicleTitle>
+            </TextContainer>
+            <TextContainer>
+              <VehicleSubtitle>Ao dia</VehicleSubtitle>
+              <VehiclePrice>R$ 120</VehiclePrice>
+            </TextContainer>
+          </VehicleInfoContainer>
+
+          <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
+
+          <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
+        </Vehicle>
+
+        <Vehicle>
+          <VehicleInfoContainer>
+            <TextContainer>
+              <VehicleSubtitle>Lamborghini</VehicleSubtitle>
+              <VehicleTitle>Huracan</VehicleTitle>
+            </TextContainer>
+            <TextContainer>
+              <VehicleSubtitle>Ao dia</VehicleSubtitle>
+              <VehiclePrice>R$ 120</VehiclePrice>
+            </TextContainer>
+          </VehicleInfoContainer>
+
+          <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
+
+          <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
+        </Vehicle>
+
+        <Vehicle>
+          <VehicleInfoContainer>
+            <TextContainer>
+              <VehicleSubtitle>Lamborghini</VehicleSubtitle>
+              <VehicleTitle>Huracan</VehicleTitle>
+            </TextContainer>
+            <TextContainer>
+              <VehicleSubtitle>Ao dia</VehicleSubtitle>
+              <VehiclePrice>R$ 120</VehiclePrice>
+            </TextContainer>
+          </VehicleInfoContainer>
+
+          <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
+
+          <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
+        </Vehicle>
+
+        <Vehicle>
+          <VehicleInfoContainer>
+            <TextContainer>
+              <VehicleSubtitle>Lamborghini</VehicleSubtitle>
+              <VehicleTitle>Huracan</VehicleTitle>
+            </TextContainer>
+            <TextContainer>
+              <VehicleSubtitle>Ao dia</VehicleSubtitle>
+              <VehiclePrice>R$ 120</VehiclePrice>
+            </TextContainer>
+          </VehicleInfoContainer>
+
+          <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
+
+          <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
+        </Vehicle>
+      </VehiclesContainer>
     </Container>
   );
 };
