@@ -1,5 +1,20 @@
 import styled from 'styled-components/native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import { FlatList } from 'react-native';
+
+interface Vehicle {
+    id: string;
+    name: string;
+    brand: string;
+    model: string;
+    daily_price: number;
+    image: string;
+    fuel: string;
+}
+
+interface VehicleImageDotProps {
+    isSelected?: boolean;
+}
 
 export const Container = styled.View`
     flex: 1;
@@ -41,10 +56,8 @@ export const DateFieldInfo = styled.Text`
     color: #FFF;
 `;
 
-export const VehiclesContainer = styled.ScrollView.attrs({
-    paddingBottom: 24
-})`
-    
+export const VehiclesContainer = styled(FlatList as new () => FlatList<Vehicle>)`
+
 `;
 
 export const TitleContainer = styled.View`
@@ -124,6 +137,10 @@ export const VehicleImagesInfo = styled.View`
     flex-direction: row;
 `;
 
-export const VehicleImagesIcon = styled.Image`
+export const VehicleImageDot = styled.View<VehicleImageDotProps>`
     margin-left: 8px;
+    height: 4px;
+    width: 4px;
+    border-radius: 4px;
+    background-color: ${props => props.isSelected ? '#3d3d4d' : '#c9c9d4'};
 `;
