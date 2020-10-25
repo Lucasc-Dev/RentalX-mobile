@@ -1,5 +1,9 @@
 import styled from 'styled-components/native';
 
+interface PeriodContainerProps {
+    inUtilization?: boolean;
+}
+
 export const Container = styled.View`
     flex: 1;
     background-color: #FFF;
@@ -77,10 +81,10 @@ export const VehicleImage = styled.Image.attrs({ resizeMode: 'contain' })`
     height: 90px;
 `;
 
-export const PeriodContainer = styled.View`
+export const PeriodContainer = styled.View<PeriodContainerProps>`
     margin-top: 2px;
-    padding: 15px 24px;
-    background-color: #f4f5f6;
+    padding: 12px 24px;
+    background-color: ${props => props.inUtilization ? '#DAF3E5' : '#f4f5f6' };
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -97,4 +101,12 @@ export const PeriodText = styled.Text`
     font-family: 'Inter-Regular';
     font-size: 13px;
     color: #47474D;
+`;
+
+export const PeriodUtilizingText = styled.Text`
+    width: 100%;
+    font-family: 'Archivo-Medium';
+    font-size: 15px;
+    color: #03b252;
+    text-align: center;
 `;

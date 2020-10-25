@@ -19,6 +19,7 @@ import {
   PeriodContainer,
   DateContainer,
   PeriodText,
+  PeriodUtilizingText,
 } from './styles';
 
 const UserRentals: React.FC = () => {
@@ -50,16 +51,8 @@ const UserRentals: React.FC = () => {
 
             <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
           </VehicleContainer>
-          <PeriodContainer>
-            <VehicleSubtitle>Período</VehicleSubtitle>
-
-            <DateContainer>
-              <PeriodText>17 Junho 2019</PeriodText>
-
-              <Icon name="arrow-right" size={20} color="#aeaeb3" />
-
-              <PeriodText>22 Junho 2020</PeriodText>
-            </DateContainer>
+          <PeriodContainer inUtilization >
+            <PeriodUtilizingText>Utilizando até 17 Junho 2020</PeriodUtilizingText>
           </PeriodContainer>
         </Vehicle>
 
@@ -124,6 +117,7 @@ const UserRentals: React.FC = () => {
             </DateContainer>
           </PeriodContainer>
         </Vehicle>
+
         
         <Vehicle>
           <VehicleContainer>
