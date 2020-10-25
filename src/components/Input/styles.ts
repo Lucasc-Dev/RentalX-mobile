@@ -20,7 +20,6 @@ export const InputBox = styled.View`
     width: 270px;
     height: 56px;
     background-color: #f2f2fa;
-    
     justify-content: center;
 `;
 
