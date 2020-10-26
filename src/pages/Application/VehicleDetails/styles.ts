@@ -35,15 +35,20 @@ export const ImageDot = styled.View<VehicleImageDotProps>`
 `;
 
 export const VehicleContainer = styled.View`
-
+    margin-top: 16px;
+    justify-content: center;
 `;
 
-export const VehicleImage = styled.View`
-
+export const VehicleImage = styled.Image`
+    width: 280px;
+    height: 132px;
+    margin: auto;
 `;
 
 export const InfoContainer = styled.View`
-
+    margin: 24px;
+    flex-direction: row;
+    justify-content: space-between;
 `;
 
 export const TextContainer = styled.View`
@@ -51,31 +56,47 @@ export const TextContainer = styled.View`
 `;
 
 export const Subtitle = styled.Text`
-
+    font-family: 'Archivo-Medium';
+    font-size: 10px;
+    color: #aeaeb3;
+    text-transform: uppercase;
 `;
 
 export const VehicleName = styled.Text`
-
+    font-family: 'Archivo-Medium';
+    font-size: 25px;
+    color: #47474d;
 `;
 
 export const VehiclePrice = styled.Text`
-
+    font-family: 'Archivo-Medium';
+    font-size: 25px;
+    color: #dc1637;
 `;
 
 export const FeaturesContainer = styled.View`
-
+    margin: 0 16px;
+    flex-direction: row;
 `;
 
 export const Feature = styled.View`
-
+    width: 109px;
+    height: 92px;
+    padding: 16px;
+    background-color: #f4f5f6;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 
-export const FeatureIcon = styled.View`
+export const FeatureIcon = styled.Image`
 
 `;
 
 export const FeatureDescription = styled.Text`
-
+    font-family: 'Inter-Medium';
+    font-size: 13px;
+    color: #7a7a80;
+    text-align: center;
 `;
 
 export const PeriodContainer = styled.View`
