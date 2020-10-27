@@ -75,8 +75,9 @@ export const VehiclePrice = styled.Text`
 `;
 
 export const FeaturesContainer = styled.View`
-    margin: 0 16px;
+    margin: 0 24px;
     flex-direction: row;
+    justify-content: space-between;
 `;
 
 export const Feature = styled.View`
@@ -100,23 +101,34 @@ export const FeatureDescription = styled.Text`
 `;
 
 export const PeriodContainer = styled.View`
-
+    margin: 40px 16px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 export const DateContainer = styled.View`
-
+    height: 38px;
+    justify-content: space-between;
 `;
 
 export const PeriodDateText = styled.Text`
-
+    font-family: 'Inter-Medium';
+    font-size: 15px;
+    color: #dc1637;
 `;
 
 export const Bottom = styled.View`
-
+    flex: 1;
+    padding: 24px;
+    background-color: #f4f5f6;
 `;
 
 export const PriceContainer = styled.View`
-
+    margin-bottom: 24px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 export const PriceCalculationContainer = styled.View`
@@ -124,7 +136,10 @@ export const PriceCalculationContainer = styled.View`
 `;
 
 export const PriceCalculationText = styled.Text`
-
+    padding-top: 8px;
+    font-family: 'Inter-Medium';
+    font-size: 15px;
+    color: #47474d;
 `;
 
 export const TotalPrice = styled.Text`
