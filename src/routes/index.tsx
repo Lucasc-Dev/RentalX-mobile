@@ -8,6 +8,10 @@ import CreateAccountPassword from '../pages/Start/CreateAccountPassword';
 import AccountCreated from '../pages/Start/AccountCreated';
 import SelectPeriod from '../pages/Application/SelectPeriod';
 import VehiclesList from '../pages/Application/VehiclesList';
+import SearchVehicle from '../pages/Application/SearchVehicle';
+import UserRentals from '../pages/Application/UserRentals';
+import VehicleDetails from '../pages/Application/VehicleDetails';
+import SuccessfulRental from '../pages/Application/SuccessfulRental';
 
 const Auth = createStackNavigator();
 
@@ -19,7 +23,6 @@ const AuthRoutes: React.FC = () => {
                 cardStyle: { backgroundColor: '#E1E1E6' },
             }}
         >
-            
             <Auth.Screen name="WelcomePage" component={WelcomePage} />
             <Auth.Screen name="SignIn" component={SignIn} />
             <Auth.Screen name="CreateAccount" component={CreateAccount} />
@@ -28,6 +31,10 @@ const AuthRoutes: React.FC = () => {
             
             <Auth.Screen name="SelectPeriod" component={SelectPeriod} />
             <Auth.Screen name="VehiclesList" component={VehiclesList} />
+            <Auth.Screen name="SearchVehicle" component={SearchVehicle} />
+            <Auth.Screen name="UserRentals" component={UserRentals} />
+            <Auth.Screen name="VehicleDetails" component={VehicleDetails} />
+            <Auth.Screen name="SuccessfulRental" component={SuccessfulRental} />
         </Auth.Navigator>
     );
 }
