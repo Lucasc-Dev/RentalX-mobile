@@ -22,7 +22,7 @@ const SuccessfulRental: React.FC = () => {
       <TitleContainer>
         <Title>Carro alugado!</Title>
 
-        <Subtitle>Agora você só precisa ir até a concessionária da RentalX para pegar o seu automóvel.</Subtitle>
+        <Subtitle>Agora você só precisa ir até a concessionária da RentalX pegar o seu automóvel.</Subtitle>
       </TitleContainer>
 
       <Button>
