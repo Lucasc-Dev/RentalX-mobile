@@ -12,6 +12,7 @@ import SearchVehicle from '../pages/Application/SearchVehicle';
 import UserRentals from '../pages/Application/UserRentals';
 import VehicleDetails from '../pages/Application/VehicleDetails';
 import SuccessfulRental from '../pages/Application/SuccessfulRental';
+import Profile from '../pages/Application/Profile';
 
 const Auth = createStackNavigator();
 
@@ -35,6 +36,7 @@ const AuthRoutes: React.FC = () => {
             <Auth.Screen name="UserRentals" component={UserRentals} />
             <Auth.Screen name="VehicleDetails" component={VehicleDetails} />
             <Auth.Screen name="SuccessfulRental" component={SuccessfulRental} />
+            <Auth.Screen name="Profile" component={Profile} />
         </Auth.Navigator>
     );
 }
