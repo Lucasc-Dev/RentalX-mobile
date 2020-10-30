@@ -4,82 +4,91 @@ import Button from '../Button';
 
 import {
   Container,
+  ModalContainer,
   Header,
   HeaderTitle,
-  HeaderSubtitle,
+  ClearFiltersButton,
+  ClearFiltersText,
   FilterField,
   FilterTitleContainer,
   FilterTitle,
+  PriceRange,
   RangeSelect,
   FuelContainer,
   Fuel,
   FuelIcon,
-  FuelDescription,
+  FilterDescription,
   GearContainer,
   Gear,
-  GearDescription,
 } from './styles';
 
 const FiltersModal: React.FC = () => {
   return (
     <Container>
-      <Header>
-        <HeaderTitle>Filtro</HeaderTitle>
+      <ModalContainer>
 
-        <HeaderSubtitle>Limpar filtros</HeaderSubtitle>
-      </Header>
+        <Header>
+          <HeaderTitle>Filtro</HeaderTitle>
 
-      <FilterField>
-        <FilterTitleContainer>
-          <FilterTitle>Preço ao dia</FilterTitle>
-        </FilterTitleContainer>
+          <ClearFiltersButton>
+            <ClearFiltersText>Limpar filtros</ClearFiltersText>
+          </ClearFiltersButton>
+        </Header>
 
-        <RangeSelect>
+        <FilterField>
+          <FilterTitleContainer>
+            <FilterTitle>Preço ao dia</FilterTitle>
 
-        </RangeSelect>
-      </FilterField>
+            <PriceRange>R$ 160 - R$ 380</PriceRange>
+          </FilterTitleContainer>
 
-      <FilterField>
-        <FilterTitle>Combustível</FilterTitle>
+          <RangeSelect>
 
-        <FuelContainer>
-          <Fuel>
-            <FuelIcon source={{ uri: '' }} />
+          </RangeSelect>
+        </FilterField>
 
-            <FuelDescription>Gasolina</FuelDescription>
-          </Fuel>
+        <FilterField>
+          <FilterTitle>Combustível</FilterTitle>
 
-          <Fuel>
-            <FuelIcon source={{ uri: '' }} />
+          <FuelContainer>
+            <Fuel>
+              <FuelIcon source={{ uri: '' }} />
 
-            <FuelDescription>Elétrico</FuelDescription>
-          </Fuel>
+              <FilterDescription>Gasolina</FilterDescription>
+            </Fuel>
 
-          <Fuel>
-            <FuelIcon source={{ uri: '' }} />
+            <Fuel>
+              <FuelIcon source={{ uri: '' }} />
 
-            <FuelDescription>Flex</FuelDescription>
-          </Fuel>
-        </FuelContainer>
-      </FilterField>
+              <FilterDescription>Elétrico</FilterDescription>
+            </Fuel>
 
-      <FilterField>
-        <FilterTitle>Câmbio</FilterTitle>
+            <Fuel>
+              <FuelIcon source={{ uri: '' }} />
 
-        <GearContainer>
-          <Gear>
-            <GearDescription>Automático</GearDescription>
-          </Gear>
+              <FilterDescription>Flex</FilterDescription>
+            </Fuel>
+          </FuelContainer>
+        </FilterField>
 
-          <Gear>
-            <GearDescription>Manual</GearDescription>
-          </Gear>
-        </GearContainer>
-      </FilterField>
+        <FilterField>
+          <FilterTitle>Câmbio</FilterTitle>
 
-      <Button 
-        text="Confirmar"
-      />
+          <GearContainer>
+            <Gear>
+              <FilterDescription>Automático</FilterDescription>
+            </Gear>
+
+            <Gear>
+              <FilterDescription>Manual</FilterDescription>
+            </Gear>
+          </GearContainer>
+        </FilterField>
+
+        <Button 
+          text="Confirmar"
+        />
+      </ModalContainer>
     </Container>
   );
 };
