@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather'
 
+import FiltersModal from '../../../components/FiltersModal';
+
 import { 
   Container,
   Header,
@@ -79,6 +81,8 @@ const VehiclesList: React.FC = () => {
   const [startDate, setStartDate] = useState('16 Julho 2020');
   const [endDate, setEndDate] = useState('20 Julho 2020');
 
+  const [filterOpen, setFilterOpen] = useState(false);
+
   return (
     <Container>
       <Header>
@@ -99,6 +103,7 @@ const VehiclesList: React.FC = () => {
         </DateContainer>
       </Header>
 
+      {filterOpen && ( <FiltersModal /> )}
 
       <VehiclesContainer 
         data={vehicles}
@@ -110,7 +115,7 @@ const VehiclesList: React.FC = () => {
             <OptionsContainer>
               <TotalVehicles>3 carros</TotalVehicles>
               
-              <FiltersButton>
+              <FiltersButton onPress={() => setFilterOpen(true)}>
                 <Icon name="filter" size={20} color="#47474d" />
               </FiltersButton>
             </OptionsContainer>
