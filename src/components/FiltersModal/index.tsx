@@ -42,29 +42,29 @@ const FiltersModal: React.FC = () => {
             <PriceRange>R$ 160 - R$ 380</PriceRange>
           </FilterTitleContainer>
 
-          <RangeSelect>
-
-          </RangeSelect>
+          <RangeSelect
+            touchDimensions={{ height: 200, width: 500, borderRadius: 0, slipDisplacement: 100 }}
+          />
         </FilterField>
 
         <FilterField>
           <FilterTitle>Combustível</FilterTitle>
 
           <FuelContainer>
-            <Fuel>
-              <FuelIcon source={{ uri: '' }} />
+            <Fuel selected>
+              <FuelIcon name="droplet" selected />
 
-              <FilterDescription>Gasolina</FilterDescription>
+              <FilterDescription selected >Gasolina</FilterDescription>
             </Fuel>
 
             <Fuel>
-              <FuelIcon source={{ uri: '' }} />
+              <FuelIcon name="droplet" />
 
               <FilterDescription>Elétrico</FilterDescription>
             </Fuel>
 
             <Fuel>
-              <FuelIcon source={{ uri: '' }} />
+              <FuelIcon name="droplet" />
 
               <FilterDescription>Flex</FilterDescription>
             </Fuel>
@@ -75,8 +75,8 @@ const FiltersModal: React.FC = () => {
           <FilterTitle>Câmbio</FilterTitle>
 
           <GearContainer>
-            <Gear>
-              <FilterDescription>Automático</FilterDescription>
+            <Gear selected>
+              <FilterDescription selected>Automático</FilterDescription>
             </Gear>
 
             <Gear>
