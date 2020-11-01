@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Dimensions, Image } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
@@ -30,7 +30,8 @@ const FiltersModal: React.FC = () => {
   const [
     nonCollidingMultiSliderValue,
     setNonCollidingMultiSliderValue,
-  ] = React.useState([200, 1200]);
+  ] = useState([200, 1200]);
+  const [selectedFuel, setSelectedFuel] = useState('');
 
   return (
     <Container>
@@ -80,22 +81,53 @@ const FiltersModal: React.FC = () => {
           <FilterTitle>Combustível</FilterTitle>
 
           <FuelContainer>
-            <Fuel selected>
-              <FuelIcon name="droplet" selected />
+            
+          <Fuel 
+              selected={selectedFuel === 'gasoline'}
+              onPress={() => {setSelectedFuel('gasoline')}}
+            >
+              <FuelIcon 
+                name="droplet" 
+                selected={selectedFuel === 'gasoline'}
+              />
 
-              <FilterDescription selected >Gasolina</FilterDescription>
+              <FilterDescription 
+                selected={selectedFuel === 'gasoline'}
+              >
+                Gasolina
+              </FilterDescription>
             </Fuel>
 
-            <Fuel>
-              <FuelIcon name="droplet" />
+            <Fuel 
+              selected={selectedFuel === 'eletric'}
+              onPress={() => {setSelectedFuel('eletric')}}
+            >
+              <FuelIcon 
+                name="droplet" 
+                selected={selectedFuel === 'eletric'}
+              />
 
-              <FilterDescription>Elétrico</FilterDescription>
+              <FilterDescription 
+                selected={selectedFuel === 'eletric'}
+              >
+                Elétrico
+              </FilterDescription>
             </Fuel>
 
-            <Fuel>
-              <FuelIcon name="droplet" />
+            <Fuel 
+              selected={selectedFuel === 'flex'}
+              onPress={() => {setSelectedFuel('flex')}}
+            >
+              <FuelIcon 
+                name="droplet" 
+                selected={selectedFuel === 'flex'}
+              />
 
-              <FilterDescription>Flex</FilterDescription>
+              <FilterDescription 
+                selected={selectedFuel === 'flex'}
+              >
+                Flex
+              </FilterDescription>
             </Fuel>
           </FuelContainer>
         </FilterField>

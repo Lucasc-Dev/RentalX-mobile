@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Feather';
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import { View } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
 interface FuelProps {
     selected?: boolean;
@@ -75,7 +74,7 @@ export const FilterTitle = styled.Text`
 `;
 
 export const RangeSliderContainer = styled.View`
-    margin-top: 16px;
+    margin: 14px 0 -10px;
 `;
 
 export const FuelContainer = styled.View`
@@ -87,7 +86,7 @@ export const FuelContainer = styled.View`
     justify-content: space-between;
 `;
 
-export const Fuel = styled.View<FuelProps>`
+export const Fuel = styled(RectButton)<FuelProps>`
     width: 33%;
     padding: 8px;
     background-color: ${props => props.selected ? '#FFF' : '#f4f5f6'};
