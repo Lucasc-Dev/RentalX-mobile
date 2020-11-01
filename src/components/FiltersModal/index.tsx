@@ -1,6 +1,10 @@
 import React from 'react';
+import { Dimensions, Image } from 'react-native';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import Button from '../Button';
+
+import sliderMarker from '../../assets/icons/SliderMarker.png';
 
 import {
   Container,
@@ -13,7 +17,7 @@ import {
   FilterTitleContainer,
   FilterTitle,
   PriceRange,
-  RangeSelect,
+  RangeSliderContainer,
   FuelContainer,
   Fuel,
   FuelIcon,
@@ -23,6 +27,11 @@ import {
 } from './styles';
 
 const FiltersModal: React.FC = () => {
+  const [
+    nonCollidingMultiSliderValue,
+    setNonCollidingMultiSliderValue,
+  ] = React.useState([200, 1200]);
+
   return (
     <Container>
       <ModalContainer>
@@ -42,9 +51,29 @@ const FiltersModal: React.FC = () => {
             <PriceRange>R$ 160 - R$ 380</PriceRange>
           </FilterTitleContainer>
 
-          <RangeSelect
-            touchDimensions={{ height: 200, width: 500, borderRadius: 0, slipDisplacement: 100 }}
-          />
+          <RangeSliderContainer>
+            <MultiSlider
+              values={[
+                nonCollidingMultiSliderValue[0],
+                nonCollidingMultiSliderValue[1],
+              ]}
+              sliderLength={Dimensions.get('window').width - 48}
+              minMarkerOverlapDistance={50}
+              isMarkersSeparated
+              min={0}
+              max={1500}
+              step={10}
+              snapped
+              selectedStyle={{ backgroundColor: '#dc1637', height: 3, }}
+              customMarkerLeft={(e) => (
+                <Image source={sliderMarker} />
+              )}
+              customMarkerRight={(e) => (
+                <Image source={sliderMarker} />
+              )}
+              touchDimensions={{height: 50,width: 50,borderRadius: 15,slipDisplacement: 200}}
+            />
+          </RangeSliderContainer>
         </FilterField>
 
         <FilterField>

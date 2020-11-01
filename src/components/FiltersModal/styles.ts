@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Feather';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import { View } from 'react-native';
 
 interface FuelProps {
     selected?: boolean;
@@ -73,8 +74,8 @@ export const FilterTitle = styled.Text`
     color: #474747;
 `;
 
-export const RangeSelect = styled(MultiSlider)`
-    
+export const RangeSliderContainer = styled.View`
+    margin-top: 16px;
 `;
 
 export const FuelContainer = styled.View`
