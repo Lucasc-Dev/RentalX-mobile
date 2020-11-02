@@ -32,7 +32,16 @@ interface Day {
   valid: boolean;
 }
 
-const Calendar: React.FC = () => {
+interface Period {
+  start_date: Date | undefined;
+  end_date: Date | undefined;
+}
+
+interface CalendarProps {
+  onChangeDate: (period: Period) => void;
+}
+
+const Calendar: React.FC<CalendarProps> = ({ onChangeDate }) => {
   const [weekDays, setWeekDays] = useState<Week[]>([]);
 
   const [startDate, setStartDate] = useState<Date>();
@@ -87,6 +96,13 @@ const Calendar: React.FC = () => {
     }
 
     setWeekDays(weeks);
+    
+    const period = {
+      start_date: startDate,
+      end_date: endDate,
+    };
+
+    onChangeDate(period);
   }, [currentDate, startDate, endDate, isBefore, isAfter]);
 
   const handleLastMonthButton = useCallback(() => {
