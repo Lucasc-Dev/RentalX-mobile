@@ -39,8 +39,8 @@ export const ButtonsContainer = styled.View`
 `;
 
 export const HorizontalContainer = styled.View`
-    width: 327px;
-    margin: 12px 0 20px;
+    width: 100%;
+    padding: 12px 24px 20px 20px;
     flex-direction: row;
     align-self: center;
     justify-content: space-between;

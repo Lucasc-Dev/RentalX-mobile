@@ -1,6 +1,7 @@
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
 import { BackHandler } from 'react-native';
+import { usePeriod } from '../../../hooks/PeriodContext';
 import Icon from 'react-native-vector-icons/Feather'
 
 import FiltersModal from '../../../components/FiltersModal';
@@ -47,24 +48,31 @@ interface Filters {
   gear: string;
 }
 
+interface Request {
+  start_date: Date;
+  end_date: Date;
+  min_range: number;
+  max_range: number;
+  fuel: string;
+  gear: string;
+}
+
 const VehiclesList: React.FC = () => {
+  const { period, formattedStartDate, formattedEndDate } = usePeriod();
+
   const [vehicles, setVehicles] = useState<Vehicle[]>();
-
-  const [startDate, setStartDate] = useState('16 Julho 2020');
-  const [endDate, setEndDate] = useState('20 Julho 2020');
-
-  const [filters, setFilters] = useState<Filters>({
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [request, setRequest] = useState<Request>({
+    ...period,
     min_range: 0,
     max_range: 1500,
     fuel: '',
     gear: '',
   });
-
-  const [filterOpen, setFilterOpen] = useState(false);
   
   useEffect(() => {
-    setFilterOpen(false);
-  }, [filters]);
+    //TODO: Load api data
+  }, [request]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -83,8 +91,13 @@ const VehiclesList: React.FC = () => {
   );
 
   const handleUpdateFilters = useCallback((filters: Filters) => {
-    setFilters(filters);
-  }, []);
+    setRequest({
+      ...period,
+      ...filters,
+    });
+
+    setFilterOpen(false);
+  }, [period]);
 
   return (
     <Container>
@@ -93,7 +106,7 @@ const VehiclesList: React.FC = () => {
           <DateField>
             <DateFieldTitle>De</DateFieldTitle>
 
-            <DateFieldInfo>{startDate}</DateFieldInfo>
+            <DateFieldInfo>{formattedStartDate}</DateFieldInfo>
           </DateField>
 
           <ChevronIcon name="chevron-down" size={20} color="#7a7a80" />
@@ -101,7 +114,7 @@ const VehiclesList: React.FC = () => {
           <DateField>
             <DateFieldTitle>Até</DateFieldTitle>
 
-            <DateFieldInfo>{endDate}</DateFieldInfo>
+            <DateFieldInfo>{formattedEndDate}</DateFieldInfo>
           </DateField>
         </DateContainer>
       </Header>

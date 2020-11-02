@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { PeriodContext } from '../../../hooks/PeriodContext';
+import { usePeriod } from '../../../hooks/PeriodContext';
 import { convert } from '../../../utils/ConvertMonth';
 
 import Button from '../../../components/Button';
@@ -26,20 +26,24 @@ interface Period {
 
 const SelectPeriod: React.FC = () => {
   const { navigate } = useNavigation();
-  const { definePeriod } = useContext(PeriodContext);
+  const { definePeriod } = usePeriod();
 
   const [period, setPeriod] = useState<Period>({} as Period);
 
   const handleConfirmButton = useCallback(() => {
-    if (period) {
-      definePeriod(period);
+    if (period.start_date && period.end_date) {
+      const newPeriod = {
+        start_date: period.start_date,
+        end_date: period.end_date,
+      }
+
+      definePeriod(newPeriod);
   
       navigate('VehiclesList');
     }
-  }, []);
+  }, [period, navigate]);
 
   const convertStartDate = useMemo(() => {
-    console.log(period)
     if (period.start_date) {
       const month = convert(period.start_date.getMonth());
   
@@ -48,7 +52,6 @@ const SelectPeriod: React.FC = () => {
   }, [period]);
 
   const convertEndDate = useMemo(() => {
-    console.log(period)
     if (period.end_date) {
       const month = convert(period.end_date.getMonth());
   
@@ -84,7 +87,7 @@ const SelectPeriod: React.FC = () => {
 
       <Button 
         text="Confirmar"
-        enable={true}
+        enable={!!(period.start_date && period.end_date)}
         onPress={handleConfirmButton}
       />
     </Container>
