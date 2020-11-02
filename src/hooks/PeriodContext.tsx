@@ -1,15 +1,26 @@
-import React, { createContext } from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 
 interface PeriodContextData {
-    start_date: Date;
-    end_date: Date;    
+    period: Period;
+    definePeriod(period: Period): void; 
 }
 
-const PeriodContext = createContext<PeriodContextData>({} as PeriodContextData);
+interface Period {
+    start_date: Date | undefined;
+    end_date: Date | undefined;
+}
+
+export const PeriodContext = createContext<PeriodContextData>({} as PeriodContextData);
 
 export const PeriodProvider: React.FC = ({ children }) => {
+    const [period, setPeriod] = useState<Period>({} as Period);
+
+    const definePeriod = useCallback((period: Period) => {
+        setPeriod(period);
+    }, []);
+
     return (
-        <PeriodContext.Provider value={{ start_date: new Date(), end_date: new Date() }}>
+        <PeriodContext.Provider value={{ period, definePeriod }}>
             {children}
         </PeriodContext.Provider>
     );
