@@ -3,6 +3,7 @@ import { RectButtonProperties } from 'react-native-gesture-handler';
 
 import { 
   ButtonContainer,
+  RectButton,
   ButtonText,
 } from './styles';
 
@@ -13,12 +14,14 @@ interface ButtonProps extends RectButtonProperties {
 
 const Button: React.FC<ButtonProps> = ({ text, enable = true, ...rest }) => {
   return (
-    <ButtonContainer
-      enabled={enable}
-      enable={enable}
-      {...rest}
-    >
-      <ButtonText>{text}</ButtonText>
+    <ButtonContainer>
+      <RectButton
+        enabled={enable}
+        enable={enable}
+        {...rest}
+      >
+        <ButtonText>{text}</ButtonText>
+      </RectButton>
     </ButtonContainer>
   );
 };

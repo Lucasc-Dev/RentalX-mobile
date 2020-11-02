@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
+    margin: 0 24px;
     align-self: center;
     align-items: center;
     flex-direction: row;
@@ -16,9 +17,9 @@ export const IconBox = styled.View`
 `;
 
 export const InputBox = styled.View`
-    margin-left: 2px;
-    width: 270px;
+    flex: 1;
     height: 56px;
+    margin-left: 2px;
     background-color: #f2f2fa;
     justify-content: center;
 `;
