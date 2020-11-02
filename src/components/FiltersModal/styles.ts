@@ -10,16 +10,16 @@ interface GearProps {
     selected?: boolean;
 }
 
-export const Container = styled.ScrollView.attrs({ zIndex: 20 })`
+export const Container = styled.View.attrs({ zIndex: 20 })`
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.75);
     position: absolute;
+    justify-content: flex-end;
 `;
 
 export const ModalContainer = styled.View`
     width: 100%;
-    margin-top: 140px;
     padding: 0 24px 24px;
     background-color: #FFF;
     border-top-left-radius: 24px;
@@ -117,7 +117,7 @@ export const GearContainer = styled.View`
     justify-content: space-between;
 `;
 
-export const Gear = styled.View<GearProps>`
+export const Gear = styled(RectButton)<GearProps>`
     width: 50%;
     background-color: ${props => props.selected ? '#FFF' : '#f4f5f6'};
     justify-content: center;

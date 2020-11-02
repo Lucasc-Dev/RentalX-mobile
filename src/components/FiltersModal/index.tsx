@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Dimensions, Image } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
@@ -26,132 +26,188 @@ import {
   Gear,
 } from './styles';
 
-const FiltersModal: React.FC = () => {
-  const [
-    nonCollidingMultiSliderValue,
-    setNonCollidingMultiSliderValue,
-  ] = useState([200, 1200]);
+interface Filters {
+  min_range: number;
+  max_range: number;
+  fuel: string;
+  gear: string;
+}
+
+interface FiltersModalProps {
+  modalOpened: boolean;
+  filtersUpdater: ((filters: Filters) => void)
+}
+
+const FiltersModal: React.FC<FiltersModalProps> = ({ modalOpened, filtersUpdater }) => {
+  const [minValue, setMinValue] = useState(0);
+  const [maxValue, setMaxValue] = useState(1500);
   const [selectedFuel, setSelectedFuel] = useState('');
+  const [selectedGear, setSelectedGear] = useState('');
 
-  return (
-    <Container>
-      <ModalContainer>
+  const handleClearFiltersButton = useCallback(() => {
+    setMinValue(0);
+    setMaxValue(1500);
+    setSelectedFuel('');
+    setSelectedGear('');
+  }, []);
 
-        <Header>
-          <HeaderTitle>Filtro</HeaderTitle>
+  const handleSubmitButton = useCallback(() => {
+    const filters = {
+      min_range: minValue,
+      max_range: maxValue,
+      fuel: selectedFuel,
+      gear: selectedGear,
+    }
 
-          <ClearFiltersButton>
-            <ClearFiltersText>Limpar filtros</ClearFiltersText>
-          </ClearFiltersButton>
-        </Header>
+    filtersUpdater(filters);
 
-        <FilterField>
-          <FilterTitleContainer>
-            <FilterTitle>Preço ao dia</FilterTitle>
 
-            <PriceRange>R$ 160 - R$ 380</PriceRange>
-          </FilterTitleContainer>
+  }, [minValue, maxValue, selectedFuel, selectedGear]);
 
-          <RangeSliderContainer>
-            <MultiSlider
-              values={[
-                nonCollidingMultiSliderValue[0],
-                nonCollidingMultiSliderValue[1],
-              ]}
-              sliderLength={Dimensions.get('window').width - 48}
-              minMarkerOverlapDistance={50}
-              isMarkersSeparated
-              min={0}
-              max={1500}
-              step={10}
-              snapped
-              selectedStyle={{ backgroundColor: '#dc1637', height: 3, }}
-              customMarkerLeft={(e) => (
-                <Image source={sliderMarker} />
-              )}
-              customMarkerRight={(e) => (
-                <Image source={sliderMarker} />
-              )}
-              touchDimensions={{height: 50,width: 50,borderRadius: 15,slipDisplacement: 200}}
-            />
-          </RangeSliderContainer>
-        </FilterField>
+  const compareGasoline = useMemo(() => {
+    return selectedFuel === 'gasoline';
+  }, [selectedFuel]);
 
-        <FilterField>
-          <FilterTitle>Combustível</FilterTitle>
+  const compareEletric = useMemo(() => {
+    return selectedFuel === 'eletric';
+  }, [selectedFuel]);
 
-          <FuelContainer>
-            
-          <Fuel 
-              selected={selectedFuel === 'gasoline'}
-              onPress={() => {setSelectedFuel('gasoline')}}
+  const compareFlex = useMemo(() => {
+    return selectedFuel === 'flex';
+  }, [selectedFuel]);
+
+  const compareAutomatic = useMemo(() => {
+    return selectedGear === 'automatic';
+  }, [selectedGear]);
+
+  const compareManual = useMemo(() => {
+    return selectedGear === 'manual';
+  }, [selectedGear]);
+
+  if (modalOpened) {
+    return (
+      <Container>
+        <ModalContainer>
+          <Header>
+            <HeaderTitle>Filtro</HeaderTitle>
+  
+            <ClearFiltersButton
+              onPress={handleClearFiltersButton}
             >
-              <FuelIcon 
-                name="droplet" 
-                selected={selectedFuel === 'gasoline'}
+              <ClearFiltersText>Limpar filtros</ClearFiltersText>
+            </ClearFiltersButton>
+          </Header>
+  
+          <FilterField>
+            <FilterTitleContainer>
+              <FilterTitle>Preço ao dia</FilterTitle>
+  
+              <PriceRange>R$ {minValue} - R$ {maxValue}</PriceRange>
+            </FilterTitleContainer>
+  
+            <RangeSliderContainer>
+              <MultiSlider
+                values={[
+                  minValue,
+                  maxValue,
+                ]}
+                onValuesChange={(value) => {
+                  setMinValue(value[0]);
+                  setMaxValue(value[1]);
+                }}
+                sliderLength={Dimensions.get('window').width - 48}
+                minMarkerOverlapDistance={40}
+                isMarkersSeparated
+                min={0}
+                max={1500}
+                step={10}
+                snapped
+                selectedStyle={{ backgroundColor: '#dc1637', height: 3, }}
+                customMarkerLeft={() => (
+                  <Image source={sliderMarker} />
+                )}
+                customMarkerRight={() => (
+                  <Image source={sliderMarker} />
+                )}
+                touchDimensions={{height: 50,width: 50,borderRadius: 15,slipDisplacement: 200}}
               />
-
-              <FilterDescription 
-                selected={selectedFuel === 'gasoline'}
-              >
-                Gasolina
-              </FilterDescription>
-            </Fuel>
-
+            </RangeSliderContainer>
+          </FilterField>
+  
+          <FilterField>
+            <FilterTitle>Combustível</FilterTitle>
+  
+            <FuelContainer>
+              
             <Fuel 
-              selected={selectedFuel === 'eletric'}
-              onPress={() => {setSelectedFuel('eletric')}}
-            >
-              <FuelIcon 
-                name="droplet" 
-                selected={selectedFuel === 'eletric'}
-              />
-
-              <FilterDescription 
-                selected={selectedFuel === 'eletric'}
+                selected={compareGasoline}
+                onPress={() => {setSelectedFuel('gasoline')}}
               >
-                Elétrico
-              </FilterDescription>
-            </Fuel>
-
-            <Fuel 
-              selected={selectedFuel === 'flex'}
-              onPress={() => {setSelectedFuel('flex')}}
-            >
-              <FuelIcon 
-                name="droplet" 
-                selected={selectedFuel === 'flex'}
-              />
-
-              <FilterDescription 
-                selected={selectedFuel === 'flex'}
+                <FuelIcon name="droplet" selected={compareGasoline}/>
+  
+                <FilterDescription selected={compareGasoline}>
+                  Gasolina
+                </FilterDescription>
+              </Fuel>
+  
+              <Fuel 
+                selected={compareEletric}
+                onPress={() => {setSelectedFuel('eletric')}}
               >
-                Flex
-              </FilterDescription>
-            </Fuel>
-          </FuelContainer>
-        </FilterField>
-
-        <FilterField>
-          <FilterTitle>Câmbio</FilterTitle>
-
-          <GearContainer>
-            <Gear selected>
-              <FilterDescription selected>Automático</FilterDescription>
-            </Gear>
-
-            <Gear>
-              <FilterDescription>Manual</FilterDescription>
-            </Gear>
-          </GearContainer>
-        </FilterField>
-
-        <Button 
-          text="Confirmar"
-        />
-      </ModalContainer>
-    </Container>
-  );
+                <FuelIcon name="droplet" selected={compareEletric}/>
+  
+                <FilterDescription selected={compareEletric}>
+                  Elétrico
+                </FilterDescription>
+              </Fuel>
+  
+              <Fuel 
+                selected={compareFlex}
+                onPress={() => {setSelectedFuel('flex')}}
+              >
+                <FuelIcon name="droplet" selected={compareFlex}/>
+  
+                <FilterDescription selected={compareFlex}>
+                  Flex
+                </FilterDescription>
+              </Fuel>
+            </FuelContainer>
+          </FilterField>
+  
+          <FilterField>
+            <FilterTitle>Câmbio</FilterTitle>
+  
+            <GearContainer>
+              <Gear 
+                selected={compareAutomatic}
+                onPress={() => {setSelectedGear('automatic')}}
+              >
+                <FilterDescription 
+                  selected={compareAutomatic}
+                  >Automático</FilterDescription>
+              </Gear>
+  
+              <Gear
+                selected={compareManual}
+                onPress={() => {setSelectedGear('manual')}}
+              >
+                <FilterDescription
+                  selected={compareManual}
+                >Manual</FilterDescription>
+              </Gear>
+            </GearContainer>
+          </FilterField>
+  
+          <Button 
+            text="Confirmar"
+            onPress={handleSubmitButton}
+          />
+        </ModalContainer>
+      </Container>
+    );
+  } else {
+    return <></>;
+  }
 };
 
 export default FiltersModal;
