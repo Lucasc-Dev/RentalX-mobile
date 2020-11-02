@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { BackHandler } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather'
 
 import FiltersModal from '../../../components/FiltersModal';
@@ -38,50 +40,51 @@ interface Vehicle {
   fuel: string;
 }
 
+interface Filters {
+  min_range: number;
+  max_range: number;
+  fuel: string;
+  gear: string;
+}
+
 const VehiclesList: React.FC = () => {
-  const [vehicles, setVehicles] = useState<Vehicle[]>([
-    {
-      id: '0765c4ad-b9de-47af-bc8e-5155a81b2363',
-      name: 'Versa',
-      brand: 'Nissan',
-      model: '2020',
-      daily_price: 650.00,
-      image: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png',
-      fuel: 'flex',
-    },
-    {
-      id: '0765c4ad-b9de-47af-bc8e-5155a81b2364',
-      name: 'Versa',
-      brand: 'Nissan',
-      model: '2020',
-      daily_price: 650.00,
-      image: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png',
-      fuel: 'flex',
-    },
-    {
-      id: '0765c4ad-b9de-47af-bc8e-5155a81b2365',
-      name: 'Versa',
-      brand: 'Nissan',
-      model: '2020',
-      daily_price: 650.00,
-      image: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png',
-      fuel: 'flex',
-    },
-    {
-      id: '0765c4ad-b9de-47af-bc8e-5155a81b2366',
-      name: 'Versa',
-      brand: 'Nissan',
-      model: '2020',
-      daily_price: 650.00,
-      image: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png',
-      fuel: 'flex',
-    },
-  ]);
+  const [vehicles, setVehicles] = useState<Vehicle[]>();
 
   const [startDate, setStartDate] = useState('16 Julho 2020');
   const [endDate, setEndDate] = useState('20 Julho 2020');
 
+  const [filters, setFilters] = useState<Filters>({
+    min_range: 0,
+    max_range: 1500,
+    fuel: '',
+    gear: '',
+  });
+
   const [filterOpen, setFilterOpen] = useState(false);
+  
+  useEffect(() => {
+    setFilterOpen(false);
+  }, [filters]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (filterOpen) {
+          setFilterOpen(false);
+          return true;
+        }
+      };
+  
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+  
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [filterOpen])
+  );
+
+  const handleUpdateFilters = useCallback((filters: Filters) => {
+    setFilters(filters);
+  }, []);
 
   return (
     <Container>
@@ -103,7 +106,7 @@ const VehiclesList: React.FC = () => {
         </DateContainer>
       </Header>
 
-      {filterOpen && ( <FiltersModal /> )}
+      <FiltersModal modalOpened={filterOpen} filtersUpdater={handleUpdateFilters} />
 
       <VehiclesContainer 
         data={vehicles}
