@@ -1,6 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
+import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from 'src/hooks/AuthContext';
+import { useAuth } from '../../../hooks/AuthContext';
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
 
 import Icon from 'react-native-vector-icons/Feather'
 
@@ -21,19 +24,30 @@ import {
   ForgotPasswordButton,
 } from './styles';
 
+interface SubmitFormData {
+  email: string;
+  password: string;
+}
+
 const SignIn: React.FC = () => {
   const { navigate } = useNavigation();
-  const { signIn } = useAuth();
+  const { signIn, user } = useAuth();
+  const formRef = useRef<FormHandles>(null);
 
   const [remindMe, setRemindMe] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleLoginButton = useCallback(() => {
-    //signIn();
-
-    navigate('SelectPeriod');
-  }, []);
+  const handleSubmitButton = useCallback(async (data: SubmitFormData) => {
+    try{
+      await signIn({
+        email: data.email,
+        password: data.password,
+      });
+      
+      navigate('SelectPeriod');
+    }catch (err) {
+      Alert.alert('Houve um problema ao fazer login.');
+    }
+  }, [signIn, navigate, user]);
 
   return (
     <>
@@ -47,42 +61,44 @@ const SignIn: React.FC = () => {
           <Subtitle>Faça seu login para começar uma experiência incrível.</Subtitle>
         </TitleContainer>
 
-        <ButtonsContainer>
-          <Input
-            name="email"
-            placeholder="E-mail"
-            autoCorrect={false}
-            icon="mail"
-          />
-          <Input 
-            name="password"
-            placeholder="Senha"
-            secureTextEntry
-            autoCorrect={false}
-            icon="lock"
-          />
+        <Form ref={formRef} onSubmit={ handleSubmitButton }>
+          <ButtonsContainer>
+            <Input
+              name="email"
+              placeholder="E-mail"
+              autoCorrect={false}
+              icon="mail"
+            />
+            <Input 
+              name="password"
+              placeholder="Senha"
+              secureTextEntry
+              autoCorrect={false}
+              icon="lock"
+            />
 
-          <HorizontalContainer>
-            <CheckBoxContainer>
-              <CheckBox
-                value={remindMe}
-                onValueChange={(value) => setRemindMe(value)}
-              />
+            <HorizontalContainer>
+              <CheckBoxContainer>
+                <CheckBox
+                  value={remindMe}
+                  onValueChange={(value) => setRemindMe(value)}
+                />
 
-              <MiniText>Lembrar-me</MiniText>
-            </CheckBoxContainer>
-            
+                <MiniText>Lembrar-me</MiniText>
+              </CheckBoxContainer>
+              
 
-            <ForgotPasswordButton>
-              <MiniText>Esqueci minha senha</MiniText>
-            </ForgotPasswordButton>
-          </HorizontalContainer>
+              <ForgotPasswordButton>
+                <MiniText>Esqueci minha senha</MiniText>
+              </ForgotPasswordButton>
+            </HorizontalContainer>
 
-          <Button 
-            text="Login"
-            onPress={handleLoginButton}
-          />
-        </ButtonsContainer>
+            <Button 
+              text="Login"
+              onPress={() => formRef.current?.submitForm()}
+            />
+          </ButtonsContainer>
+        </Form>
       </Container>
     </>
   );
