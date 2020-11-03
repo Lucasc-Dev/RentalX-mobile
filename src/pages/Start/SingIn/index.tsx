@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from 'src/hooks/AuthContext';
 
 import Icon from 'react-native-vector-icons/Feather'
 
@@ -22,10 +23,15 @@ import {
 
 const SignIn: React.FC = () => {
   const { navigate } = useNavigation();
+  const { signIn } = useAuth();
 
   const [remindMe, setRemindMe] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLoginButton = useCallback(() => {
+    //signIn();
+
     navigate('SelectPeriod');
   }, []);
 
