@@ -1,7 +1,9 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { BackHandler } from 'react-native';
 import { usePeriod } from '../../../hooks/PeriodContext';
+import api from '../../../services/api';
+
 import Icon from 'react-native-vector-icons/Feather'
 
 import FiltersModal from '../../../components/FiltersModal';
@@ -60,8 +62,11 @@ interface Request {
 const VehiclesList: React.FC = () => {
   const { period, formattedStartDate, formattedEndDate } = usePeriod();
 
-  const [vehicles, setVehicles] = useState<Vehicle[]>();
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [totalVehicles, setTotalVehicles] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
   const [request, setRequest] = useState<Request>({
     ...period,
     min_range: 0,
@@ -71,8 +76,8 @@ const VehiclesList: React.FC = () => {
   });
   
   useEffect(() => {
-    //TODO: Load api data
-  }, [request]);
+    loadVehicles();
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -90,11 +95,35 @@ const VehiclesList: React.FC = () => {
     }, [filterOpen])
   );
 
+  const loadVehicles = useCallback(async () => {
+    if (loading) {
+      return;
+    }
+
+    if (totalVehicles > 0 && vehicles.length === totalVehicles) {
+      return;
+    }
+
+    setLoading(true);
+
+    const response = await api.get('vehicles', { params: { ...request, page } });
+
+    setVehicles([...vehicles, ...response.data.vehicles]);
+
+    setTotalVehicles(response.data.count);
+
+    setPage(page + 1);
+
+    setLoading(false)
+  }, [api, request, vehicles, loading, page, totalVehicles]);
+
   const handleUpdateFilters = useCallback((filters: Filters) => {
     setRequest({
       ...period,
       ...filters,
     });
+
+    setPage(0);
 
     setFilterOpen(false);
   }, [period]);
@@ -124,12 +153,15 @@ const VehiclesList: React.FC = () => {
       <VehiclesContainer 
         data={vehicles}
         keyExtractor={(vehicle) => vehicle.id}
+        showsVerticalScrollIndicator={false}
+        onEndReached={loadVehicles}
+        onEndReachedThreshold={0.25}
         ListHeaderComponent={
           <TitleContainer>
             <Title>Resultados</Title>
     
             <OptionsContainer>
-              <TotalVehicles>3 carros</TotalVehicles>
+              <TotalVehicles>{totalVehicles} carros</TotalVehicles>
               
               <FiltersButton onPress={() => setFilterOpen(true)}>
                 <Icon name="filter" size={20} color="#47474d" />
