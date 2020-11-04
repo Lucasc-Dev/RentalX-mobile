@@ -1,6 +1,10 @@
-import React, { useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useRef } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
+import { useAuth } from '../../../hooks/AuthContext';
 
+import api from '../../../services/api';
 import Icon from 'react-native-vector-icons/Feather'
 
 import Input from '../../../components/Input';
@@ -16,12 +20,34 @@ import {
   InfoTitle,
 } from './styles';
 
-const CreateAccountPassword: React.FC = () => {
-  const { navigate } = useNavigation();
+interface CreateAccountRouteParams {
+  name: string;
+  email: string;
+}
 
-  const handleNextButton = useCallback(() => {
-    navigate('AccountCreated');
-  }, []);
+const CreateAccountPassword: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+  const { navigate } = useNavigation();
+  const { signIn } = useAuth()
+  const { params } = useRoute();
+
+  const { name, email } = params as CreateAccountRouteParams;
+
+  const handleSubmitButton = useCallback(async (data) => {
+    try {
+      const user = {
+        name, 
+        email,
+        password: data.password,
+      }
+
+      await api.post('users', user);
+
+      navigate('AccountCreated');
+    }catch (err) {
+      console.log(err);
+    }
+  }, [name, email]);
 
   return (
     <>
@@ -35,30 +61,32 @@ const CreateAccountPassword: React.FC = () => {
           <Subtitle>Faça seu cadastro de forma rápida e fácil.</Subtitle>
         </TitleContainer>
 
-        <InputsContainer>
-          <InfoTitle>02. Senha</InfoTitle>
+        <Form ref={formRef} onSubmit={handleSubmitButton} >
+          <InputsContainer>
+            <InfoTitle>02. Senha</InfoTitle>
 
-          <Input 
-            name="password"
-            placeholder="Senha"
-            autoCorrect={false}
-            secureTextEntry
-            icon="lock"
-          />
-          <Input
-            name="confirm_password"
-            placeholder="Repetir senha"
-            autoCorrect={false}
-            secureTextEntry
-            icon="lock"
-          />
+            <Input 
+              name="password"
+              placeholder="Senha"
+              autoCorrect={false}
+              secureTextEntry
+              icon="lock"
+            />
+            <Input
+              name="confirm_password"
+              placeholder="Repetir senha"
+              autoCorrect={false}
+              secureTextEntry
+              icon="lock"
+            />
 
-          <Button 
-            style={{ marginTop: 32 }}
-            text="Cadastrar"
-            onPress={handleNextButton}
-          />
-        </InputsContainer>
+            <Button 
+              style={{ marginTop: 32 }}
+              text="Cadastrar"
+              onPress={() => {formRef.current?.submitForm()}}
+            />
+          </InputsContainer>
+        </Form>
       </Container>
     </>
   );
