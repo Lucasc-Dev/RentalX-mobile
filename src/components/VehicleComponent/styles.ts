@@ -1,10 +1,11 @@
 import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
 
 interface VehicleImageDotProps {
     isSelected?: boolean;
 }
 
-export const Vehicle = styled.View`
+export const Vehicle = styled(RectButton)`
     height: 250px;
     margin: 16px 24px 0;
     padding: 24px;

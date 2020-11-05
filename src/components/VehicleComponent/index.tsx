@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useNavigation } from '@react-navigation/native';
+
 import Icon from 'react-native-vector-icons/Feather';
 
 import { 
@@ -28,8 +30,14 @@ interface VehicleComponentProps {
 }
 
 const VehicleComponent: React.FC<VehicleComponentProps> = ({ vehicle }) => {
+  const { navigate } = useNavigation();
+
+  const handleClickVehicle = useCallback(() => {
+    navigate('VehicleDetails', { id: vehicle.id });
+  }, [navigate, vehicle]);
+
   return (
-    <Vehicle>
+    <Vehicle onPress={handleClickVehicle} >
       <VehicleInfoContainer>
         <TextContainer>
           <VehicleSubtitle>{vehicle.brand}</VehicleSubtitle>
