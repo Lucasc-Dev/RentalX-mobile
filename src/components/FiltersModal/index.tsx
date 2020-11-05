@@ -68,8 +68,8 @@ const FiltersModal: React.FC<FiltersModalProps> = ({ modalOpened, filtersUpdater
     return selectedFuel === 'gasoline';
   }, [selectedFuel]);
 
-  const compareEletric = useMemo(() => {
-    return selectedFuel === 'eletric';
+  const compareEletrical = useMemo(() => {
+    return selectedFuel === 'eletrical';
   }, [selectedFuel]);
 
   const compareFlex = useMemo(() => {
@@ -151,12 +151,12 @@ const FiltersModal: React.FC<FiltersModalProps> = ({ modalOpened, filtersUpdater
               </Fuel>
   
               <Fuel 
-                selected={compareEletric}
-                onPress={() => {setSelectedFuel('eletric')}}
+                selected={compareEletrical}
+                onPress={() => {setSelectedFuel('eletrical')}}
               >
-                <FuelIcon name="droplet" selected={compareEletric}/>
+                <FuelIcon name="droplet" selected={compareEletrical}/>
   
-                <FilterDescription selected={compareEletric}>
+                <FilterDescription selected={compareEletrical}>
                   Elétrico
                 </FilterDescription>
               </Fuel>
