@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import api from '../../../services/api';
 
 import Icon from 'react-native-vector-icons/Feather';
 import Button from '../../../components/Button';
@@ -33,7 +35,35 @@ import {
   TotalPrice,
 } from './styles';
 
+interface Vehicle {
+  id: string;
+  name: string;
+  brand: string;
+  model: string;
+  plate: string;
+  daily_price: number;
+  image: string;
+  fuel: string;
+  gear: string;
+}
+
+interface VehicleDetailsParams {
+  id: string;
+}
+
 const VehicleDetails: React.FC = () => {
+  const { params } = useRoute();
+
+  const { id } = params as VehicleDetailsParams;
+
+  const [vehicle, setVehicle] = useState<Vehicle>({} as Vehicle);
+
+  useEffect(() => {
+    api.get(`vehicles/${id}`).then(response => {
+      setVehicle(response.data);
+    });
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -49,16 +79,16 @@ const VehicleDetails: React.FC = () => {
       </Header>
 
       <VehicleContainer>
-        <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }}/>
+        <VehicleImage source={{ uri: vehicle.image }}/>
 
         <InfoContainer>
           <TextContainer>
-            <Subtitle>Lamborghini</Subtitle>
-            <VehicleName>Huracan</VehicleName>
+            <Subtitle>{vehicle.brand}</Subtitle>
+            <VehicleName>{vehicle.name}</VehicleName>
           </TextContainer>
           <TextContainer>
             <Subtitle>Ao dia</Subtitle>
-            <VehiclePrice>R$ 580</VehiclePrice>
+            <VehiclePrice>R$ {vehicle.daily_price}</VehiclePrice>
           </TextContainer>
         </InfoContainer>
 
@@ -98,10 +128,10 @@ const VehicleDetails: React.FC = () => {
         <PriceContainer>
           <PriceCalculationContainer>
             <Subtitle>Total</Subtitle>
-            <PriceCalculationText>R$ 580 * 3 diárias</PriceCalculationText>
+            <PriceCalculationText>R$ {vehicle.daily_price} * 3 diárias</PriceCalculationText>
           </PriceCalculationContainer>
 
-          <TotalPrice>R$ 1,740</TotalPrice>
+          <TotalPrice>R$ { vehicle.daily_price }</TotalPrice>
         </PriceContainer>
 
         <Button 

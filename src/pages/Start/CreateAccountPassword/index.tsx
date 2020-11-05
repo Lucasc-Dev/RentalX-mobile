@@ -2,7 +2,6 @@ import React, { useCallback, useRef } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
-import { useAuth } from '../../../hooks/AuthContext';
 
 import api from '../../../services/api';
 import Icon from 'react-native-vector-icons/Feather'
@@ -28,7 +27,6 @@ interface CreateAccountRouteParams {
 const CreateAccountPassword: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { navigate } = useNavigation();
-  const { signIn } = useAuth()
   const { params } = useRoute();
 
   const { name, email } = params as CreateAccountRouteParams;

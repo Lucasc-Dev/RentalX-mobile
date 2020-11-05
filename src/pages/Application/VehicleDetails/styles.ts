@@ -4,7 +4,7 @@ interface VehicleImageDotProps {
     isSelected?: boolean;
 }
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
     flex: 1;
     background-color: #FFF;
 `;

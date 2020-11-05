@@ -68,7 +68,7 @@ const VehiclesList: React.FC = () => {
   });
   
   useEffect(() => {
-    loadVehicles(true);
+    loadVehicles();
   }, []);
 
   useFocusEffect(
@@ -87,7 +87,7 @@ const VehiclesList: React.FC = () => {
     }, [filterOpen])
   );
 
-  const loadVehicles = useCallback(async (loadingNewVehicles: boolean) => {
+  const loadVehicles = useCallback(async () => {
     if (loading) {
       return;
     }
@@ -117,7 +117,7 @@ const VehiclesList: React.FC = () => {
 
     setFilterOpen(false);
 
-    loadVehicles(false);
+    loadVehicles();
   }, [period]);
 
   return (
@@ -146,7 +146,7 @@ const VehiclesList: React.FC = () => {
         data={vehicles}
         keyExtractor={(vehicle) => vehicle.id}
         showsVerticalScrollIndicator={false}
-        onEndReached={() => {loadVehicles(true)}}
+        onEndReached={() => {loadVehicles()}}
         onEndReachedThreshold={0.25}
         ListHeaderComponent={
           <TitleContainer>
