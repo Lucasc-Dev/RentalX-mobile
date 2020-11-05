@@ -7,6 +7,7 @@ import api from '../../../services/api';
 import Icon from 'react-native-vector-icons/Feather'
 
 import FiltersModal from '../../../components/FiltersModal';
+import VehicleComponent from '../../../components/VehicleComponent';
 
 import { 
   Container,
@@ -22,15 +23,6 @@ import {
   OptionsContainer,
   TotalVehicles,
   FiltersButton,
-  Vehicle,
-  VehicleInfoContainer,
-  TextContainer,
-  VehicleTitle,
-  VehicleSubtitle,
-  VehiclePrice,
-  VehicleImage,
-  VehicleImagesInfo,
-  VehicleImageDot,
 } from './styles';
 
 interface Vehicle {
@@ -76,7 +68,7 @@ const VehiclesList: React.FC = () => {
   });
   
   useEffect(() => {
-    loadVehicles();
+    loadVehicles(true);
   }, []);
 
   useFocusEffect(
@@ -95,7 +87,7 @@ const VehiclesList: React.FC = () => {
     }, [filterOpen])
   );
 
-  const loadVehicles = useCallback(async () => {
+  const loadVehicles = useCallback(async (loadingNewVehicles: boolean) => {
     if (loading) {
       return;
     }
@@ -109,23 +101,23 @@ const VehiclesList: React.FC = () => {
     const response = await api.get('vehicles', { params: { ...request, page } });
 
     setVehicles([...vehicles, ...response.data.vehicles]);
-
     setTotalVehicles(response.data.count);
 
     setPage(page + 1);
-
-    setLoading(false)
+    setLoading(false);
   }, [api, request, vehicles, loading, page, totalVehicles]);
 
   const handleUpdateFilters = useCallback((filters: Filters) => {
+    setVehicles([]);
+    
     setRequest({
       ...period,
       ...filters,
     });
 
-    setPage(0);
-
     setFilterOpen(false);
+
+    loadVehicles(false);
   }, [period]);
 
   return (
@@ -154,7 +146,7 @@ const VehiclesList: React.FC = () => {
         data={vehicles}
         keyExtractor={(vehicle) => vehicle.id}
         showsVerticalScrollIndicator={false}
-        onEndReached={loadVehicles}
+        onEndReached={() => {loadVehicles(true)}}
         onEndReachedThreshold={0.25}
         ListHeaderComponent={
           <TitleContainer>
@@ -170,31 +162,9 @@ const VehiclesList: React.FC = () => {
           </TitleContainer>
         }
         renderItem={({ item: vehicle }) => (
-          <Vehicle>
-            <VehicleInfoContainer>
-              <TextContainer>
-                <VehicleSubtitle>{vehicle.brand}</VehicleSubtitle>
-                <VehicleTitle>{vehicle.name}</VehicleTitle>
-              </TextContainer>
-
-              <TextContainer>
-                <VehicleSubtitle>Ao dia</VehicleSubtitle>
-                <VehiclePrice>R$ {vehicle.daily_price}</VehiclePrice>
-              </TextContainer>
-            </VehicleInfoContainer>
-
-            <VehicleImage source={{ uri: vehicle.image }} />
-
-            <VehicleInfoContainer>
-              <Icon name="droplet" size={20} color="#aeaeb3"/>
-
-              <VehicleImagesInfo>
-                <VehicleImageDot isSelected />
-                <VehicleImageDot isSelected={false} />
-                <VehicleImageDot isSelected={false} />
-              </VehicleImagesInfo>
-            </VehicleInfoContainer>
-          </Vehicle>
+          <VehicleComponent 
+            vehicle={vehicle}
+          />
         )}
       />
     </Container>
