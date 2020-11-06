@@ -47,6 +47,7 @@ interface Request {
   end_date: Date;
   min_range: number;
   max_range: number;
+  page: number;
   fuel: string;
   gear: string;
 }
@@ -58,18 +59,25 @@ const VehiclesList: React.FC = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [totalVehicles, setTotalVehicles] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0);
   const [request, setRequest] = useState<Request>({
     ...period,
     min_range: 0,
     max_range: 1500,
+    page: 0,
     fuel: '',
     gear: '',
   });
-  
+
   useEffect(() => {
-    loadVehicles();
-  }, []);
+    console.log(loading);
+    if (!loading) {
+      api.get('vehicles', { params: { ...request } }).then(response => {
+        setVehicles(response.data.vehicles);
+        setTotalVehicles(response.data.count);
+        setRequest(state => ({...state, page: state.page + 1}));
+      });
+    }
+  }, [request.min_range, request.max_range, request.fuel, request.gear]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -98,27 +106,32 @@ const VehiclesList: React.FC = () => {
 
     setLoading(true);
 
-    const response = await api.get('vehicles', { params: { ...request, page } });
+    const response = await api.get('vehicles', { params: { ...request } });
 
-    setVehicles([...vehicles, ...response.data.vehicles]);
+    const newVehicles = [
+      ...vehicles,
+      ...response.data.vehicles,
+    ]
+
+    setVehicles(newVehicles);
     setTotalVehicles(response.data.count);
-
-    setPage(page + 1);
-    setLoading(false);
-  }, [api, request, vehicles, loading, page, totalVehicles]);
-
-  const handleUpdateFilters = useCallback((filters: Filters) => {
-    setVehicles([]);
+    setRequest(state => ({...state, page: state.page + 1}));
     
+    setLoading(false);
+  }, [api, request, vehicles, loading, totalVehicles]);
+
+  const handleUpdateFilters = useCallback(async (filters: Filters) => {
+    setVehicles([]);
     setRequest({
       ...period,
-      ...filters,
+      min_range: filters.min_range,
+      max_range: filters.max_range,
+      page: 0,
+      fuel: filters.fuel,
+      gear: filters.gear,
     });
-
     setFilterOpen(false);
-
-    loadVehicles();
-  }, [period]);
+  }, [request,period]);
 
   return (
     <Container>
@@ -172,3 +185,4 @@ const VehiclesList: React.FC = () => {
 };
 
 export default VehiclesList;
+ 
