@@ -35,7 +35,7 @@ const Profile: React.FC = () => {
           <Icon name="power" size={20} color="#aeaeb3" />
         </TopHeaderContainer>
 
-        <ProfileImage source={{ uri: 'http://localhost:3333/files/fe295d591330440966e3-Profile-picture-2---square.jpg' }} />
+        <ProfileImage source={{ uri: 'https://avatars2.githubusercontent.com/u/62844136?s=460&u=2ce225849f7add286add7f6337761715df34e9d6&v=4' }} />
       </Header>
 
       <ProfileName>Lucas César Ambrogi</ProfileName>
