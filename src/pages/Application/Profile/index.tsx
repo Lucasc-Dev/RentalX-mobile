@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
+import { useAuth } from '../../../hooks/AuthContext';
+import api from '../../../services/api';
 
 import { 
   Container,
@@ -23,7 +25,47 @@ import {
   VehicleImage,
 } from './styles';
 
+interface Vehicle {
+  id: string;
+  name: string;
+  brand: string;
+  model: string;
+  plate: string;
+  daily_price: number;
+  image: string;
+  fuel: string;
+  gear: string;
+}
+
+interface Profile {
+  id: string;
+  name: string;
+  image: string;
+  total_rentals: number;
+}
+
+interface FavoriteVehicle {
+  vehicle: Vehicle;
+  times_used: number;
+}
+
 const Profile: React.FC = () => {
+  const [profile, setProfile] = useState<Profile>({} as Profile);
+  const [favoriteVehicle, setFavoriteVehicle] = useState<FavoriteVehicle>();
+
+  useEffect(() => {
+    api.get('profile').then(response => {
+      const profile = response.data.user;
+      const favorite_vehicle = response.data.favorite_vehicle;
+
+      setProfile(profile);
+
+      if (favorite_vehicle) {
+        setFavoriteVehicle(favorite_vehicle);
+      }
+    });
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -35,41 +77,45 @@ const Profile: React.FC = () => {
           <Icon name="power" size={20} color="#aeaeb3" />
         </TopHeaderContainer>
 
-        <ProfileImage source={{ uri: 'https://avatars2.githubusercontent.com/u/62844136?s=460&u=2ce225849f7add286add7f6337761715df34e9d6&v=4' }} />
+        <ProfileImage source={{ uri: profile.image }} />
       </Header>
 
-      <ProfileName>Lucas César Ambrogi</ProfileName>
+      <ProfileName>{profile.name}</ProfileName>
 
       <InfoSection>
         <Rentals>
           <InfoTitle>Agendamentos feitos</InfoTitle>
 
-          <InfoDescription>05</InfoDescription>
+          <InfoDescription>{profile.total_rentals}</InfoDescription>
         </Rentals>
 
         <FavoriteVehicle>
           <FavoriteVehicleHeader>
             <InfoTitle>Carro favorito</InfoTitle>
 
-            <InfoDescription>Utilizado 2 vezes</InfoDescription>
+            <InfoDescription>
+              { favoriteVehicle ? `Utilizado ${favoriteVehicle.times_used} vezes` : `Nenhum` }
+            </InfoDescription>
           </FavoriteVehicleHeader>
           
-          <Vehicle>
-            <VehicleInfoContainer>
-              <TextContainer>
-                <VehicleSubtitle>Lamborghini</VehicleSubtitle>
-                <VehicleTitle>Huracan</VehicleTitle>
-              </TextContainer>
-              <TextContainer>
-                <VehicleSubtitle>Por 3 dias</VehicleSubtitle>
-                <VehiclePrice>R$ 120</VehiclePrice>
-              </TextContainer>
-            </VehicleInfoContainer>
+          { favoriteVehicle && (
+            <Vehicle>
+              <VehicleInfoContainer>
+                <TextContainer>
+                  <VehicleSubtitle>{favoriteVehicle.vehicle.brand}</VehicleSubtitle>
+                  <VehicleTitle>{favoriteVehicle.vehicle.name}</VehicleTitle>
+                </TextContainer>
+                <TextContainer>
+                  <VehicleSubtitle>Por dia</VehicleSubtitle>
+                  <VehiclePrice>R$ {favoriteVehicle.vehicle.daily_price}</VehiclePrice>
+                </TextContainer>
+              </VehicleInfoContainer>
 
-            <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
+              <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
 
-            <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
-          </Vehicle>
+              <VehicleImage source={{ uri: favoriteVehicle.vehicle.image }} />
+            </Vehicle>
+          )}
         </FavoriteVehicle>
       </InfoSection>
     </Container>

@@ -8,7 +8,7 @@ export const Container = styled.ScrollView.attrs({
 
 export const Header = styled.View`
     width: 100%;
-    height: 200px;
+    height: 190px;
     background-color: #1b1b1f;
     justify-content: space-between;
 `;
@@ -29,13 +29,13 @@ export const HeaderTitle = styled.Text`
 export const ProfileImage = styled.Image`
     width: 180px;
     height: 180px;
-    margin: 24px auto; 
+    margin: 16px auto; 
     border-radius: 90px;
 `;
 
 export const ProfileName = styled.Text`
     width: 220px;
-    margin: 100px auto 48px;
+    margin: 100px auto 40px;
     font-family: 'Archivo-SemiBold';
     font-size: 30px;
     text-align: center;
@@ -71,14 +71,14 @@ export const FavoriteVehicle = styled.View`
 `;
 
 export const FavoriteVehicleHeader = styled.View`
-    margin: 24px 24px 0;
+    margin: 20px 24px 4px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 `;
 
 export const Vehicle = styled.View`
-    margin: 16px 24px;
+    margin: 16px;
     padding: 24px;
     background-color: #f4f5f6;
     flex-direction: row;
@@ -91,7 +91,7 @@ export const VehicleInfoContainer = styled.View`
 `;
 
 export const TextContainer = styled.View`
-
+    margin-right: 8px;
 `;
 
 export const VehicleSubtitle = styled.Text`
@@ -107,7 +107,7 @@ export const VehicleTitle = styled.Text`
     color: #47474d;
 `;
 
-export const VehiclePrice = styled.Text`
+export const VehiclePrice = styled.Text` 
     font-family: 'Archivo-Medium';
     font-size: 15px;
     color: #dc1637;
