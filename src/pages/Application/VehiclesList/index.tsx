@@ -69,7 +69,6 @@ const VehiclesList: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log(loading);
     if (!loading) {
       api.get('vehicles', { params: { ...request } }).then(response => {
         setVehicles(response.data.vehicles);
@@ -108,12 +107,10 @@ const VehiclesList: React.FC = () => {
 
     const response = await api.get('vehicles', { params: { ...request } });
 
-    const newVehicles = [
+    setVehicles([
       ...vehicles,
       ...response.data.vehicles,
-    ]
-
-    setVehicles(newVehicles);
+    ]);
     setTotalVehicles(response.data.count);
     setRequest(state => ({...state, page: state.page + 1}));
     
