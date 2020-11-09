@@ -34,6 +34,13 @@ export const DateField = styled.View`
 
 `;
 
+export const BackButton = styled.TouchableOpacity`
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+`;
+
 export const ChevronIcon = styled(FeatherIcon)`
     padding-top: 24px;
 `;
@@ -48,7 +55,7 @@ export const DateFieldTitle = styled.Text`
 export const DateFieldInfo = styled.Text`
     margin-top: 8px;
     font-family: 'Inter-Medium';
-    font-size: 15px;
+    font-size: 14px;
     color: #FFF;
 `;
 

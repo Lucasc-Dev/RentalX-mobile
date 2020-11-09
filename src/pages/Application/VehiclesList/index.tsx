@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { BackHandler } from 'react-native';
 import { usePeriod } from '../../../hooks/PeriodContext';
 import api from '../../../services/api';
@@ -14,6 +14,7 @@ import {
   Header,
   DateContainer,
   DateField,
+  BackButton,
   ChevronIcon,
   DateFieldTitle,
   DateFieldInfo,
@@ -53,6 +54,7 @@ interface Request {
 }
 
 const VehiclesList: React.FC = () => {
+  const { reset } = useNavigation();
   const { period, formattedStartDate, formattedEndDate } = usePeriod();
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -130,6 +132,15 @@ const VehiclesList: React.FC = () => {
     setFilterOpen(false);
   }, [request,period]);
 
+  const handleGoBackButton = useCallback(() => {
+    reset({
+      index: 0,
+      routes: [
+        { name: 'SelectPeriod' },
+      ]
+    });
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -140,7 +151,9 @@ const VehiclesList: React.FC = () => {
             <DateFieldInfo>{formattedStartDate}</DateFieldInfo>
           </DateField>
 
-          <ChevronIcon name="chevron-down" size={20} color="#7a7a80" />
+          <BackButton onPress={handleGoBackButton} >
+            <ChevronIcon name="chevron-down" size={20} color="#7a7a80" />
+          </BackButton>
 
           <DateField>
             <DateFieldTitle>Até</DateFieldTitle>
