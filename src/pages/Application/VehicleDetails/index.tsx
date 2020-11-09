@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { usePeriod } from '../../../hooks/PeriodContext';
 import { Image } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import api from '../../../services/api';
@@ -53,6 +54,7 @@ interface VehicleDetailsParams {
 
 const VehicleDetails: React.FC = () => {
   const { params } = useRoute();
+  const { timeInDays } = usePeriod();
 
   const { id } = params as VehicleDetailsParams;
 
@@ -63,6 +65,14 @@ const VehicleDetails: React.FC = () => {
       setVehicle(response.data);
     });
   }, []);
+
+  const totalPrice = useMemo(() => {
+    if (timeInDays) {
+      const price = vehicle.daily_price * timeInDays;
+
+      return price
+    }
+  }, [vehicle, timeInDays]);
 
   return (
     <Container>
@@ -94,15 +104,15 @@ const VehicleDetails: React.FC = () => {
 
         <FeaturesContainer>
           <Feature>
-            <FeatureIcon source={{ uri: '' }} />
+            <FeatureIcon />
             <FeatureDescription>Automatico</FeatureDescription>
           </Feature>
           <Feature>
-            <FeatureIcon source={{ uri: '' }} />
+            <FeatureIcon />
             <FeatureDescription>Gasolina</FeatureDescription>
           </Feature>
           <Feature>
-            <FeatureIcon source={{ uri: '' }} />
+            <FeatureIcon />
             <FeatureDescription>380km/h</FeatureDescription>
           </Feature>
         </FeaturesContainer>
@@ -128,10 +138,10 @@ const VehicleDetails: React.FC = () => {
         <PriceContainer>
           <PriceCalculationContainer>
             <Subtitle>Total</Subtitle>
-            <PriceCalculationText>R$ {vehicle.daily_price} * 3 diárias</PriceCalculationText>
+            <PriceCalculationText>R$ {vehicle.daily_price} * {timeInDays} diárias</PriceCalculationText>
           </PriceCalculationContainer>
 
-          <TotalPrice>R$ { vehicle.daily_price }</TotalPrice>
+          <TotalPrice>R$ { totalPrice }</TotalPrice>
         </PriceContainer>
 
         <Button 

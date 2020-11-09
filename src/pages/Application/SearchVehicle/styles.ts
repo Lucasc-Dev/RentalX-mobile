@@ -80,7 +80,7 @@ export const VehicleInfoContainer = styled.View`
 `;
 
 export const TextContainer = styled.View`
-
+    margin-right: 8px;
 `;
 
 export const VehicleSubtitle = styled.Text`

@@ -75,7 +75,7 @@ export const VehiclePrice = styled.Text`
 `;
 
 export const FeaturesContainer = styled.View`
-    margin: 0 24px;
+    margin: 0 auto;
     flex-direction: row;
     justify-content: space-between;
 `;
@@ -84,12 +84,13 @@ export const Feature = styled.View`
     width: 109px;
     height: 92px;
     padding: 16px;
+    
     background-color: #f4f5f6;
     flex-direction: column;
     justify-content: space-between;
 `;
 
-export const FeatureIcon = styled.Image`
+export const FeatureIcon = styled.View`
 
 `;
 
@@ -101,7 +102,7 @@ export const FeatureDescription = styled.Text`
 `;
 
 export const PeriodContainer = styled.View`
-    margin: 40px 16px;
+    margin: 40px 24px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -143,5 +144,7 @@ export const PriceCalculationText = styled.Text`
 `;
 
 export const TotalPrice = styled.Text`
-
+    font-family: 'Archivo-Medium';
+    font-size: 24px;
+    color: #3d3d3d;
 `;

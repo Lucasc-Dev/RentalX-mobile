@@ -39,7 +39,7 @@ const SelectPeriod: React.FC = () => {
 
       definePeriod(newPeriod);
   
-      navigate('VehiclesList');
+      navigate('TabPagesStack');
     }
   }, [period, navigate]);
 
