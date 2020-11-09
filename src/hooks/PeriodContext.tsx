@@ -1,3 +1,4 @@
+import { differenceInCalendarDays } from 'date-fns';
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { convert } from '../utils/ConvertMonth';
 
@@ -6,6 +7,7 @@ interface PeriodContextData {
     definePeriod(period: Period): void;
     formattedStartDate: string | undefined;
     formattedEndDate: string | undefined;
+    timeInDays: number | undefined;
 }
 
 interface Period {
@@ -38,8 +40,16 @@ export const PeriodProvider: React.FC = ({ children }) => {
         }
     }, [period]);
 
+    const timeInDays = useMemo(() => {
+        if (period.start_date && period.end_date) {
+            const days = differenceInCalendarDays(period.end_date, period.start_date) + 1;
+
+            return days;
+        }
+    }, [period]);
+
     return (
-        <PeriodContext.Provider value={{ period, definePeriod, formattedStartDate, formattedEndDate }}>
+        <PeriodContext.Provider value={{ period, definePeriod, formattedStartDate, formattedEndDate, timeInDays }}>
             {children}
         </PeriodContext.Provider>
     );
