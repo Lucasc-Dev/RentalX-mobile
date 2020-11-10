@@ -1,23 +1,42 @@
+import { FlatList } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
+
+interface Feature {
+    id: string;
+    name: string;
+    description: string;
+    image: string;
+}
+
+interface FeatureProps {
+    transparent?: boolean;
+}
 
 interface VehicleImageDotProps {
     isSelected?: boolean;
 }
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
     flex: 1;
     background-color: #FFF;
 `;
 
+export const ListContainer = styled(FlatList as new () => FlatList<Feature>).attrs({
+    showsVerticalScrollIndicator: false
+})`
+    margin: 0 16px;
+    background-color: #FFF;
+`;
+
 export const Header = styled.View`
-    margin: 32px 24px 16px;
+    margin: 24px 8px 0;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 `;
 
 export const BackButton = styled.TouchableOpacity`
-    width: 32px;
+    width: 40px;
     height: 32px;
     justify-content: center;
 `;
@@ -46,7 +65,7 @@ export const VehicleImage = styled.Image`
 `;
 
 export const InfoContainer = styled.View`
-    margin: 24px;
+    margin: 24px 8px;
     flex-direction: row;
     justify-content: space-between;
 `;
@@ -75,23 +94,28 @@ export const VehiclePrice = styled.Text`
 `;
 
 export const FeaturesContainer = styled.View`
-    margin: 0 auto;
+    width: 100%;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 `;
 
-export const Feature = styled.View`
-    width: 109px;
+export const Feature = styled.View<FeatureProps>`
     height: 92px;
-    padding: 16px;
+    margin: 4px;
+    padding: 12px;
+    background-color: ${props => props.transparent ? 'transparent' : '#f4f5f6'};
+    flex-grow: 1;
+    flex-basis: 0;
     
-    background-color: #f4f5f6;
-    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
 `;
 
 export const FeatureIcon = styled.View`
-
+    margin-top: 6px;
+    justify-content: center;
+    align-items: center;
 `;
 
 export const FeatureDescription = styled.Text`
@@ -102,7 +126,7 @@ export const FeatureDescription = styled.Text`
 `;
 
 export const PeriodContainer = styled.View`
-    margin: 40px 24px;
+    margin: 40px 8px 24px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -119,14 +143,14 @@ export const PeriodDateText = styled.Text`
     color: #dc1637;
 `;
 
-export const Bottom = styled.View`
-    flex: 1;
-    padding: 24px;
+export const FooterContainer = styled.View`
+    width: 100%;
+    padding: 24px 0 16px;
     background-color: #f4f5f6;
 `;
 
 export const PriceContainer = styled.View`
-    margin-bottom: 24px;
+    margin: 0 24px 24px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
