@@ -1,11 +1,10 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-    margin: 0 24px;
+    margin: 0 24px 8px;
     align-self: center;
     align-items: center;
     flex-direction: row;
-    margin-bottom: 8px;
 `;
 
 export const IconBox = styled.View`
