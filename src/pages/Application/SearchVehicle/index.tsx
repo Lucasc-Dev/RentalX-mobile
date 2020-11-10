@@ -49,7 +49,7 @@ const SearchVehicle: React.FC = () => {
       setTotalVehicles(response.data.count);
       setPage(1);
     });
-  }, [period, search]);
+  }, [search, period]);
 
   const loadVehicles = useCallback(async () => {
     if (loading) {
@@ -72,7 +72,7 @@ const SearchVehicle: React.FC = () => {
     setPage(state => state + 1);
 
     setLoading(false);
-  }, [loading, totalVehicles, vehicles, page, search]);
+  }, [loading, totalVehicles, vehicles, page, search, period]);
 
   return (
     <Container>
@@ -85,7 +85,10 @@ const SearchVehicle: React.FC = () => {
 
         <Search>
           <SearchInputBox>
-            <SearchInput placeholder="Qual carro você procura?" />
+            <SearchInput 
+              placeholder="Qual carro você procura?" 
+              onChangeText={value => {setSearch(value)}}
+            />
           </SearchInputBox>
 
           <SearchIconBox>
@@ -101,7 +104,7 @@ const SearchVehicle: React.FC = () => {
         onEndReached={() => {loadVehicles()}}
         onEndReachedThreshold={0.25}
         renderItem={({ item: vehicle }) => (
-          <HorizontalVehicleComponent vehicle={vehicle} />
+          <HorizontalVehicleComponent period={{ start_date: '10 junho', end_date: '20 julho', inUse: false }} vehicle={vehicle} />
         )}
       />
     </Container>

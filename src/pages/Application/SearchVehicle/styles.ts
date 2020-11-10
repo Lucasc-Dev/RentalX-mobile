@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { FlatList } from 'react-native-gesture-handler';
+import { RectButton } from 'react-native-gesture-handler';
 
 interface Vehicle {
     id: string;
@@ -56,6 +57,7 @@ export const SearchInputBox = styled.View`
 `;
 
 export const SearchInput = styled.TextInput`
+    flex: 1;
     width: 100%;
     height: 100%;
     padding: 0 24px;
@@ -65,7 +67,7 @@ export const SearchInput = styled.TextInput`
     color: #7a7a80;
 `;
 
-export const SearchIconBox = styled.View`
+export const SearchIconBox = styled(RectButton)`
     width: 56px;
     height: 56px;
     margin-left: 2px;
@@ -76,4 +78,5 @@ export const SearchIconBox = styled.View`
 
 export const VehiclesContainer = styled(FlatList as new () => FlatList<Vehicle>)`
     margin-top: 27px;
+    padding: 16px 0;
 `;
