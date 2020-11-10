@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
+import { usePeriod } from '../../../hooks/PeriodContext';
+import api from '../../../services/api';
+
+import HorizontalVehicleComponent from '../../../components/HorizontalVehicleComponent';
 
 import {
   Container,
@@ -12,23 +16,71 @@ import {
   SearchInput,
   SearchIconBox,
   VehiclesContainer,
-  Vehicle,
-  VehicleInfoContainer,
-  TextContainer,
-  VehicleSubtitle,
-  VehicleTitle,
-  VehiclePrice,
-  VehicleImage,
 } from './styles';
 
+interface Vehicle {
+  id: string;
+  name: string;
+  brand: string;
+  model: string;
+  daily_price: number;
+  image: string;
+  fuel: string;
+}
+
 const SearchVehicle: React.FC = () => {
+  const { period } = usePeriod();
+
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [totalVehicles, setTotalVehicles] = useState(0);
+  const [page, setPage] = useState(0);
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const request = {
+      ...period,
+      search,
+      page: 0,
+    }
+
+    api.get('vehicles', { params: { ...request } }).then(response => {
+      setVehicles(response.data.vehicles);
+      setTotalVehicles(response.data.count);
+      setPage(1);
+    });
+  }, [period, search]);
+
+  const loadVehicles = useCallback(async () => {
+    if (loading) {
+      return;
+    }
+
+    if (totalVehicles > 0 && vehicles.length === totalVehicles) {
+      return;
+    }
+
+    setLoading(true);
+
+    const response = await api.get('vehicles', { params: { ...period, search, page } });
+
+    setVehicles([
+      ...vehicles,
+      ...response.data.vehicles,
+    ]);
+    setTotalVehicles(response.data.count);
+    setPage(state => state + 1);
+
+    setLoading(false);
+  }, [loading, totalVehicles, vehicles, page, search]);
+
   return (
     <Container>
       <Header>
         <HeaderTitleContainer>
           <Title>Listagem</Title>
 
-          <TotalVehicles>12 carros</TotalVehicles>
+          <TotalVehicles>{totalVehicles} carros</TotalVehicles>
         </HeaderTitleContainer>
 
         <Search>
@@ -42,92 +94,16 @@ const SearchVehicle: React.FC = () => {
         </Search>
       </Header>
 
-      <VehiclesContainer>
-        <Vehicle>
-          <VehicleInfoContainer>
-            <TextContainer>
-              <VehicleSubtitle>Lamborghini</VehicleSubtitle>
-              <VehicleTitle>Huracan</VehicleTitle>
-            </TextContainer>
-            <TextContainer>
-              <VehicleSubtitle>Ao dia</VehicleSubtitle>
-              <VehiclePrice>R$ 120</VehiclePrice>
-            </TextContainer>
-          </VehicleInfoContainer>
-
-          <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
-
-          <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
-        </Vehicle>
-
-        <Vehicle>
-          <VehicleInfoContainer>
-            <TextContainer>
-              <VehicleSubtitle>Lamborghini</VehicleSubtitle>
-              <VehicleTitle>Huracan</VehicleTitle>
-            </TextContainer>
-            <TextContainer>
-              <VehicleSubtitle>Ao dia</VehicleSubtitle>
-              <VehiclePrice>R$ 120</VehiclePrice>
-            </TextContainer>
-          </VehicleInfoContainer>
-
-          <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
-
-          <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
-        </Vehicle>
-
-        <Vehicle>
-          <VehicleInfoContainer>
-            <TextContainer>
-              <VehicleSubtitle>Lamborghini</VehicleSubtitle>
-              <VehicleTitle>Huracan</VehicleTitle>
-            </TextContainer>
-            <TextContainer>
-              <VehicleSubtitle>Ao dia</VehicleSubtitle>
-              <VehiclePrice>R$ 120</VehiclePrice>
-            </TextContainer>
-          </VehicleInfoContainer>
-
-          <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
-
-          <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
-        </Vehicle>
-
-        <Vehicle>
-          <VehicleInfoContainer>
-            <TextContainer>
-              <VehicleSubtitle>Lamborghini</VehicleSubtitle>
-              <VehicleTitle>Huracan</VehicleTitle>
-            </TextContainer>
-            <TextContainer>
-              <VehicleSubtitle>Ao dia</VehicleSubtitle>
-              <VehiclePrice>R$ 120</VehiclePrice>
-            </TextContainer>
-          </VehicleInfoContainer>
-
-          <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
-
-          <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
-        </Vehicle>
-
-        <Vehicle>
-          <VehicleInfoContainer>
-            <TextContainer>
-              <VehicleSubtitle>Lamborghini</VehicleSubtitle>
-              <VehicleTitle>Huracan</VehicleTitle>
-            </TextContainer>
-            <TextContainer>
-              <VehicleSubtitle>Ao dia</VehicleSubtitle>
-              <VehiclePrice>R$ 120</VehiclePrice>
-            </TextContainer>
-          </VehicleInfoContainer>
-
-          <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
-
-          <VehicleImage source={{ uri: 'https://somarautomoveis.com/wp-content/uploads/2019/11/carro-png-destaque.png' }} />
-        </Vehicle>
-      </VehiclesContainer>
+      <VehiclesContainer
+        data={vehicles}
+        keyExtractor={vehicle => vehicle.id}
+        showsVerticalScrollIndicator={false}
+        onEndReached={() => {loadVehicles()}}
+        onEndReachedThreshold={0.25}
+        renderItem={({ item: vehicle }) => (
+          <HorizontalVehicleComponent vehicle={vehicle} />
+        )}
+      />
     </Container>
   );
 };
