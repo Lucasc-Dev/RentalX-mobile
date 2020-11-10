@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { 
+  VehicleContainer,
   Vehicle,
   VehicleInfoContainer,
   TextContainer,
@@ -11,6 +12,10 @@ import {
   VehicleTitle,
   VehiclePrice,
   VehicleImage,
+  PeriodContainer,
+  PeriodUtilizingText,
+  DateContainer,
+  PeriodText,
 } from './styles';
 
 interface Vehicle {
@@ -25,9 +30,14 @@ interface Vehicle {
 
 interface HorizontalVehicleComponentProps {
   vehicle: Vehicle;
+  period?: {
+    start_date: string;
+    end_date: string;
+    inUse: boolean;
+  }
 }
 
-const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({ vehicle }) => {
+const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({ vehicle, period }) => {
   const { navigate } = useNavigation();
 
   const handleClickVehicle = useCallback(() => {
@@ -35,23 +45,43 @@ const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({
   }, [navigate, vehicle]);
 
   return (
-    <Vehicle onPress={handleClickVehicle} >
-      <VehicleInfoContainer>
-        <TextContainer>
-          <VehicleSubtitle>{vehicle.brand}</VehicleSubtitle>
-          <VehicleTitle>{vehicle.name}</VehicleTitle>
-        </TextContainer>
+    <VehicleContainer>
+      <Vehicle onPress={handleClickVehicle} >
+        <VehicleInfoContainer>
+          <TextContainer>
+            <VehicleSubtitle>{vehicle.brand}</VehicleSubtitle>
+            <VehicleTitle>{vehicle.name}</VehicleTitle>
+          </TextContainer>
 
-        <TextContainer>
-          <VehicleSubtitle>Ao dia</VehicleSubtitle>
-          <VehiclePrice>R$ {vehicle.daily_price}</VehiclePrice>
-        </TextContainer>
-      </VehicleInfoContainer>
+          <TextContainer>
+            <VehicleSubtitle>Ao dia</VehicleSubtitle>
+            <VehiclePrice>R$ {vehicle.daily_price}</VehiclePrice>
+          </TextContainer>
+        </VehicleInfoContainer>
 
-      <Icon name="droplet" size={20} color="#aeaeb3"/>
+        <Icon name="droplet" size={20} color="#aeaeb3"/>
 
-      <VehicleImage source={{ uri: vehicle.image }} />
-    </Vehicle>
+        <VehicleImage source={{ uri: vehicle.image }} />
+      </Vehicle>
+      { period && (
+        <PeriodContainer inUse={period.inUse} >
+          {period.inUse ? (
+            <PeriodUtilizingText>Utilizando até 17 Junho 2020</PeriodUtilizingText>
+          ) : (
+            <>
+              <VehicleSubtitle>Período</VehicleSubtitle>
+              <DateContainer>
+                <PeriodText>17 Junho 2019</PeriodText>
+
+                <Icon name="arrow-right" size={20} color="#aeaeb3" />
+
+                <PeriodText>22 Junho 2020</PeriodText>
+              </DateContainer>
+            </>
+          )}
+        </PeriodContainer>
+      )}
+    </VehicleContainer>
   );
 };
 
