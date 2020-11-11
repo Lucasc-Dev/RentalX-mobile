@@ -104,7 +104,7 @@ const SearchVehicle: React.FC = () => {
         onEndReached={() => {loadVehicles()}}
         onEndReachedThreshold={0.25}
         renderItem={({ item: vehicle }) => (
-          <HorizontalVehicleComponent period={{ start_date: '10 junho', end_date: '20 julho', inUse: false }} vehicle={vehicle} />
+          <HorizontalVehicleComponent vehicle={vehicle} />
         )}
       />
     </Container>

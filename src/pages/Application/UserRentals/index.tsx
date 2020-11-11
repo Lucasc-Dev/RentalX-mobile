@@ -47,19 +47,19 @@ const UserRentals: React.FC = () => {
       return;
     }
 
-    /* if (totalRentals > 0 && rentals.length === totalRentals) {
+    if (totalRentals > 0 && rentals.length === totalRentals) {
       return;
-    } */
+    }
 
     setLoading(true);
 
-    const response = await api.get('vehicles', { params: { page } });
+    const response = await api.get('rentals', { params: { page } });
 
     setRentals(state => ([
       ...state,
-      ...response.data,
+      ...response.data.vehicles,
     ]));
-    /* setTotalVehicles(response.data.count); */
+    setTotalRentals(response.data.count);
     setPage(state => state + 1);
 
     setLoading(false);

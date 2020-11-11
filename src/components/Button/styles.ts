@@ -5,8 +5,7 @@ interface ButtonContainerProps {
     enable?: boolean;
 }
 
-export const ButtonContainer = styled.View`
-    margin: 0 24px;
+export const Container = styled.View`
 `;
 
 export const RectButton = styled(ReactRectButton)<ButtonContainerProps>`

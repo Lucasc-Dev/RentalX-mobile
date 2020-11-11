@@ -53,7 +53,7 @@ export const DateFieldTitle = styled.Text`
 `;
 
 export const DateFieldInfo = styled.Text`
-    margin-top: 8px;
+    margin-top: 6px;
     font-family: 'Inter-Medium';
     font-size: 14px;
     color: #FFF;

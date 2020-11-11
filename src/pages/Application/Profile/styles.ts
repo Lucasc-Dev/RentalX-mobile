@@ -20,6 +20,13 @@ export const TopHeaderContainer = styled.View`
     align-items: center;
 `;
 
+export const IconButton = styled.TouchableOpacity`
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+`;
+
 export const HeaderTitle = styled.Text`
     font-family: 'Archivo-SemiBold';
     font-size: 25px;

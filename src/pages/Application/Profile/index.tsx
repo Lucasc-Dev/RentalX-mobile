@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import Icon from 'react-native-vector-icons/Feather';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../../hooks/AuthContext';
 import api from '../../../services/api';
+
+import Icon from 'react-native-vector-icons/Feather';
 
 import { 
   Container,
   Header,
   TopHeaderContainer,
   HeaderTitle,
+  IconButton,
   ProfileImage,
   ProfileName,
   InfoSection,
@@ -50,6 +53,9 @@ interface FavoriteVehicle {
 }
 
 const Profile: React.FC = () => {
+  const { navigate } = useNavigation();
+  const { signOut } = useAuth();
+
   const [profile, setProfile] = useState<Profile>({} as Profile);
   const [favoriteVehicle, setFavoriteVehicle] = useState<FavoriteVehicle>();
 
@@ -66,15 +72,27 @@ const Profile: React.FC = () => {
     });
   }, []);
 
+  const handleEditProfile = useCallback(() => {
+    navigate('EditProfileNameEmail');
+  }, []);
+
+  const handleSignOut = useCallback(() => {
+    signOut();
+  }, []);
+
   return (
     <Container>
       <Header>
         <TopHeaderContainer>
-          <Icon name="edit-3" size={20} color="#aeaeb3"/>
+          <IconButton onPress={handleEditProfile}>
+            <Icon name="edit-3" size={20} color="#aeaeb3"/>
+          </IconButton>
 
           <HeaderTitle>Perfil</HeaderTitle>
 
-          <Icon name="power" size={20} color="#aeaeb3" />
+          <IconButton onPress={handleSignOut}>
+            <Icon name="power" size={20} color="#aeaeb3" />
+          </IconButton>
         </TopHeaderContainer>
 
         <ProfileImage source={{ uri: profile.image }} />
