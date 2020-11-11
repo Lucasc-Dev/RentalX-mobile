@@ -1,5 +1,13 @@
 import { differenceInCalendarDays } from 'date-fns/esm';
+import { FlatList } from 'react-native-gesture-handler';
 import styled, { css } from 'styled-components/native';
+
+interface Day {
+    date: Date;
+    selected?: boolean;
+    between?: boolean;
+    valid: boolean;
+}
 
 interface DayProps {
     isSelected?: boolean;
@@ -57,17 +65,13 @@ export const WeekDayText = styled.Text`
     color: #aeaeb3;
 `;
 
-export const MonthContainer = styled.View`
-    flex: 1;
+export const CalendarDaysList = styled(FlatList as new () => FlatList<Day>)`
     margin: 20px 12px;
 `;
 
-export const MonthColumn = styled.View`
-    flex-direction: column;
-`;
-
-export const MonthRow = styled.View`
-    flex-direction: row;
+export const MonthContainer = styled.View`
+    flex: 1;
+    margin: 20px 12px;
 `;
 
 export const Day = styled.TouchableOpacity<DayProps>`

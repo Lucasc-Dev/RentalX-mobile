@@ -14,16 +14,10 @@ import {
   ArrowButton,
   WeekDays,
   WeekDayText,
-  MonthContainer,
-  MonthColumn,
-  MonthRow,
+  CalendarDaysList,
   Day,
   DayText,
 } from './styles';
-
-interface Week {
-  days: Day[];
-}
 
 interface Day {
   date: Date;
@@ -42,7 +36,7 @@ interface CalendarProps {
 }
 
 const Calendar: React.FC<CalendarProps> = ({ onChangeDate }) => {
-  const [weekDays, setWeekDays] = useState<Week[]>([]);
+  const [days, setDays] = useState<Day[]>([]);
 
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
@@ -52,50 +46,41 @@ const Calendar: React.FC<CalendarProps> = ({ onChangeDate }) => {
   useEffect(() => {
     const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
 
-    const weeks: Week[] = [
-      { days: [] },
-      { days: [] },
-      { days: [] },
-      { days: [] },
-      { days: [] },
-      { days: [] },
-    ];
+    const weeks: Day[] = [];
 
     let dayIndex = 1 - firstDay.getDay();
-    for (let i = 0; i < weeks.length; i++) {
-      for (let j = 0; j < 7; j++) {
-        const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), dayIndex);
+    for (let i = 0; i < 42; i++) {
+      const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), dayIndex);
+
+      const today = new Date();
+
+      const isInThisMonth = date.getMonth() === currentDate.getMonth();
+      const isNotInThePast = isBefore(new Date(), date);
+      const isNotTooLong = isAfter(new Date(today.getFullYear(), today.getMonth() + 3), date)
+      const isAfterStartDate = startDate && !endDate && (isAfter(date, startDate) || isEqual(date, startDate));
+      const isBeforeEndDate = endDate && !startDate && (isBefore(date, endDate) || isEqual(date, endDate));
+      const isBothDatesSelected = !!(endDate && startDate);
+      const isBothDatesNotSelected = (!endDate && !startDate);
+
+      const valid = 
+        (isInThisMonth && isNotInThePast && isNotTooLong) &&
+        ((isAfterStartDate || isBeforeEndDate) || (isBothDatesSelected || isBothDatesNotSelected));
         
-        const today = new Date();
+      const selected = date.getTime() === startDate?.getTime() || date.getTime() === endDate?.getTime();
+      
+      const between = (startDate && endDate) && (isBefore(startDate, date) && isAfter(endDate, date));
 
-        const isInThisMonth = date.getMonth() === currentDate.getMonth();
-        const isNotInThePast = isBefore(new Date(), date);
-        const isNotTooLong = isAfter(new Date(today.getFullYear(), today.getMonth() + 3), date)
-        const isAfterStartDate = startDate && !endDate && (isAfter(date, startDate) || isEqual(date, startDate));
-        const isBeforeEndDate = endDate && !startDate && (isBefore(date, endDate) || isEqual(date, endDate));
-        const isBothDatesSelected = !!(endDate && startDate);
-        const isBothDatesNotSelected = (!endDate && !startDate);
+      weeks.push({ 
+        date, 
+        valid,
+        selected,
+        between,
+      });
 
-        const valid = 
-          (isInThisMonth && isNotInThePast && isNotTooLong) &&
-          ((isAfterStartDate || isBeforeEndDate) || (isBothDatesSelected || isBothDatesNotSelected));
-          
-        const selected = date.getTime() === startDate?.getTime() || date.getTime() === endDate?.getTime();
-        
-        const between = (startDate && endDate) && (isBefore(startDate, date) && isAfter(endDate, date));
-
-        weeks[i].days.push({ 
-          date, 
-          valid,
-          selected,
-          between,
-        });
-
-        dayIndex++;
-      }
+      dayIndex++;
     }
 
-    setWeekDays(weeks);
+    setDays(weeks);
     
     const period = {
       start_date: startDate,
@@ -105,7 +90,7 @@ const Calendar: React.FC<CalendarProps> = ({ onChangeDate }) => {
     onChangeDate(period);
   }, [currentDate, startDate, endDate, isBefore, isAfter]);
 
-  const handleLastMonthButton = useCallback(() => {
+  const handlePreviousMonthButton = useCallback(() => {
     setCurrentDate(state => new Date(state.getFullYear(), state.getMonth() - 1, 1));
   }, []);
   
@@ -156,7 +141,7 @@ const Calendar: React.FC<CalendarProps> = ({ onChangeDate }) => {
 
           <Arrows>
             <ArrowButton
-              onPress={handleLastMonthButton}
+              onPress={handlePreviousMonthButton}
             >
               <Icon size={24} name="chevron-left" color="#7a7a80" />
             </ArrowButton>
@@ -180,34 +165,26 @@ const Calendar: React.FC<CalendarProps> = ({ onChangeDate }) => {
         </WeekDays>
       </Header>
 
-      <MonthContainer>
-        <MonthColumn>
-          {
-            weekDays.map(({ days }, index) => (
-              <MonthRow key={index}>
-                {
-                  days.map((day) => (
-                    <Day 
-                      key={day.date.getDate()}
-                      isSelected={day.selected}
-                      isBetween={day.between}
-                      onPress={() => {handleSelectDay(day)}}
-                      >
-                      <DayText 
-                        isValid={day.valid}
-                        isSelected={day.selected}
-                        isBetween={day.between}
-                      >
-                        {day.date.getDate()}
-                      </DayText>
-                    </Day>
-                  ))
-                }
-              </MonthRow>
-            ))
-          }
-        </MonthColumn>
-      </MonthContainer>
+      <CalendarDaysList 
+        data={days}
+        numColumns={7}
+        keyExtractor={day => String(day.date)}
+        renderItem={({ item: day }) => (
+          <Day 
+            isSelected={day.selected}
+            isBetween={day.between}
+            onPress={() => {handleSelectDay(day)}}
+            >
+            <DayText 
+              isValid={day.valid}
+              isSelected={day.selected}
+              isBetween={day.between}
+            >
+              {day.date.getDate()}
+            </DayText>
+          </Day>
+        )}
+      />
     </Container>
   );
 };
