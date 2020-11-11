@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { createRef, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { usePeriod } from '../../../hooks/PeriodContext';
 import { convert } from '../../../utils/ConvertMonth';
 import { isAfter, isBefore, isEqual } from 'date-fns';
 
 import Icon from 'react-native-vector-icons/Feather'
-import Button from '../../../components/Button';
 
 import { 
   Container,
@@ -27,7 +26,9 @@ import {
   WeekDayText,
   Day,
   DayText,
+  Button,
 } from './styles';
+import { FlatList } from 'react-native-gesture-handler';
 
 interface Day {
   date: Date;
@@ -36,30 +37,28 @@ interface Day {
   valid: boolean;
 }
 
-interface Period {
-  start_date: Date | undefined;
-  end_date: Date | undefined;
-}
-
 const SelectPeriod: React.FC = () => {
   const { navigate } = useNavigation();
   const { definePeriod } = usePeriod();
 
-  const [period, setPeriod] = useState<Period>({} as Period);
+  const flatListRef = createRef<FlatList<Day>>();
 
   const [days, setDays] = useState<Day[]>([]);
-
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
-
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [firstSelect, setFirstSelect] = useState(true);
 
   useEffect(() => {
-    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-
     const weeks: Day[] = [];
+    
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    
+    const totalDays = firstDay.getDay() + 1 + lastDay.getDate() > 35 ? 42 : 35;
 
     let dayIndex = 1 - firstDay.getDay();
+    
     for (let i = 0; i < 42; i++) {
       const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), dayIndex);
 
@@ -92,10 +91,16 @@ const SelectPeriod: React.FC = () => {
     }
 
     setDays(weeks);
-    
-    setStartDate(startDate);
-    setEndDate(endDate);
-  }, [currentDate, startDate, endDate, isBefore, isAfter]);
+
+    if (startDate && endDate && firstSelect) {
+      setFirstSelect(false);
+
+      flatListRef.current?.scrollToEnd();
+    }
+    if (!startDate && !endDate && !firstSelect) {
+      setFirstSelect(true);
+    }
+  }, [currentDate, startDate, endDate, firstSelect]);
 
   const handleSelectDay = useCallback(({ date, valid }: Day) => {
     if (!valid) {
@@ -124,19 +129,6 @@ const SelectPeriod: React.FC = () => {
     }
   }, [startDate, endDate]);
 
-  const handleConfirmButton = useCallback(() => {
-    if (period.start_date && period.end_date) {
-      const newPeriod = {
-        start_date: period.start_date,
-        end_date: period.end_date,
-      }
-
-      definePeriod(newPeriod);
-  
-      navigate('TabPagesStack');
-    }
-  }, [period, navigate]);
-
   const handlePreviousMonthButton = useCallback(() => {
     setCurrentDate(state => new Date(state.getFullYear(), state.getMonth() - 1, 1));
   }, []);
@@ -144,22 +136,31 @@ const SelectPeriod: React.FC = () => {
   const handleNextMonthButton = useCallback(() => {
     setCurrentDate(state => new Date(state.getFullYear(), state.getMonth() + 1, 1));
   }, []);
+  
+  const handleConfirmButton = useCallback(() => {
+    if (startDate && endDate) {
+
+      definePeriod({ start_date: startDate, end_date: endDate });
+  
+      navigate('TabPagesStack');
+    }
+  }, [startDate, endDate, navigate]);
 
   const convertStartDate = useMemo(() => {
-    if (period.start_date) {
-      const month = convert(period.start_date.getMonth());
+    if (startDate) {
+      const month = convert(startDate.getMonth());
   
-      return `${period.start_date.getDate()} ${month} ${period.start_date.getFullYear()}`;
+      return `${startDate.getDate()} ${month} ${startDate.getFullYear()}`;
     }
-  }, [period]);
+  }, [startDate]);
 
   const convertEndDate = useMemo(() => {
-    if (period.end_date) {
-      const month = convert(period.end_date.getMonth());
+    if (endDate) {
+      const month = convert(endDate.getMonth());
   
-      return `${period.end_date.getDate()} ${month} ${period.end_date.getFullYear()}`;
+      return `${endDate.getDate()} ${month} ${endDate.getFullYear()}`;
     }
-  }, [period]);
+  }, [endDate]);
 
   const currentMonthAndYear = useMemo(() => {
     const month = convert(currentDate.getMonth());
@@ -191,9 +192,11 @@ const SelectPeriod: React.FC = () => {
         </DateContainer>
       </Header>
       <FlatListContainer
+        ref={flatListRef}
         data={days}
         keyExtractor={day => String(day.date)}
         numColumns={7}
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => (
           <CalendarContainer>
             <CalendarTitle>
@@ -245,46 +248,12 @@ const SelectPeriod: React.FC = () => {
         ListFooterComponent={() => (
           <Button 
             text="Confirmar"
-            enable={!!(period.start_date && period.end_date)}
+            enable={!!(startDate && endDate)}
             onPress={handleConfirmButton}
           />
         )}
       />
     </Container>
-
-    /* <Container>
-      <Header>
-        <Title>Escolha a data e encontre um carro.</Title>
-        
-        <DateContainer>
-          <DateField>
-            <DateFieldTitle>De</DateFieldTitle>
-
-            <DateFieldInput>{convertStartDate}</DateFieldInput>
-          </DateField>
-
-          <ArrowIcon>
-            <Icon name="arrow-right" size={18} color="#7a7a80"/>
-          </ArrowIcon>
-
-          <DateField>
-            <DateFieldTitle>Até</DateFieldTitle>
-
-            <DateFieldInput>{convertEndDate}</DateFieldInput>
-          </DateField>
-        </DateContainer>
-      </Header>
-
-      <Calendar 
-        onChangeDate={(period) => setPeriod(period)}
-      />
-
-      <Button 
-        text="Confirmar"
-        enable={!!(period.start_date && period.end_date)}
-        onPress={handleConfirmButton}
-      />
-    </Container> */
   );
 };
 

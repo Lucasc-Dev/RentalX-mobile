@@ -1,5 +1,6 @@
 import { FlatList } from 'react-native-gesture-handler';
 import styled, { css } from 'styled-components/native';
+import ButtonComponent from '../../../components/Button';
 
 interface Day {
     date: Date;
@@ -21,9 +22,13 @@ export const Container = styled.View`
 export const FlatListContainer = styled(FlatList as new () => FlatList<Day>)`
     margin: 0 12px;
     background-color: #FFF;
+    z-index: 10;
 `;
 
 export const Header = styled.View`
+    position: absolute;
+    z-index: 15;
+
     width: 100%;
     height: 240px;
     background-color: #1b1b1f;
@@ -68,6 +73,7 @@ export const DateFieldInput = styled.Text`
 `;
 
 export const CalendarContainer = styled.View`
+    padding: 240px 0 12px;
 `;
 
 export const CalendarTitle = styled.View`
@@ -153,6 +159,12 @@ export const DayText = styled.Text<DayProps>`
             color: #AEAEB3;
         `
     }
+`;
+
+export const Button = styled(ButtonComponent).attrs({
+    marginHorizontal: 0,
+})`
+    margin: 24px 0 16px;
 `;
 
 /* export const Container = styled.ScrollView.attrs({
