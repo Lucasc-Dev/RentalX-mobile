@@ -1,12 +1,11 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 interface TabProps { 
     selected: boolean;
 }
 
-export const Container = styled.ScrollView.attrs({
-    showsVerticalScrollIndicator: false
-})`
+export const Container = styled.ScrollView`
+    flex: 1;
     background-color: #FFF;
 `;
 
@@ -45,18 +44,29 @@ export const ProfileImage = styled.Image`
 `;
 
 export const TabContainer = styled.View`
-    width: 40%;
-    margin: 100px auto 40px;
+    margin: 114px 24px 24px;
+    padding: 0 50px;
+
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+
+    border-bottom-width: 1px;
+    border-bottom-color: #ebebf0;
 `;
 
-export const Tab = styled.View<TabProps>`
-
+export const Tab = styled.TouchableOpacity<TabProps>`
+    padding-bottom: 16px;
+    ${props => props.selected && css`
+        border-bottom-width: 2px;
+        border-bottom-color: #dc1637;
+    `}
 `;
 
 export const TabText = styled.Text<TabProps>`
-
+    font-family: ${props => props.selected ? 'Archivo-SemiBold' : 'Archivo-Medium'};
+    font-size: 20px;
+    color: ${props => props.selected ? '#3d3d4d' : '#aeaeb3'};
 `;
 
 export const InputContainer = styled.View`
@@ -64,5 +74,6 @@ export const InputContainer = styled.View`
 `;
 
 export const ButtonContainer = styled.View`
-
+    margin: 24px 0 16px;
+    justify-content: flex-end;
 `;
