@@ -43,6 +43,7 @@ interface Vehicle {
 interface Profile {
   id: string;
   name: string;
+  email: string;
   image: string;
   total_rentals: number;
 }
@@ -73,8 +74,8 @@ const Profile: React.FC = () => {
   }, []);
 
   const handleEditProfile = useCallback(() => {
-    navigate('EditProfileNameEmail');
-  }, []);
+    navigate('EditProfile', { profile });
+  }, [profile]);
 
   const handleSignOut = useCallback(() => {
     signOut();
