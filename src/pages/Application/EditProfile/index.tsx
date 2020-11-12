@@ -49,7 +49,6 @@ const EditProfile: React.FC = () => {
 
   const handleSubmitForm = useCallback(async (data) => {
     if (selectedTab === 'profile') {
-      console.log(data);
       if (!data.email && !data.name || data.email === '' && data.name === '') {
         goBack();
 
@@ -83,9 +82,45 @@ const EditProfile: React.FC = () => {
       }
     }
     if (selectedTab === 'password') {
+      if (!data.currentPassword && !data.newPassword && !data.confirmPassword) {
+        goBack();
 
+        return;
+      }
+
+      if (data.currentPassword && data.newPassword && data.confirmPassword) {
+        if (data.newPassword !== data.confirmPassword) {
+          Alert.alert('A nova senha não condiz com a confirmação.')
+        }
+
+        try {
+          const requestBody = { 
+            name: profile.name,
+            email: profile.email,
+            oldPassword: data.currentPassword,
+            password: data.newPassword,
+          }
+  
+          await api.put('profile', requestBody);
+  
+          Alert.alert('Senha alterada com sucesso!')
+  
+          reset({
+            index: 0,
+            routes: [
+              { name: 'Profile' },
+            ]
+          });
+  
+          navigate('Profile');
+        } catch (err) {
+          Alert.alert('Houve um erro ao atualizar a senha.')
+        }
+      }else { 
+        Alert.alert('Preencha todos os campos.')
+      }
     }
-  }, []);
+  }, [selectedTab, profile, formRef]);
 
   return (
     <Container>
@@ -138,16 +173,19 @@ const EditProfile: React.FC = () => {
           <InputContainer>
             <Input
               name="currentPassword"
+              secureTextEntry
               placeholder="Senha atual"
               icon="lock"
             />    
             <Input 
               name="newPassword"
+              secureTextEntry
               placeholder="Nova senha"
               icon="lock"
             />    
             <Input 
               name="confirmPassword"
+              secureTextEntry
               placeholder="Confirmar senha"
               icon="lock"
             />    
