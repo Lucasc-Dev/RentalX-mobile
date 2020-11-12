@@ -20,7 +20,6 @@ import {
   TabContainer,
   Tab,
   TabText,
-  InputContainer,
   ButtonContainer,
 } from './styles';
 
@@ -48,6 +47,7 @@ const EditProfile: React.FC = () => {
   }, []);
 
   const handleSubmitForm = useCallback(async (data) => {
+    console.log(data)
     if (selectedTab === 'profile') {
       if (!data.email && !data.name || data.email === '' && data.name === '') {
         goBack();
@@ -155,7 +155,7 @@ const EditProfile: React.FC = () => {
 
       <Form ref={formRef} onSubmit={handleSubmitForm} >
         {selectedTab === 'profile' ? (
-          <InputContainer>
+          <>
             <Input 
               name="name" 
               placeholder="Nome"
@@ -168,9 +168,9 @@ const EditProfile: React.FC = () => {
               defaultValue={profile.email}
               icon="mail"
             />    
-          </InputContainer>
+          </>
         ) : (
-          <InputContainer>
+          <>
             <Input
               name="currentPassword"
               secureTextEntry
@@ -189,7 +189,7 @@ const EditProfile: React.FC = () => {
               placeholder="Confirmar senha"
               icon="lock"
             />    
-          </InputContainer>
+          </>
         )}
       </Form>
 

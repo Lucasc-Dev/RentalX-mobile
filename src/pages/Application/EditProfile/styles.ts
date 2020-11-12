@@ -69,10 +69,6 @@ export const TabText = styled.Text<TabProps>`
     color: ${props => props.selected ? '#3d3d4d' : '#aeaeb3'};
 `;
 
-export const InputContainer = styled.View`
-
-`;
-
 export const ButtonContainer = styled.View`
     margin: 24px 0 16px;
     justify-content: flex-end;
