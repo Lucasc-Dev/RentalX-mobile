@@ -15,16 +15,11 @@ import {
   ButtonText,
 } from './styles';
 
-const SuccessfulRental: React.FC = () => {
-  const { reset } = useNavigation();
+const EditProfileSuccessful: React.FC = () => {
+  const { navigate } = useNavigation();
 
   const handleButton = useCallback(() => {
-    reset({
-      index: 0,
-      routes: [
-        { name: 'TabPagesStack' },
-      ]
-    });
+    navigate('TabPagesStack', { screen: 'Profile' });
   }, []);
 
   return (
@@ -32,9 +27,9 @@ const SuccessfulRental: React.FC = () => {
       <ImageBackground source={backgroundImage} resizeMode="cover" />
       <DoneImage source={doneIcon} />
       <TitleContainer>
-        <Title>Carro alugado!</Title>
+        <Title>Feito!</Title>
 
-        <Subtitle>Agora você só precisa ir até a concessionária da RentalX pegar o seu automóvel.</Subtitle>
+        <Subtitle>Agora suas informações estão atualizadas.</Subtitle>
       </TitleContainer>
 
       <Button onPress={handleButton}>
@@ -44,4 +39,4 @@ const SuccessfulRental: React.FC = () => {
   );
 };
 
-export default SuccessfulRental;
+export default EditProfileSuccessful;

@@ -37,7 +37,7 @@ interface ProfileParams {
 const EditProfile: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { updateUser } = useAuth();
-  const { goBack, navigate, reset } = useNavigation();
+  const { goBack, reset } = useNavigation();
   const { profile } = useRoute().params as ProfileParams;
 
   const [selectedTab, setSelectedTab] = useState('profile');
@@ -47,7 +47,6 @@ const EditProfile: React.FC = () => {
   }, []);
 
   const handleSubmitForm = useCallback(async (data) => {
-    console.log(data)
     if (selectedTab === 'profile') {
       if (!data.email && !data.name || data.email === '' && data.name === '') {
         goBack();
@@ -67,16 +66,12 @@ const EditProfile: React.FC = () => {
 
         updateUser(user);
 
-        Alert.alert('Perfil atualizado!');
-
         reset({
           index: 0,
           routes: [
-            { name: 'Profile' },
+            { name: 'EditProfileSuccessful' },
           ]
         });
-
-        navigate('Profile');
       }catch(err) {
         Alert.alert('Houve um problema ao atualizar o perfil');
       }
@@ -108,11 +103,9 @@ const EditProfile: React.FC = () => {
           reset({
             index: 0,
             routes: [
-              { name: 'Profile' },
+              { name: 'EditProfileSuccessful' },
             ]
           });
-  
-          navigate('Profile');
         } catch (err) {
           Alert.alert('Houve um erro ao atualizar a senha.')
         }
