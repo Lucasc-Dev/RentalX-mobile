@@ -1,5 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { convert } from '../../utils/ConvertMonth';
+import { isBefore } from 'date-fns';
 
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -31,9 +33,8 @@ interface Vehicle {
 interface HorizontalVehicleComponentProps {
   vehicle: Vehicle;
   period?: {
-    start_date: string;
-    end_date: string;
-    inUse: boolean;
+    start_date: Date;
+    end_date: Date;
   }
 }
 
@@ -43,6 +44,33 @@ const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({
   const handleClickVehicle = useCallback(() => {
     navigate('VehicleDetails', { id: vehicle.id });
   }, [navigate, vehicle]);
+
+  const formattedStartDate = useMemo(() => {
+    if (period) {
+      const month = convert(period.start_date.getMonth());
+  
+      return `${period.start_date.getDate()} ${month} ${period.start_date.getFullYear()}`;
+    }
+  }, [period]);
+
+  const formattedEndDate = useMemo(() => {
+    if (period) {
+      const month = convert(period.end_date.getMonth());
+  
+      return `${period.end_date.getDate()} ${month} ${period.end_date.getFullYear()}`;
+    }
+  }, [period]);
+
+  const isInUse = useMemo(() => {
+    if (period) {
+      const currentDate = new Date();
+
+      const isBeforeEndDate = isBefore(currentDate, period.end_date);
+
+      return isBeforeEndDate;
+    }
+    return false;
+  }, [period]);
 
   return (
     <VehicleContainer>
@@ -64,18 +92,18 @@ const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({
         <VehicleImage source={{ uri: vehicle.image }} />
       </Vehicle>
       { period && (
-        <PeriodContainer inUse={period.inUse} >
-          {period.inUse ? (
-            <PeriodUtilizingText>Utilizando até 17 Junho 2020</PeriodUtilizingText>
+        <PeriodContainer inUse={isInUse} >
+          {isInUse ? (
+            <PeriodUtilizingText>Utilizando até {formattedEndDate}</PeriodUtilizingText>
           ) : (
             <>
               <VehicleSubtitle>Período</VehicleSubtitle>
               <DateContainer>
-                <PeriodText>17 Junho 2019</PeriodText>
+                <PeriodText>{formattedStartDate}</PeriodText>
 
                 <Icon name="arrow-right" size={20} color="#aeaeb3" />
 
-                <PeriodText>22 Junho 2020</PeriodText>
+                <PeriodText>{formattedEndDate}</PeriodText>
               </DateContainer>
             </>
           )}

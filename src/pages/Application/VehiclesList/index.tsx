@@ -170,7 +170,8 @@ const VehiclesList: React.FC = () => {
         keyExtractor={(vehicle) => vehicle.id}
         showsVerticalScrollIndicator={false}
         onEndReached={() => {loadVehicles()}}
-        onEndReachedThreshold={0.25}
+        onEndReachedThreshold={0.35}
+        contentContainerStyle={{ paddingBottom: 24 }}
         ListHeaderComponent={
           <TitleContainer>
             <Title>Resultados</Title>

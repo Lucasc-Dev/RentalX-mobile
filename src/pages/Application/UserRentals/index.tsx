@@ -37,7 +37,8 @@ const UserRentals: React.FC = () => {
 
   useEffect(() => {
     api.get('rentals', { params: { page: 0 } }).then(response => {
-      setRentals(response.data);
+      setRentals(response.data.rentals);
+      setTotalRentals(response.data.count);
       setPage(1);
     });
   }, []);
@@ -57,13 +58,13 @@ const UserRentals: React.FC = () => {
 
     setRentals(state => ([
       ...state,
-      ...response.data.vehicles,
+      ...response.data.rentals,
     ]));
     setTotalRentals(response.data.count);
     setPage(state => state + 1);
 
     setLoading(false);
-  }, [loading, rentals, page]);
+  }, [loading, totalRentals, rentals, page]);
 
   return (
     <Container>
@@ -81,8 +82,9 @@ const UserRentals: React.FC = () => {
         showsVerticalScrollIndicator={false}
         onEndReached={loadVehicles}
         onEndReachedThreshold={0.25}
+        contentContainerStyle={{ paddingBottom: 24 }}
         renderItem={({ item: rental }) => (
-          <HorizontalVehicleComponent period={{ start_date: rental.start_date, end_date: rental.end_date, inUse: false }} vehicle={rental.vehicle} />
+          <HorizontalVehicleComponent period={{ start_date: new Date(rental.start_date), end_date: new Date(rental.end_date) }} vehicle={rental.vehicle} />
         )}
       />
     </Container>

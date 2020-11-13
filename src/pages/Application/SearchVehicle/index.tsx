@@ -103,6 +103,7 @@ const SearchVehicle: React.FC = () => {
         showsVerticalScrollIndicator={false}
         onEndReached={() => {loadVehicles()}}
         onEndReachedThreshold={0.25}
+        contentContainerStyle={{ paddingBottom: 24 }}
         renderItem={({ item: vehicle }) => (
           <HorizontalVehicleComponent vehicle={vehicle} />
         )}
