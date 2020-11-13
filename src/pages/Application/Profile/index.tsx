@@ -78,7 +78,7 @@ const Profile: React.FC = () => {
   }, [profile]);
 
   const handleSignOut = useCallback(() => {
-    signOut();
+    navigate('ConfirmLogout');
   }, []);
 
   return (
