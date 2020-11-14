@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useRef } from 'react';
-import { Alert } from 'react-native';
+import { Alert, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../../hooks/AuthContext';
 import { Form } from '@unform/mobile';
@@ -32,7 +32,9 @@ interface SubmitFormData {
 const SignIn: React.FC = () => {
   const { navigate } = useNavigation();
   const { signIn, user } = useAuth();
+
   const formRef = useRef<FormHandles>(null);
+  const passwordInputRef = useRef<TextInput>(null);
 
   const [remindMe, setRemindMe] = useState(false);
 
@@ -68,13 +70,22 @@ const SignIn: React.FC = () => {
               placeholder="E-mail"
               autoCorrect={false}
               icon="mail"
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                passwordInputRef.current?.focus();
+              }}
             />
             <Input 
+              ref={passwordInputRef}
               name="password"
               placeholder="Senha"
-              secureTextEntry
+              isPassword={true}
               autoCorrect={false}
               icon="lock"
+              returnKeyType="send"
+              onSubmitEditing={() => {
+                formRef.current?.submitForm()
+              }}
             />
 
             <HorizontalContainer>
@@ -95,7 +106,9 @@ const SignIn: React.FC = () => {
 
             <Button 
               text="Login"
-              onPress={() => formRef.current?.submitForm()}
+              onPress={() => {
+                formRef.current?.submitForm()
+              }}
             />
           </ButtonsContainer>
         </Form>

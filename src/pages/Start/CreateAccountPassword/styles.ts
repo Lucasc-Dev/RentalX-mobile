@@ -1,19 +1,25 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.KeyboardAvoidingView`
+export const Container = styled.View`
+    flex: 1;
+    background-color: #FFF;
+    justify-content: space-between;
+`;
+
+export const KeyboardAvoidingContainer = styled.KeyboardAvoidingView`
+    background-color: #FFF;
 `;
 
 export const BackButton = styled.TouchableOpacity`
     width: 40px;
     height: 40px;
-    margin: 24px 0 0 15px;
+    margin: 24px 0 0 16px;
     align-items: center;
     justify-content: center;
-    position: absolute;
 `;
 
 export const TitleContainer = styled.View`
-    margin: 80px 0 80px 32px;
+    margin: 50px 0 60px 32px;
     width: 220px;
 `;
 

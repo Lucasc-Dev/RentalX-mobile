@@ -1,4 +1,5 @@
 import React, { useCallback, useRef } from 'react';
+import { TextInput } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
@@ -11,6 +12,7 @@ import Button from '../../../components/Button';
 
 import { 
   Container,
+  KeyboardAvoidingContainer,
   BackButton,
   TitleContainer,
   Title,
@@ -25,10 +27,12 @@ interface CreateAccountRouteParams {
 }
 
 const CreateAccountPassword: React.FC = () => {
-  const formRef = useRef<FormHandles>(null);
-  const { navigate } = useNavigation();
+  const { navigate, goBack } = useNavigation();
   const { params } = useRoute();
 
+  const formRef = useRef<FormHandles>(null);
+  const confirmPasswordInputRef = useRef<TextInput>(null);
+  
   const { name, email } = params as CreateAccountRouteParams;
 
   const handleSubmitButton = useCallback(async (data) => {
@@ -48,17 +52,17 @@ const CreateAccountPassword: React.FC = () => {
   }, [name, email]);
 
   return (
-    <>
-      <BackButton>
-        <Icon size={20} name="chevron-left" color="#AEAEB3" />
-      </BackButton>
-      <Container behavior="position">
+    <Container>
+      <KeyboardAvoidingContainer behavior="position">
+        <BackButton onPress={goBack}>
+          <Icon size={20} name="chevron-left" color="#AEAEB3" />
+        </BackButton>
         <TitleContainer>
           <Title>Crie sua conta</Title>
           
           <Subtitle>Faça seu cadastro de forma rápida e fácil.</Subtitle>
         </TitleContainer>
-
+        
         <Form ref={formRef} onSubmit={handleSubmitButton} >
           <InputsContainer>
             <InfoTitle>02. Senha</InfoTitle>
@@ -67,26 +71,37 @@ const CreateAccountPassword: React.FC = () => {
               name="password"
               placeholder="Senha"
               autoCorrect={false}
-              secureTextEntry
+              isPassword={true}
               icon="lock"
-            />
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                confirmPasswordInputRef.current?.focus();
+              }}
+              />
             <Input
+              ref={confirmPasswordInputRef}
               name="confirm_password"
               placeholder="Repetir senha"
               autoCorrect={false}
-              secureTextEntry
+              isPassword={true}
               icon="lock"
-            />
-
-            <Button 
-              style={{ marginTop: 32 }}
-              text="Cadastrar"
-              onPress={() => {formRef.current?.submitForm()}}
+              returnKeyType="send"
+              textContentType="newPassword"
+              onSubmitEditing={() => {
+                formRef.current?.submitForm();
+              }}
             />
           </InputsContainer>
         </Form>
-      </Container>
-    </>
+      </KeyboardAvoidingContainer>
+      <Button 
+        style={{ marginVertical: 24 }}
+        text="Cadastrar"
+        onPress={() => {
+          formRef.current?.submitForm()
+        }}
+      />
+    </Container>
   );
 };
 

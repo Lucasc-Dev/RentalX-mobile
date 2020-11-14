@@ -2,6 +2,8 @@ import styled from 'styled-components/native';
 import ReactCheckBox from '@react-native-community/checkbox';
 
 export const Container = styled.KeyboardAvoidingView`
+    flex: 1;
+    background-color: #FFF;
 `;
 
 export const BackButton = styled.TouchableOpacity`
@@ -14,14 +16,13 @@ export const BackButton = styled.TouchableOpacity`
 `;
 
 export const TitleContainer = styled.View`
-    margin: 100px 0 80px 32px;
     width: 220px;
+    margin: 100px 0 80px 32px;
 `;
 
 export const Title = styled.Text`
     font-family: 'Archivo-SemiBold';
     font-size: 38px;
-    font-weight: 600;
     line-height: 43px;
     color: #3d3d4d;
 `;
