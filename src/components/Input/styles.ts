@@ -1,10 +1,20 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
-export const Container = styled.View`
+interface InputContainerProps {
+    isErrored: boolean;
+}
+
+export const Container = styled.View<InputContainerProps>`
     margin: 0 24px 8px;
     align-self: center;
     align-items: center;
     flex-direction: row;
+    border-width: 1px;
+    border-color: transparent;
+
+    ${props => props.isErrored && css`
+        border-color: #dc1637;    
+    `}
 `;
 
 export const IconBox = styled.View`
@@ -15,7 +25,7 @@ export const IconBox = styled.View`
     justify-content: center;
 `;
 
-export const InputBox = styled.View`
+export const InputBox = styled.View<InputContainerProps>`
     flex: 1;
     height: 56px;
     margin-left: 2px;
@@ -23,6 +33,8 @@ export const InputBox = styled.View`
     flex-direction: row;
     justify-content: center;
     align-items: center;
+
+
 `;
 
 export const TextInput = styled.TextInput`
@@ -34,5 +46,5 @@ export const TextInput = styled.TextInput`
 `;
 
 export const SpyButton = styled.TouchableOpacity`
-    margin: 16px;
+    margin: 16px 16px 16px 0;
 `;
