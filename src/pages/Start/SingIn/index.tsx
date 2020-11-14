@@ -15,6 +15,7 @@ import Button from '../../../components/Button';
 
 import { 
   Container,
+  KeyboardAvoidingContainer,
   BackButton,
   TitleContainer,
   Title,
@@ -75,11 +76,11 @@ const SignIn: React.FC = () => {
   }, [signIn, navigate, user]);
 
   return (
-    <>
-      <BackButton>
-        <Icon size={20} name="chevron-left" color="#AEAEB3" />
-      </BackButton>
-      <Container behavior="position">
+    <Container>
+      <KeyboardAvoidingContainer behavior="position">
+        <BackButton>
+          <Icon size={20} name="chevron-left" color="#AEAEB3" />
+        </BackButton>
         <TitleContainer>
           <Title>Estamos quase lá.</Title>
           
@@ -104,6 +105,7 @@ const SignIn: React.FC = () => {
               ref={passwordInputRef}
               name="password"
               placeholder="Senha"
+              autoCapitalize="none"
               isPassword={true}
               autoCorrect={false}
               icon="lock"
@@ -128,17 +130,17 @@ const SignIn: React.FC = () => {
                 <MiniText>Esqueci minha senha</MiniText>
               </ForgotPasswordButton>
             </HorizontalContainer>
-
-            <Button 
-              text="Login"
-              onPress={() => {
-                formRef.current?.submitForm()
-              }}
-            />
           </ButtonsContainer>
         </Form>
-      </Container>
-    </>
+      </KeyboardAvoidingContainer>
+      <Button 
+        style={{ marginBottom: 24 }}
+        text="Login"
+        onPress={() => {
+          formRef.current?.submitForm()
+        }}
+      />
+    </Container>
   );
 };
 

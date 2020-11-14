@@ -1,8 +1,10 @@
 import React, { useCallback, useRef } from 'react';
-import { TextInput } from 'react-native';
+import { Alert, TextInput } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
+import * as Yup from 'yup';
+import getValidationErrors from '../../../utils/getValidationErrors';
 
 import api from '../../../services/api';
 import Icon from 'react-native-vector-icons/Feather'
@@ -27,7 +29,7 @@ interface CreateAccountRouteParams {
 }
 
 const CreateAccountPassword: React.FC = () => {
-  const { navigate, goBack } = useNavigation();
+  const { reset, goBack } = useNavigation();
   const { params } = useRoute();
 
   const formRef = useRef<FormHandles>(null);
@@ -37,6 +39,13 @@ const CreateAccountPassword: React.FC = () => {
 
   const handleSubmitButton = useCallback(async (data) => {
     try {
+      const schema = Yup.object().shape({
+        password: Yup.string().required('Senha obrigatória').max(30, 'Máximo 30 dígitos').min(5, 'Mínimo 6 dígitos'),
+        confirm_password: Yup.string().required('Senha obrigatória').oneOf([Yup.ref('password'), '']),
+      });
+
+      await schema.validate(data, { abortEarly: false });
+
       const user = {
         name, 
         email,
@@ -45,9 +54,27 @@ const CreateAccountPassword: React.FC = () => {
 
       await api.post('users', user);
 
-      navigate('AccountCreated');
+      reset({
+        index: 0,
+        routes: [
+          { name: 'AccountCreated' },
+        ]
+      });
     }catch (err) {
-      console.log(err);
+      if (err instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(err);
+
+        formRef.current?.setErrors(errors);
+
+        console.log(errors);
+
+        return;
+      }
+
+      Alert.alert(
+        'Erro na autenticação', 
+        'Ocorreu um erro ao fazer login, cheque as credenciais.'
+      );
     }
   }, [name, email]);
 
@@ -72,6 +99,7 @@ const CreateAccountPassword: React.FC = () => {
               placeholder="Senha"
               autoCorrect={false}
               isPassword={true}
+              autoCapitalize="none"
               icon="lock"
               returnKeyType="next"
               onSubmitEditing={() => {
@@ -84,6 +112,7 @@ const CreateAccountPassword: React.FC = () => {
               placeholder="Repetir senha"
               autoCorrect={false}
               isPassword={true}
+              autoCapitalize="none"
               icon="lock"
               returnKeyType="send"
               textContentType="newPassword"
