@@ -20,7 +20,9 @@ export const InputBox = styled.View`
     height: 56px;
     margin-left: 2px;
     background-color: #f2f2fa;
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
 `;
 
 export const TextInput = styled.TextInput`
@@ -29,4 +31,8 @@ export const TextInput = styled.TextInput`
     font-size: 16px;
     margin: 0 23px;
     color: #7a7a80;
+`;
+
+export const SpyButton = styled.TouchableOpacity`
+    margin: 16px;
 `;

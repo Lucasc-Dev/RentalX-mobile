@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { forwardRef, useCallback, useEffect, useRef, useState, useImperativeHandle } from 'react';
 import { TextInputProps } from 'react-native';
 import { useField } from '@unform/core';
 
@@ -9,28 +9,49 @@ import {
   IconBox,
   InputBox,
   TextInput,
+  SpyButton,
 } from './styles';
 
 interface InputProps extends TextInputProps {
   name: string;
   icon: string;
+  isPassword?: boolean;
 }
 
 interface InputValueReference {
   value: string;
 }
 
-const Input: React.FC<InputProps> = ({ icon, name, ...rest }) => {
+interface InputRef {
+  focus(): void;
+}
+
+const Input: React.RefForwardingComponent<InputRef, InputProps> = (
+  { icon, name, isPassword, ...rest }, ref,
+) => {
   const inputElementRef = useRef<any>(null);
+
+  const [spy, setSpy] = useState(false);
 
   const { registerField, defaultValue = '', fieldName, error } = useField(name);
   const inputValueRef = useRef<InputValueReference>({ value: defaultValue });
+
+  useImperativeHandle(ref, () => ({
+    focus() {
+      inputElementRef.current.focus();
+    }
+  }))
+
+  const handleSpyButton = useCallback(() => {
+    setSpy(state => !state);
+  }, []);
 
   useEffect(() => {
     registerField({
       name: fieldName,
       ref: inputValueRef.current,
       path: 'value',
+
       setValue(ref: any, value: string) {
         inputValueRef.current.value = value;
         inputElementRef.current.setNativeProps({ text: value });
@@ -39,7 +60,7 @@ const Input: React.FC<InputProps> = ({ icon, name, ...rest }) => {
         inputValueRef.current.value = '';
         inputElementRef.current.clear();
       }
-      });
+    });
   }, []);
 
   return (
@@ -53,12 +74,18 @@ const Input: React.FC<InputProps> = ({ icon, name, ...rest }) => {
           ref={inputElementRef}
           keyboardAppearance="light"
           placeholderTextColor="#666360" 
+          secureTextEntry={(isPassword && !spy)}
           onChangeText={(value) => { inputValueRef.current.value = value }}
           {...rest} 
         />
+        { isPassword && (
+          <SpyButton onPress={handleSpyButton}>
+            <Icon name={spy ? `eye` : `eye-off`} size={20} color="#aeaeb3" />
+          </SpyButton>
+        )}
       </InputBox>
     </Container>
   );
 };
 
-export default Input;
+export default forwardRef(Input);
