@@ -59,7 +59,7 @@ const SelectPeriod: React.FC = () => {
 
     let dayIndex = 1 - firstDay.getDay();
     
-    for (let i = 0; i < 42; i++) {
+    for (let i = 0; i < totalDays; i++) {
       const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), dayIndex);
 
       const today = new Date();

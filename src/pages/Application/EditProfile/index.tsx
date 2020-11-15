@@ -35,7 +35,8 @@ interface ProfileParams {
 }
 
 const EditProfile: React.FC = () => {
-  const formRef = useRef<FormHandles>(null);
+  const profileFormRef = useRef<FormHandles>(null);
+  const passwordFormRef = useRef<FormHandles>(null);
   const { updateUser } = useAuth();
   const { goBack, reset } = useNavigation();
   const { profile } = useRoute().params as ProfileParams;
@@ -46,14 +47,22 @@ const EditProfile: React.FC = () => {
     goBack();
   }, []);
 
+  const handleSubmitButton = useCallback(() => {
+    if (selectedTab === 'profile') {
+      profileFormRef.current?.submitForm();
+    } else {
+      passwordFormRef.current?.submitForm();
+    }
+  }, [passwordFormRef, profileFormRef, selectedTab]);
+
   const handleSubmitForm = useCallback(async (data) => {
+    console.log(data)
     if (selectedTab === 'profile') {
       if (!data.email && !data.name || data.email === '' && data.name === '') {
         goBack();
 
         return;
       }
-
       try{
         const requestBody = {
           email: data.email ? data.email : profile.email,
@@ -113,7 +122,7 @@ const EditProfile: React.FC = () => {
         Alert.alert('Preencha todos os campos.')
       }
     }
-  }, [selectedTab, profile, formRef]);
+  }, [selectedTab, profile, passwordFormRef, profileFormRef]);
 
   return (
     <Container>
@@ -146,50 +155,50 @@ const EditProfile: React.FC = () => {
         </Tab>
       </TabContainer>
 
-      <Form ref={formRef} onSubmit={handleSubmitForm} >
-        {selectedTab === 'profile' ? (
-          <>
-            <Input 
-              name="name" 
-              placeholder="Nome"
-              defaultValue={profile.name}
-              icon="user" 
-              />
-            <Input 
-              name="email"
-              placeholder="E-mail"
-              defaultValue={profile.email}
-              icon="mail"
-            />    
-          </>
-        ) : (
-          <>
-            <Input
-              name="currentPassword"
-              secureTextEntry
-              placeholder="Senha atual"
-              icon="lock"
-            />    
-            <Input 
-              name="newPassword"
-              secureTextEntry
-              placeholder="Nova senha"
-              icon="lock"
-            />    
-            <Input 
-              name="confirmPassword"
-              secureTextEntry
-              placeholder="Confirmar senha"
-              icon="lock"
-            />    
-          </>
-        )}
+      <Form ref={profileFormRef} onSubmit={handleSubmitForm} >
+        <Input 
+          name="name" 
+          placeholder="Nome"
+          defaultValue={profile.name}
+          icon="user" 
+          isVisible={selectedTab === 'profile'}
+        />
+        <Input 
+          name="email"
+          placeholder="E-mail"
+          defaultValue={profile.email}
+          icon="mail"
+          isVisible={selectedTab === 'profile'}
+        />    
+      
+        <Input
+          name="currentPassword"
+          isPassword={true}
+          placeholder="Senha atual"
+          icon="lock"
+          isVisible={selectedTab === 'password'}
+          />    
+        <Input 
+          name="newPassword"
+          isPassword={true}
+          placeholder="Nova senha"
+          icon="lock"
+          isVisible={selectedTab === 'password'}
+          />    
+        <Input 
+          name="confirmPassword"
+          isPassword={true}
+          secureTextEntry
+          placeholder="Confirmar senha"
+          icon="lock"
+          isVisible={selectedTab === 'password'}
+        />  
       </Form>
 
       <ButtonContainer>
         <Button 
           text="Salvar alterações"
-          onPress={() => {formRef.current?.submitForm()}}
+          onPress={handleSubmitButton}
         />
       </ButtonContainer>
     </Container>
