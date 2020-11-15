@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components/native';
 
 interface InputContainerProps {
-    isErrored: boolean;
+    isErrored?: boolean;
+    isVisible?: boolean;
 }
 
 export const Container = styled.View<InputContainerProps>`
@@ -14,6 +15,10 @@ export const Container = styled.View<InputContainerProps>`
 
     ${props => props.isErrored && css`
         border-color: #dc1637;    
+    `}
+
+    ${props => props.isVisible && css`
+        display: none;
     `}
 `;
 

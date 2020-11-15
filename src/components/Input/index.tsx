@@ -16,6 +16,7 @@ interface InputProps extends TextInputProps {
   name: string;
   icon: string;
   isPassword?: boolean;
+  isVisible?: boolean;
 }
 
 interface InputValueReference {
@@ -27,7 +28,7 @@ interface InputRef {
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  { icon, name, isPassword, ...rest }, ref,
+  { icon, name, isPassword, isVisible, ...rest }, ref,
 ) => {
   const inputElementRef = useRef<any>(null);
 
@@ -71,7 +72,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   }, []);
 
   return (
-    <Container isErrored={!!error} >
+    <Container isErrored={!!error} isVisible={!isVisible} >
       <IconBox>
         <Icon name={icon} size={20} color={ filled ? "#dc1637" : "#7a7a80"} />
       </IconBox>
