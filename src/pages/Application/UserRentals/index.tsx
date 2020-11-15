@@ -84,7 +84,11 @@ const UserRentals: React.FC = () => {
         onEndReachedThreshold={0.25}
         contentContainerStyle={{ paddingBottom: 24 }}
         renderItem={({ item: rental }) => (
-          <HorizontalVehicleComponent period={{ start_date: new Date(rental.start_date), end_date: new Date(rental.end_date) }} vehicle={rental.vehicle} />
+          <HorizontalVehicleComponent 
+            period={{ start_date: new Date(rental.start_date), end_date: new Date(rental.end_date) }} 
+            vehicle={rental.vehicle} 
+            onlyDetails
+          />
         )}
       />
     </Container>

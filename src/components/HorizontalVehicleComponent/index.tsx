@@ -9,6 +9,7 @@ import {
   VehicleContainer,
   Vehicle,
   VehicleInfoContainer,
+  FuelContainer,
   TextContainer,
   VehicleSubtitle,
   VehicleTitle,
@@ -36,13 +37,16 @@ interface HorizontalVehicleComponentProps {
     start_date: Date;
     end_date: Date;
   }
+  onlyDetails?: boolean;
 }
 
-const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({ vehicle, period }) => {
+const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({ 
+  vehicle, period, onlyDetails 
+}) => {
   const { navigate } = useNavigation();
 
   const handleClickVehicle = useCallback(() => {
-    navigate('VehicleDetails', { id: vehicle.id });
+    navigate('VehicleDetails', { id: vehicle.id, onlyDetails });
   }, [navigate, vehicle]);
 
   const formattedStartDate = useMemo(() => {
@@ -87,7 +91,9 @@ const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({
           </TextContainer>
         </VehicleInfoContainer>
 
-        <Icon name="droplet" size={20} color="#aeaeb3"/>
+        <FuelContainer>
+          <Icon name="droplet" size={20} color="#aeaeb3" />
+        </FuelContainer>
 
         <VehicleImage source={{ uri: vehicle.image }} />
       </Vehicle>

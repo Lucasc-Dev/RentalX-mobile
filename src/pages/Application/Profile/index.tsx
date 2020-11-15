@@ -4,6 +4,7 @@ import { useAuth } from '../../../hooks/AuthContext';
 import api from '../../../services/api';
 
 import Icon from 'react-native-vector-icons/Feather';
+import HorizontalVehicleComponent from '../../../components/HorizontalVehicleComponent';
 
 import { 
   Container,
@@ -19,13 +20,6 @@ import {
   InfoDescription,
   FavoriteVehicle,
   FavoriteVehicleHeader,
-  Vehicle,
-  VehicleInfoContainer,
-  TextContainer,
-  VehicleSubtitle,
-  VehicleTitle,
-  VehiclePrice,
-  VehicleImage,
 } from './styles';
 
 interface Vehicle {
@@ -55,7 +49,6 @@ interface FavoriteVehicle {
 
 const Profile: React.FC = () => {
   const { navigate } = useNavigation();
-  const { signOut } = useAuth();
 
   const [profile, setProfile] = useState<Profile>({} as Profile);
   const [favoriteVehicle, setFavoriteVehicle] = useState<FavoriteVehicle>();
@@ -118,22 +111,10 @@ const Profile: React.FC = () => {
           </FavoriteVehicleHeader>
           
           { favoriteVehicle && (
-            <Vehicle>
-              <VehicleInfoContainer>
-                <TextContainer>
-                  <VehicleSubtitle>{favoriteVehicle.vehicle.brand}</VehicleSubtitle>
-                  <VehicleTitle>{favoriteVehicle.vehicle.name}</VehicleTitle>
-                </TextContainer>
-                <TextContainer>
-                  <VehicleSubtitle>Por dia</VehicleSubtitle>
-                  <VehiclePrice>R$ {favoriteVehicle.vehicle.daily_price}</VehiclePrice>
-                </TextContainer>
-              </VehicleInfoContainer>
-
-              <Icon name="droplet" size={20} color="#aeaeb3" style={{ alignSelf: 'flex-end' }} />
-
-              <VehicleImage source={{ uri: favoriteVehicle.vehicle.image }} />
-            </Vehicle>
+            <HorizontalVehicleComponent 
+              vehicle={favoriteVehicle.vehicle} 
+              onlyDetails 
+            />
           )}
         </FavoriteVehicle>
       </InfoSection>

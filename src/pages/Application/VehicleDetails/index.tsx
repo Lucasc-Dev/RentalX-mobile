@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { usePeriod } from '../../../hooks/PeriodContext';
-import { Image } from 'react-native';
+import { Alert, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { usePeriod } from '../../../hooks/PeriodContext';
 import api from '../../../services/api';
 
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import Button from '../../../components/Button';
-
-import rightArrow from '../../../assets/icons/RightArrow.png';
 
 import { 
   Container,
@@ -29,6 +27,7 @@ import {
   FeatureDescription,
   PeriodContainer,
   DateContainer,
+  ArrowIconContainer,
   PeriodDateText,
   FooterContainer,
   PriceContainer,
@@ -58,14 +57,15 @@ interface Vehicle {
 
 interface VehicleDetailsParams {
   id: string;
+  onlyDetails?: boolean;
 }
 
 const VehicleDetails: React.FC = () => {
   const { params } = useRoute();
-  const { timeInDays } = usePeriod();
-  const { navigate } = useNavigation();
+  const { period, timeInDays, formattedStartDate, formattedEndDate } = usePeriod();
+  const { reset, goBack } = useNavigation();
 
-  const { id } = params as VehicleDetailsParams;
+  const { id, onlyDetails } = params as VehicleDetailsParams;
 
   const [features, setFeatures] = useState<Feature[]>([]);
   const [vehicle, setVehicle] = useState<Vehicle>({} as Vehicle);
@@ -75,28 +75,57 @@ const VehicleDetails: React.FC = () => {
       setVehicle(response.data);
 
       const features = response.data.features;
-      
-      const fullRows = Math.floor(features.length / 3);
 
-      let lastRowIndex = features.length - (fullRows * 3);
-
-      while (lastRowIndex !== 3 && lastRowIndex !== 0) {
-        features.push({ 
-          id: 'null',
-          name: '',
-          description: '',
-          image: '',
-        });
-
-        lastRowIndex++;
-      }
-
-      setFeatures(features);
+      if (features) {
+        const fullRows = Math.floor(features.length / 3);
+  
+        let lastRowIndex = features.length - (fullRows * 3);
+  
+        while (lastRowIndex !== 3 && lastRowIndex !== 0) {
+          features.push({ 
+            id: 'null',
+            name: '',
+            description: '',
+            image: '',
+          });
+  
+          lastRowIndex++;
+        }
+  
+        setFeatures(features);
+      }      
     });
   }, []);
 
-  const handleRentButton = useCallback(() => {
-    navigate('SuccessfulRental');
+  const handleRentButton = useCallback(async () => {
+    try {
+      const request = {
+        vehicle_id: id,
+        start_date: period.start_date,
+        end_date: period.end_date,
+      }
+
+      await api.post('rentals', request);
+
+      reset({
+        index: 0,
+        routes: [
+          { name: 'SuccessfulRental' },
+        ]
+      });
+    }catch {
+      Alert.alert(
+        'Falha ao alugar este veículo.',
+        'Não foi possível alugar este veículo, tente novamente.',
+      );
+
+      reset({
+        index: 0,
+        routes: [
+          { name: 'TabPagesStack' },
+        ]
+      });
+    }
   }, []);
 
   const totalPrice = useMemo(() => {
@@ -138,7 +167,7 @@ const VehicleDetails: React.FC = () => {
         ListHeaderComponent={() => (
           <>
             <Header>
-              <BackButton>
+              <BackButton onPress={goBack}>
                 <FeatherIcon name="chevron-left" size={20} color="#aeaeb3" />
               </BackButton>
   
@@ -199,36 +228,39 @@ const VehicleDetails: React.FC = () => {
               <DateContainer>
                 <Subtitle>De</Subtitle>
   
-                <PeriodDateText>17 Julho 2020</PeriodDateText>
+                <PeriodDateText>{formattedStartDate}</PeriodDateText>
               </DateContainer>
   
-              <Image source={rightArrow} />
+              <ArrowIconContainer>
+                <FeatherIcon name="arrow-right" size={18} color="#aeaeb3"/>
+              </ArrowIconContainer>
   
               <DateContainer>
                 <Subtitle>Até</Subtitle>
   
-                <PeriodDateText>20 Julho 2020</PeriodDateText>
+                <PeriodDateText>{formattedEndDate}</PeriodDateText>
               </DateContainer>
             </PeriodContainer>
           </>
         )}
       />
+      {!onlyDetails && (
+        <FooterContainer>
+          <PriceContainer>
+            <PriceCalculationContainer>
+              <Subtitle>Total</Subtitle>
+              <PriceCalculationText>R$ {vehicle.daily_price} * {timeInDays} diárias</PriceCalculationText>
+            </PriceCalculationContainer>
 
-      <FooterContainer>
-        <PriceContainer>
-          <PriceCalculationContainer>
-            <Subtitle>Total</Subtitle>
-            <PriceCalculationText>R$ {vehicle.daily_price} * {timeInDays} diárias</PriceCalculationText>
-          </PriceCalculationContainer>
+            <TotalPrice>R$ { totalPrice }</TotalPrice>
+          </PriceContainer>
 
-          <TotalPrice>R$ { totalPrice }</TotalPrice>
-        </PriceContainer>
-
-        <Button 
-          text="Alugar agora"
-          onPress={handleRentButton}
-        />
-      </FooterContainer>
+          <Button 
+            text="Alugar agora"
+            onPress={handleRentButton}
+          />
+        </FooterContainer>
+      )}
     </Container>
   );
 };

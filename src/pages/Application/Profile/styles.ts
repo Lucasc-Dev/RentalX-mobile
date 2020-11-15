@@ -78,7 +78,7 @@ export const FavoriteVehicle = styled.View`
 `;
 
 export const FavoriteVehicleHeader = styled.View`
-    margin: 20px 24px 4px;
+    margin: 20px 24px 16px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;

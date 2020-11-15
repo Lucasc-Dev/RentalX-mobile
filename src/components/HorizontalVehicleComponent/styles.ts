@@ -21,6 +21,11 @@ export const VehicleInfoContainer = styled.View`
     justify-content: space-between;
 `;
 
+export const FuelContainer = styled.View`
+    margin-left: 4px;
+    justify-content: flex-end;
+`;
+
 export const TextContainer = styled.View`
     margin-right: 8px;
 `;

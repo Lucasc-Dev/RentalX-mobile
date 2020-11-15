@@ -137,6 +137,12 @@ export const DateContainer = styled.View`
     justify-content: space-between;
 `;
 
+export const ArrowIconContainer = styled.View`
+    height: 34px;
+    justify-content: flex-end;
+    align-items: center;
+`;
+
 export const PeriodDateText = styled.Text`
     font-family: 'Inter-Medium';
     font-size: 15px;
