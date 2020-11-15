@@ -40,7 +40,7 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
-  const [remindMe, setRemindMe] = useState(false);
+  const [remindMe, setRemindMe] = useState(true);
 
   const handleSubmitButton = useCallback(async (data: SubmitFormData) => {
     try{
@@ -56,7 +56,7 @@ const SignIn: React.FC = () => {
       await signIn({
         email: data.email,
         password: data.password,
-      });
+      }, remindMe);
       
       navigate('SelectPeriod');
     }catch (err) {
