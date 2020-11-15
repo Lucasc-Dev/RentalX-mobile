@@ -1,4 +1,6 @@
-import React from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -7,10 +9,37 @@ import SignIn from '../../pages/Start/SingIn';
 import CreateAccount from '../../pages/Start/CreateAccount';
 import CreateAccountPassword from '../../pages/Start/CreateAccountPassword';
 import AccountCreated from '../../pages/Start/AccountCreated';
+import OnBoardingScreen from '../../pages/Start/OnBoardingScreen';
 
 const App = createStackNavigator();
 
 const AuthRoutes: React.FC = () => {
+    const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        async function checkFirstLaunch() {
+            const response = await AsyncStorage.getItem('@RentalX:firstLaunch');
+
+            if (response === null) {
+                setFirstLaunch(true);
+            }else {
+                setFirstLaunch(false);
+            }
+        }
+
+        checkFirstLaunch();
+    }, []);
+
+    if (firstLaunch === null) {
+        return (
+            <View 
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+            >
+                <ActivityIndicator size="large" color="#999" />
+            </View>
+        );
+    }
+
     return (
         <App.Navigator
             screenOptions={{
@@ -18,6 +47,9 @@ const AuthRoutes: React.FC = () => {
                 cardStyle: { backgroundColor: '#E1E1E6' },
             }}
         >
+            {firstLaunch && (
+                <App.Screen name="OnBoardingScreen" component={OnBoardingScreen} />
+            )}
             <App.Screen name="WelcomePage" component={WelcomePage} />
             <App.Screen name="SignIn" component={SignIn} />
             <App.Screen name="CreateAccount" component={CreateAccount} />

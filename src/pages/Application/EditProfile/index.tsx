@@ -56,7 +56,6 @@ const EditProfile: React.FC = () => {
   }, [passwordFormRef, profileFormRef, selectedTab]);
 
   const handleSubmitForm = useCallback(async (data) => {
-    console.log(data)
     if (selectedTab === 'profile') {
       if (!data.email && !data.name || data.email === '' && data.name === '') {
         goBack();

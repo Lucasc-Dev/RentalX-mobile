@@ -41,7 +41,7 @@ export const Subtitle = styled.Text`
 `;
 
 export const ButtonsContainer = styled.View`
-    margin-top: 70px;
+    margin-top: 60px;
 `;
 
 export const HorizontalButtonsContainer = styled.View`
@@ -62,18 +62,4 @@ export const ButtonText = styled.Text`
     text-align: center;
     font-size: 16px;
     color: #e1e1e6;
-`;
-
-export const BackButton = styled.TouchableOpacity`
-    width: 156px;
-    height: 40px;
-    margin: 40px auto 0;
-`;
-
-export const BackButtonText = styled.Text`
-    margin: auto;
-    font-family: 'Archivo-SemiBold';
-    /*text-align: center;*/
-    font-size: 15px;
-    color: #7a7a80;
 `;

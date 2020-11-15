@@ -14,8 +14,6 @@ import {
   HorizontalButtonsContainer,
   Button,
   ButtonText,
-  BackButton,
-  BackButtonText,
 } from './styles';
 
 const WelcomePage: React.FC = () => {
@@ -27,10 +25,6 @@ const WelcomePage: React.FC = () => {
   
   const handleSignUpButton = useCallback(() => {
     navigate('CreateAccount');
-  }, []);
-  
-  const handleBackButton = useCallback(() => {
-    canGoBack();
   }, []);
 
   return (
@@ -61,10 +55,6 @@ const WelcomePage: React.FC = () => {
               <ButtonText>Cadastro</ButtonText>
             </Button>
           </HorizontalButtonsContainer>
-
-          <BackButton onPress={handleBackButton}>
-            <BackButtonText>Voltar</BackButtonText>
-          </BackButton>
         </ButtonsContainer>
       </VerticalContainer>
     </Container>
