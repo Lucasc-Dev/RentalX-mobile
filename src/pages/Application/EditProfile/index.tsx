@@ -1,10 +1,12 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, TextInput } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import { useAuth } from '../../../hooks/AuthContext';
 import api from '../../../services/api';
+import * as Yup from 'yup';
+import getValidationErrors from '../../../utils/getValidationErrors';
 
 import Icon from 'react-native-vector-icons/Feather';
 import Input from '../../../components/Input';
@@ -35,8 +37,12 @@ interface ProfileParams {
 }
 
 const EditProfile: React.FC = () => {
-  const profileFormRef = useRef<FormHandles>(null);
-  const passwordFormRef = useRef<FormHandles>(null);
+  const formRef = useRef<FormHandles>(null);
+
+  const emailInputRef = useRef<TextInput>(null);
+  const newPasswordInputRef = useRef<TextInput>(null);
+  const confirmPasswordInputRef = useRef<TextInput>(null);
+
   const { updateUser } = useAuth();
   const { goBack, reset } = useNavigation();
   const { profile } = useRoute().params as ProfileParams;
@@ -47,22 +53,21 @@ const EditProfile: React.FC = () => {
     goBack();
   }, []);
 
-  const handleSubmitButton = useCallback(() => {
-    if (selectedTab === 'profile') {
-      profileFormRef.current?.submitForm();
-    } else {
-      passwordFormRef.current?.submitForm();
-    }
-  }, [passwordFormRef, profileFormRef, selectedTab]);
-
   const handleSubmitForm = useCallback(async (data) => {
     if (selectedTab === 'profile') {
-      if (!data.email && !data.name || data.email === '' && data.name === '') {
+      if (!data.email && !data.name) {
         goBack();
-
         return;
       }
+
       try{
+        const schema = Yup.object().shape({
+          name: data.name ? Yup.string().min(5).max(50) : Yup.string().optional(),
+          email: Yup.string().email('Digite um e-mail válido'),
+        })
+
+        await schema.validate(data, { abortEarly: false });
+
         const requestBody = {
           email: data.email ? data.email : profile.email,
           name: data.name ? data.name : profile.name,
@@ -70,9 +75,7 @@ const EditProfile: React.FC = () => {
 
         const response = await api.put('profile', requestBody);
 
-        const user = response.data;
-
-        updateUser(user);
+        updateUser(response.data);
 
         reset({
           index: 0,
@@ -81,47 +84,56 @@ const EditProfile: React.FC = () => {
           ]
         });
       }catch(err) {
-        Alert.alert('Houve um problema ao atualizar o perfil');
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+  
+          return;
+        }
+        Alert.alert('Não foi possível atualizar seu perfil.');
       }
     }
+
     if (selectedTab === 'password') {
       if (!data.currentPassword && !data.newPassword && !data.confirmPassword) {
         goBack();
-
         return;
       }
 
-      if (data.currentPassword && data.newPassword && data.confirmPassword) {
-        if (data.newPassword !== data.confirmPassword) {
-          Alert.alert('A nova senha não condiz com a confirmação.')
-        }
+      try {
+        const schema = Yup.object().shape({
+          currentPassword: Yup.string().required('Senha antiga obrigatória').max(30, 'Máximo 30 dígitos').min(5, 'Mínimo 6 dígitos'),
+          newPassword: Yup.string().required('Nova senha obrigatória').max(30, 'Máximo 30 dígitos').min(5, 'Mínimo 6 dígitos'),
+          confirmPassword: Yup.string().required('Confirmação de senha obrigatória').oneOf([Yup.ref('newPassword'), '']),
+        })
 
-        try {
-          const requestBody = { 
-            name: profile.name,
-            email: profile.email,
-            oldPassword: data.currentPassword,
-            password: data.newPassword,
-          }
+        await schema.validate(data, { abortEarly: false });
+
+        await api.put('profile', {
+          oldPassword: data.currentPassword,
+          password: data.newPassword,
+        });
+
+        reset({
+          index: 0,
+          routes: [
+            { name: 'EditProfileSuccessful' },
+          ]
+        });
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
   
-          await api.put('profile', requestBody);
-  
-          Alert.alert('Senha alterada com sucesso!')
-  
-          reset({
-            index: 0,
-            routes: [
-              { name: 'EditProfileSuccessful' },
-            ]
-          });
-        } catch (err) {
-          Alert.alert('Houve um erro ao atualizar a senha.')
+          return;
         }
-      }else { 
-        Alert.alert('Preencha todos os campos.')
+        Alert.alert(
+          'Erro ao atualizar senha', 
+          'Verifique se os dados informados estão corretos.'
+        );
       }
     }
-  }, [selectedTab, profile, passwordFormRef, profileFormRef]);
+  }, [selectedTab, profile]);
 
   return (
     <Container>
@@ -154,20 +166,29 @@ const EditProfile: React.FC = () => {
         </Tab>
       </TabContainer>
 
-      <Form ref={profileFormRef} onSubmit={handleSubmitForm} >
+      <Form ref={formRef} onSubmit={handleSubmitForm} >
         <Input 
           name="name" 
           placeholder="Nome"
           defaultValue={profile.name}
           icon="user" 
           isVisible={selectedTab === 'profile'}
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            emailInputRef.current?.focus();
+          }}
         />
         <Input 
+          ref={emailInputRef}
           name="email"
           placeholder="E-mail"
           defaultValue={profile.email}
           icon="mail"
           isVisible={selectedTab === 'profile'}
+          returnKeyType="send"
+          onSubmitEditing={() => {
+            formRef.current?.submitForm();
+          }}
         />    
       
         <Input
@@ -176,28 +197,41 @@ const EditProfile: React.FC = () => {
           placeholder="Senha atual"
           icon="lock"
           isVisible={selectedTab === 'password'}
-          />    
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            newPasswordInputRef.current?.focus();
+          }}
+        />    
         <Input 
+          ref={newPasswordInputRef}
           name="newPassword"
           isPassword={true}
           placeholder="Nova senha"
           icon="lock"
           isVisible={selectedTab === 'password'}
-          />    
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            confirmPasswordInputRef.current?.focus();
+          }}
+        />    
         <Input 
+          ref={confirmPasswordInputRef}
           name="confirmPassword"
           isPassword={true}
-          secureTextEntry
           placeholder="Confirmar senha"
           icon="lock"
           isVisible={selectedTab === 'password'}
+          returnKeyType="send"
+          onSubmitEditing={() => {
+            formRef.current?.submitForm();
+          }}
         />  
       </Form>
 
       <ButtonContainer>
         <Button 
           text="Salvar alterações"
-          onPress={handleSubmitButton}
+          onPress={() => formRef.current?.submitForm()}
         />
       </ButtonContainer>
     </Container>

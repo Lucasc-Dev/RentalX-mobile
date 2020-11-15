@@ -72,7 +72,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   }, []);
 
   return (
-    <Container isErrored={!!error} isVisible={!isVisible} >
+    <Container isErrored={!!error} isVisible={isVisible} >
       <IconBox>
         <Icon name={icon} size={20} color={ filled ? "#dc1637" : "#7a7a80"} />
       </IconBox>

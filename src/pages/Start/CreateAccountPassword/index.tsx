@@ -66,8 +66,6 @@ const CreateAccountPassword: React.FC = () => {
 
         formRef.current?.setErrors(errors);
 
-        console.log(errors);
-
         return;
       }
 

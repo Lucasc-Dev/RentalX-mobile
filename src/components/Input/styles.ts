@@ -17,7 +17,7 @@ export const Container = styled.View<InputContainerProps>`
         border-color: #dc1637;    
     `}
 
-    ${props => props.isVisible && css`
+    ${props => props.isVisible === false && css`
         display: none;
     `}
 `;
