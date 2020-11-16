@@ -1,4 +1,3 @@
-import { ActivityIndicator, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -10,6 +9,7 @@ import CreateAccount from '../../pages/Start/CreateAccount';
 import CreateAccountPassword from '../../pages/Start/CreateAccountPassword';
 import AccountCreated from '../../pages/Start/AccountCreated';
 import OnBoardingScreen from '../../pages/Start/OnBoardingScreen';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = createStackNavigator();
 
@@ -25,20 +25,12 @@ const AuthRoutes: React.FC = () => {
             }else {
                 setFirstLaunch(false);
             }
+
+            SplashScreen.hide();
         }
 
         checkFirstLaunch();
     }, []);
-
-    if (firstLaunch === null) {
-        return (
-            <View 
-                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-            >
-                <ActivityIndicator size="large" color="#999" />
-            </View>
-        );
-    }
 
     return (
         <App.Navigator
