@@ -29,7 +29,7 @@ interface Profile {
   id: string;
   name: string;
   email: string;
-  image: string;
+  avatar_url: string;
 }
 
 interface ProfileParams {
@@ -148,7 +148,7 @@ const EditProfile: React.FC = () => {
           <IconButton />
         </TopHeaderContainer>
 
-        <ProfileImage source={{ uri: profile.image }} />
+        <ProfileImage source={{ uri: profile.avatar_url }} />
       </Header>
 
       <TabContainer>

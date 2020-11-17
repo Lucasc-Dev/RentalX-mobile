@@ -38,7 +38,7 @@ interface Profile {
   id: string;
   name: string;
   email: string;
-  image: string;
+  avatar_url: string;
   total_rentals: number;
 }
 
@@ -89,7 +89,7 @@ const Profile: React.FC = () => {
           </IconButton>
         </TopHeaderContainer>
 
-        <ProfileImage source={{ uri: profile.image }} />
+        <ProfileImage source={{ uri: profile.avatar_url }} />
       </Header>
 
       <ProfileName>{profile.name}</ProfileName>
