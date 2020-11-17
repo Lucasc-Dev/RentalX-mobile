@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -10,10 +10,15 @@ import SuccessfulRental from '../../pages/Application/SuccessfulRental';
 import EditProfile from '../../pages/Application/EditProfile';
 import EditProfileSuccessful from '../../pages/Application/EditProfileSuccessful';
 import ConfirmLogout from '../../pages/Application/ConfirmLogout';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = createStackNavigator();
 
 const AuthRoutes: React.FC = () => {
+    useEffect(() => {
+        SplashScreen.hide();
+    }, []);
+
     return (
         <App.Navigator
             screenOptions={{
