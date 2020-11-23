@@ -34,7 +34,7 @@ interface SubmitFormData {
 }
 
 const SignIn: React.FC = () => {
-  const { navigate } = useNavigation();
+  const { navigate, goBack } = useNavigation();
   const { signIn, user } = useAuth();
 
   const formRef = useRef<FormHandles>(null);
@@ -78,7 +78,7 @@ const SignIn: React.FC = () => {
   return (
     <Container>
       <KeyboardAvoidingContainer behavior="position">
-        <BackButton>
+        <BackButton onPress={goBack}>
           <Icon size={20} name="chevron-left" color="#AEAEB3" />
         </BackButton>
         <TitleContainer>
@@ -132,14 +132,14 @@ const SignIn: React.FC = () => {
             </HorizontalContainer>
           </ButtonsContainer>
         </Form>
+        <Button 
+          style={{ marginBottom: 24 }}
+          text="Login"
+          onPress={() => {
+            formRef.current?.submitForm()
+          }}
+        />
       </KeyboardAvoidingContainer>
-      <Button 
-        style={{ marginBottom: 24 }}
-        text="Login"
-        onPress={() => {
-          formRef.current?.submitForm()
-        }}
-      />
     </Container>
   );
 };

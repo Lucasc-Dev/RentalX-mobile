@@ -32,7 +32,7 @@ const AuthRoutes: React.FC = () => {
         checkFirstLaunch();
     }, []);
 
-    return (
+    return firstLaunch !== null ? (
         <App.Navigator
             screenOptions={{
                 headerShown: false,
@@ -48,7 +48,7 @@ const AuthRoutes: React.FC = () => {
             <App.Screen name="CreateAccountPassword" component={CreateAccountPassword} />
             <App.Screen name="AccountCreated" component={AccountCreated} />
         </App.Navigator>
-    );
+    ) : null;
 }
 
 export default AuthRoutes;

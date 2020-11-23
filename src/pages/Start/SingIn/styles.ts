@@ -8,7 +8,7 @@ export const Container = styled.View`
 `;
 
 export const KeyboardAvoidingContainer = styled.KeyboardAvoidingView`
-    background-color: #FFF;
+    flex: 1;
 `;
 
 export const BackButton = styled.TouchableOpacity`
@@ -46,7 +46,7 @@ export const ButtonsContainer = styled.View`
 
 export const HorizontalContainer = styled.View`
     width: 100%;
-    padding: 12px 24px 20px 20px;
+    padding: 16px 24px 24px 20px;
     flex-direction: row;
     align-self: center;
     justify-content: space-between;

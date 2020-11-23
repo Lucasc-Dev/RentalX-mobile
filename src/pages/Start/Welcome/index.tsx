@@ -17,7 +17,7 @@ import {
 } from './styles';
 
 const WelcomePage: React.FC = () => {
-  const { navigate, canGoBack } = useNavigation();
+  const { navigate } = useNavigation();
 
   const handleLoginButton = useCallback(() => {
     navigate('SignIn');
