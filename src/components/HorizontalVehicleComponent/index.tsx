@@ -27,8 +27,11 @@ interface Vehicle {
   brand: string;
   model: string;
   daily_price: number;
-  image: string;
   fuel: string;
+  images: {
+    id: string;
+    image_url: string;
+  }[];
 }
 
 interface HorizontalVehicleComponentProps {
@@ -95,7 +98,9 @@ const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({
           <Icon name="droplet" size={20} color="#aeaeb3" />
         </FuelContainer>
 
-        <VehicleImage source={{ uri: vehicle.image }} />
+        {vehicle.images[0] && (
+          <VehicleImage source={{ uri: vehicle.images[0].image_url }} />
+        )}
       </Vehicle>
       { period && (
         <PeriodContainer inUse={isInUse} >

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 interface VehicleImageDotProps {
@@ -41,8 +42,14 @@ export const VehiclePrice = styled.Text`
     color: #DC1637;
 `;
 
+export const ImageContainer = styled.ScrollView.attrs({
+    horizontal: true,
+    pagingEnabled: true,
+    showsHorizontalScrollIndicator: false,
+})``;
+
 export const VehicleImage = styled.Image`
-    width: 100%;
+    width: ${Dimensions.get('window').width - 96}px;
     height: 130px;
     margin: 8px auto;
 `;

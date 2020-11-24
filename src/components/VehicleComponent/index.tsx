@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/Feather';
@@ -10,6 +10,7 @@ import {
   VehicleSubtitle,
   VehicleTitle,
   VehiclePrice,
+  ImageContainer,
   VehicleImage,
   VehicleImagesInfo,
   VehicleImageDot,
@@ -21,8 +22,11 @@ interface Vehicle {
   brand: string;
   model: string;
   daily_price: number;
-  image: string;
   fuel: string;
+  images: {
+    id: string;
+    image_url: string;
+  }[];
 }
 
 interface VehicleComponentProps {
@@ -31,6 +35,8 @@ interface VehicleComponentProps {
 
 const VehicleComponent: React.FC<VehicleComponentProps> = ({ vehicle }) => {
   const { navigate } = useNavigation();
+
+  const [currentImage, setCurrentImage] = useState(0);
 
   const handleClickVehicle = useCallback(() => {
     navigate('VehicleDetails', { id: vehicle.id });
@@ -50,15 +56,19 @@ const VehicleComponent: React.FC<VehicleComponentProps> = ({ vehicle }) => {
         </TextContainer>
       </VehicleInfoContainer>
 
-      <VehicleImage source={{ uri: vehicle.image }} />
+      <ImageContainer>
+        { vehicle.images.map(image => (
+          <VehicleImage key={image.id} source={{ uri: image.image_url }} />
+        ))}
+      </ImageContainer>
 
       <VehicleInfoContainer>
         <Icon name="droplet" size={20} color="#aeaeb3"/>
 
         <VehicleImagesInfo>
-          <VehicleImageDot isSelected />
-          <VehicleImageDot isSelected={false} />
-          <VehicleImageDot isSelected={false} />
+          { vehicle.images.map((image, index) => (
+              <VehicleImageDot key={image.id} isSelected={index === currentImage} />                  
+          ))}
         </VehicleImagesInfo>
       </VehicleInfoContainer>
     </Vehicle>
