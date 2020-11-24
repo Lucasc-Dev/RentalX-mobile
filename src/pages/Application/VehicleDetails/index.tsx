@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Alert, Image } from 'react-native';
+import { Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { usePeriod } from '../../../hooks/PeriodContext';
 import api from '../../../services/api';
@@ -15,6 +15,7 @@ import {
   ImageDotsContainer,
   ImageDot,
   VehicleContainer,
+  ImageContainer,
   VehicleImage,
   InfoContainer,
   TextContainer,
@@ -50,9 +51,12 @@ interface Vehicle {
   model: string;
   plate: string;
   daily_price: number;
-  image: string;
   fuel: string;
   gear: string;
+  images: {
+    id: string;
+    image_url: string;
+  }[];
 }
 
 interface VehicleDetailsParams {
@@ -69,13 +73,14 @@ const VehicleDetails: React.FC = () => {
 
   const [features, setFeatures] = useState<Feature[]>([]);
   const [vehicle, setVehicle] = useState<Vehicle>({} as Vehicle);
+  const [currentImage, setCurrentImage] = useState(0);
 
   useEffect(() => {
     api.get(`vehicles/${id}`).then(response => {
       setVehicle(response.data);
 
       const features = response.data.features;
-
+      
       if (features) {
         const fullRows = Math.floor(features.length / 3);
   
@@ -158,7 +163,7 @@ const VehicleDetails: React.FC = () => {
     }
   }, [vehicle]);
 
-  return (
+  return vehicle.id ? (
     <Container>
       <ListContainer 
         data={features}
@@ -172,14 +177,20 @@ const VehicleDetails: React.FC = () => {
               </BackButton>
   
               <ImageDotsContainer>
-                <ImageDot isSelected />
-                <ImageDot isSelected={false} />
-                <ImageDot isSelected={false} />
+                { 
+                  vehicle.images.map((image, index) => (
+                    <ImageDot key={image.id} isSelected={index === currentImage} />                  
+                  )) 
+                }
               </ImageDotsContainer>
             </Header>
   
             <VehicleContainer>
-              <VehicleImage source={{ uri: vehicle.image }}/>
+              <ImageContainer>
+                { vehicle.images.map(image => (
+                  <VehicleImage key={image.id} source={{ uri: image.image_url }} />
+                ))}
+              </ImageContainer>
   
               <InfoContainer>
                 <TextContainer>
@@ -262,7 +273,7 @@ const VehicleDetails: React.FC = () => {
         </FooterContainer>
       )}
     </Container>
-  );
+  ) : null;
 };
 
 export default VehicleDetails;

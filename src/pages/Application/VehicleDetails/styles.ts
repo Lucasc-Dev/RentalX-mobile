@@ -1,5 +1,6 @@
 import { FlatList } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
 
 interface Feature {
     id: string;
@@ -54,13 +55,21 @@ export const ImageDot = styled.View<VehicleImageDotProps>`
 `;
 
 export const VehicleContainer = styled.View`
-    margin-top: 16px;
+    margin-top: 12px;
     justify-content: center;
 `;
 
+export const ImageContainer = styled.ScrollView.attrs({
+    horizontal: true,
+    pagingEnabled: true,
+    showsHorizontalScrollIndicator: false,
+})`
+    
+`;
+
 export const VehicleImage = styled.Image`
-    width: 280px;
-    height: 132px;
+    width: ${Dimensions.get('window').width - 32}px;
+    height: 140px;
     margin: auto;
 `;
 
