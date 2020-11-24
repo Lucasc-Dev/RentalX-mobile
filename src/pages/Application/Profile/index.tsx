@@ -29,9 +29,12 @@ interface Vehicle {
   model: string;
   plate: string;
   daily_price: number;
-  image: string;
   fuel: string;
   gear: string;
+  images: {
+    id: string;
+    image_url: string;
+  }[];
 }
 
 interface Profile {
