@@ -7,8 +7,11 @@ interface Vehicle {
     brand: string;
     model: string;
     daily_price: number;
-    image: string;
     fuel: string;
+    images: {
+        id: string;
+        image_url: string;
+    }[];
 }
 
 interface Rental {
