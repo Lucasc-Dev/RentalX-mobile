@@ -98,7 +98,7 @@ const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({
           <Icon name="droplet" size={20} color="#aeaeb3" />
         </FuelContainer>
 
-        {vehicle.images[0] && (
+        {(vehicle.images && vehicle.images[0]) && (
           <VehicleImage source={{ uri: vehicle.images[0].image_url }} />
         )}
       </Vehicle>
