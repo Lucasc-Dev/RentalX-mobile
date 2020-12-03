@@ -1,5 +1,7 @@
 <h1 align="center">
-  RentX Aplication!
+  RentalX Aplication!
 </h1>
 
-🚗 RentX is a mobile platform to find and rent a vehicle using your smartphone!
+🚗 RentalX is a React Native mobile application of a fictional rental company, made to help you to find and rent a vehicle on your smartphone!
+
+
