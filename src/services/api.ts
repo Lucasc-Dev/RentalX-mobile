@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://192.168.0.100:3333',
+    baseURL: 'https://api.rentalx.lucascesar.com.br',
 });
 
 export default api;
