@@ -73,8 +73,9 @@ const HorizontalVehicleComponent: React.FC<HorizontalVehicleComponentProps> = ({
       const currentDate = new Date();
 
       const isBeforeEndDate = isBefore(currentDate, period.end_date);
+      const isAfterToday = isBefore(period.start_date, currentDate);
 
-      return isBeforeEndDate;
+      return isBeforeEndDate && isAfterToday;
     }
     return false;
   }, [period]);
