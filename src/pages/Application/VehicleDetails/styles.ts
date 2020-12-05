@@ -69,7 +69,7 @@ export const ImageContainer = styled.ScrollView.attrs({
 
 export const VehicleImage = styled.Image`
     width: ${Dimensions.get('window').width - 32}px;
-    height: 140px;
+    height: 200px;
     margin: auto;
 `;
 

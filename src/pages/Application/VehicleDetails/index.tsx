@@ -156,7 +156,7 @@ const VehicleDetails: React.FC = () => {
     switch (vehicle.fuel) {
       case 'gasoline': 
         return 'Gasolina';
-      case 'eletrical':
+      case 'eletronical':
         return 'Elétrico';
       case 'flex': 
         return 'Flex';
